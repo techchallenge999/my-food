@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-food-app
+    image: my-food-app:latest
+    ports:
+      - 8000:8000
+    volumes:
+      - source: .
+        target: /app
+        type: bind

@@ -1,0 +1,22 @@
+name: ci-myfood
+on:
+  pull_request:
+    branches:
+      - development
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  check-application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.5.2
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: sudo apt-get update
+      - run: sudo apt-get --no-install-recommends --no-upgrade -y install python3-pip
+      - run: pip install -r requirements.txt
+      - run: pytest

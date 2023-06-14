@@ -2,10 +2,11 @@ import re
 from my_food.application.domain.compartilhado.validator.abtract_validator import (
     AbstractValidator,
 )
+from my_food.application.domain.usuarios.Interfaces.usuario import UsuarioAbstrato
 
 
 class UsuarioValidator(AbstractValidator):
-    def __init__(self, entity) -> None:
+    def __init__(self, entity: UsuarioAbstrato) -> None:
         self.user = entity
 
     def validate(self):
@@ -51,9 +52,10 @@ class UsuarioValidator(AbstractValidator):
             )
             % 11
         )
-        return is_equal_to_verifying_digit(
-            cpf_int_digits[9], first_remainder
-        ) and is_equal_to_verifying_digit(cpf_int_digits[10], second_remainder)
+        return not (
+            is_equal_to_verifying_digit(cpf_int_digits[9], first_remainder)
+            and is_equal_to_verifying_digit(cpf_int_digits[10], second_remainder)
+        )
 
     def _is_invalid_email(self) -> bool:
         if not isinstance(self.user.email, str):

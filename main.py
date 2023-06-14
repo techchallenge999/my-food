@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 
+from my_food.application.domain.usuarios.entities.usuario import Usuario
+
 
 app = FastAPI()
 
 
-@app.get('/')
-async def root():
-    return 'Hi!'
+@app.get("/{nome}")
+async def root(nome: str):
+    usuario = Usuario("325.021.298-93", "email@sample.com", nome, "515165164516")
+    return f"Olá user {usuario.nome}"

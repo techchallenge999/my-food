@@ -1,15 +1,13 @@
 from abc import ABC
-from my_food.application.domain.compartilhado.validator.abtract_validator import (
-    AbstractValidator,
-)
+from my_food.application.domain.compartilhado.interfaces.validator import InterfaceValidator
 
 
-class UsuarioAbstrato(ABC):
+class InterfaceUsuario(ABC):
     _cpf: str
     _email: str
     _nome: str
     _senha: str
-    _validator: AbstractValidator
+    _validator: InterfaceValidator
 
     @property
     def cpf(self) -> str:
@@ -44,5 +42,5 @@ class UsuarioAbstrato(ABC):
         self._senha = value
 
     @property
-    def validator(self) -> AbstractValidator:
+    def validator(self) -> InterfaceValidator:
         return self._validator

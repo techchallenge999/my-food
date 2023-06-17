@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 from typing import TypeVar
 
 
-GenericEntity = TypeVar("GenericEntity")
+GenericEntity = TypeVar('GenericEntity')
 
 
-class AbstractValidator(ABC):
+class InterfaceValidator(ABC):
     @abstractmethod
     def __init__(self, entity: GenericEntity) -> None:
         pass

@@ -2,10 +2,10 @@ version: '3.7'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: my-food-app
+    depends_on:
+      - db
     image: my-food-app:latest
     ports:
       - 8000:8000
@@ -13,3 +13,9 @@ services:
       - source: .
         target: /app
         type: bind
+  db:
+    container_name: my-food-db
+    image: postgres:14
+    env_file: .env
+    ports:
+      - 5432:5432

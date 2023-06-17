@@ -6,10 +6,10 @@ ENV PYTHONDONTWRITEBYTECODE 1 \
 WORKDIR /app
 
 RUN apt-get update && apt-get --no-install-recommends --no-upgrade -y install \
-    # build-essential \
+    build-essential \
     # libmediainfo-dev \
-    # libpq-dev \
-    # python3-dev \
+    libpq-dev \
+    python3-dev \
     python3-pip \
     && apt-get -y autoremove \
     && apt-get -y clean \

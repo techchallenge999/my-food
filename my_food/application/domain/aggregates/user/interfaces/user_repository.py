@@ -20,5 +20,9 @@ class UserRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
+    def find_by_cpf(self, cpf: str) -> Optional[UserInterface]:
+        pass
+
+    @abstractmethod
     def find_by_email(self, email: str) -> Optional[UserInterface]:
         pass

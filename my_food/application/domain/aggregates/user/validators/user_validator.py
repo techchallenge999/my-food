@@ -13,6 +13,7 @@ class UserValidator(InterfaceValidator):
 
     def validate(self):
         self._raise_if_invalid_cpf()
+        self._raise_if_unavailable_cpf()
         self._raise_if_invalid_email()
         self._raise_if_unavailable_email()
         self._raise_if_invalid_password()
@@ -22,6 +23,10 @@ class UserValidator(InterfaceValidator):
     def _raise_if_invalid_cpf(self) -> None:
         if self._is_invalid_cpf():
             raise ValueError('CPF inválido')
+
+    def _raise_if_unavailable_cpf(self) -> None:
+        if self._is_unavailable_cpf():
+            raise ValueError('CPF indisponível')
 
     def _raise_if_invalid_email(self) -> None:
         if self._is_invalid_email():
@@ -74,6 +79,9 @@ class UserValidator(InterfaceValidator):
             and is_equal_to_verifying_digit(cpf_int_digits[10], second_remainder)
         )
 
+    def _is_unavailable_cpf(self) -> bool:
+        return self._repository.find_by_cpf(self._user.cpf) is not None
+
     def _is_invalid_email(self) -> bool:
         if not isinstance(self._user.email, str):
             return True
@@ -84,9 +92,7 @@ class UserValidator(InterfaceValidator):
         return self._repository.find_by_email(self._user.email) is not None
 
     def _is_invalid_password(self) -> bool:
-        if not isinstance(self._user.password, str):
-            return True
-        return len(self._user.password) < 8
+        return not (isinstance(self._user.password, str) and len(self._user.password) >= 8)
 
     def _is_invalid_uuid(self) -> bool:
         return isinstance(self._user.uuid, UUID)

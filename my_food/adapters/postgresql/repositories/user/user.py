@@ -37,6 +37,11 @@ class UserRepository(UserRepositoryInterface):
                 user.password = entity.password
                 session.commit()
 
+    def find_by_cpf(self, cpf: str) -> Optional[UserInterface]:
+        with Session() as session:
+            user = session.query(UserModel).filter_by(cpf=cpf).first()
+            return user
+
     def find_by_email(self, email: str) -> Optional[UserInterface]:
         with Session() as session:
             user = session.query(UserModel).filter_by(email=email).first()

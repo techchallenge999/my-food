@@ -1,4 +1,5 @@
 from typing import Optional
+from uuid import UUID
 
 from sqlalchemy.orm import Session
 
@@ -9,6 +10,7 @@ from my_food.application.domain.aggregates.user.interfaces.user_repository impor
 
 
 class UserRepository(UserRepositoryInterface):
+
     def create(self, entity: UserInterface) -> None:
         with Session(engine) as session:
             new_user = UserModel(
@@ -20,14 +22,14 @@ class UserRepository(UserRepositoryInterface):
             session.add(new_user)
             session.commit()
 
-    def find(self, id_: str) -> UserInterface:
+    def find(self, uuid: str) -> Optional[UserInterface]:
         with Session(engine) as session:
-            user = session.query(UserModel).filter_by(cpf=id_).first()
+            user = session.query(UserModel).filter_by(uuid=UUID(uuid)).first()
             return user
 
     def update(self, entity: UserInterface) -> None:
         with Session(engine) as session:
-            user = session.query(UserModel).filter_by(cpf=entity.cpf).first()
+            user = session.query(UserModel).filter_by(uuid=entity.uuid).first()
             if user:
                 user.cpf = entity.cpf
                 user.email = entity.email

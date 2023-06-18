@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from uuid import UUID
 from my_food.application.domain.shared.interfaces.validator import InterfaceValidator
 
 
@@ -7,6 +8,7 @@ class UserInterface(ABC):
     _email: str
     _name: str
     _password: str
+    _uuid: UUID
     _validator: InterfaceValidator
 
     @abstractmethod
@@ -47,6 +49,16 @@ class UserInterface(ABC):
     @abstractmethod
     @password.setter
     def password(self, value: str):
+        pass
+
+    @abstractmethod
+    @property
+    def uuid(self) -> UUID:
+        pass
+
+    @abstractmethod
+    @uuid.setter
+    def uuid(self, value: UUID):
         pass
 
     @abstractmethod

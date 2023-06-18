@@ -14,3 +14,4 @@ class CreateUserOutputDto:
     cpf: str
     email: str
     name: str
+    uuid: str

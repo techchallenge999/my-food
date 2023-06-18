@@ -5,7 +5,7 @@ from typing import TypeVar
 GenericEntity = TypeVar('GenericEntity')
 
 
-class InterfaceRepositorio(ABC):
+class RepositoryInterface(ABC):
     @abstractmethod
     def create(self, entity: GenericEntity) -> None:
         pass

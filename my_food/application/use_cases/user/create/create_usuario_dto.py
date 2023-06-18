@@ -2,15 +2,15 @@ from dataclasses import dataclass
 
 
 @dataclass
-class InputCreateUsuarioDto:
+class CreateUserInputDto:
     cpf: str
     email: str
-    nome: str
-    senha: str
+    name: str
+    password: str
 
 
 @dataclass
-class OutputCreateUsuarioDto:
+class CreateUserOutputDto:
     cpf: str
     email: str
-    nome: str
+    name: str

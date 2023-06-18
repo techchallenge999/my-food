@@ -1,14 +1,12 @@
 from abc import ABC, abstractmethod
-from my_food.application.domain.compartilhado.interfaces.validator import (
-    InterfaceValidator,
-)
+from my_food.application.domain.shared.interfaces.validator import InterfaceValidator
 
 
-class InterfaceUsuario(ABC):
+class UserInterface(ABC):
     _cpf: str
     _email: str
-    _nome: str
-    _senha: str
+    _name: str
+    _password: str
     _validator: InterfaceValidator
 
     @abstractmethod
@@ -33,22 +31,22 @@ class InterfaceUsuario(ABC):
 
     @abstractmethod
     @property
-    def nome(self) -> str:
+    def name(self) -> str:
         pass
 
     @abstractmethod
-    @nome.setter
-    def nome(self, value: str):
+    @name.setter
+    def name(self, value: str):
         pass
 
     @abstractmethod
     @property
-    def senha(self) -> str:
+    def password(self) -> str:
         pass
 
     @abstractmethod
-    @senha.setter
-    def senha(self, value: str):
+    @password.setter
+    def password(self, value: str):
         pass
 
     @abstractmethod

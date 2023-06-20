@@ -3,8 +3,15 @@ from dataclasses import dataclass
 
 @dataclass
 class UpdateUserInputDto:
-    pass
+    cpf: str
+    email: str
+    name: str
+    uuid: str
+
 
 @dataclass
 class UpdateUserOutputDto:
-    pass
+    cpf: str
+    email: str
+    name: str
+    uuid: str

@@ -1,8 +1,14 @@
-from uuid import UUID
+from uuid import UUID, uuid4
 
-from my_food.application.domain.aggregates.user.interfaces.user_entity import UserInterface
-from my_food.application.domain.aggregates.user.interfaces.user_repository import UserRepositoryInterface
-from my_food.application.domain.aggregates.user.validators.user_validator import UserValidator
+from my_food.application.domain.aggregates.user.interfaces.user_entity import (
+    UserInterface,
+)
+from my_food.application.domain.aggregates.user.interfaces.user_repository import (
+    UserRepositoryInterface,
+)
+from my_food.application.domain.aggregates.user.validators.user_validator import (
+    UserValidator,
+)
 
 
 class User(UserInterface):
@@ -12,10 +18,10 @@ class User(UserInterface):
         email: str,
         name: str,
         password: str,
-        uuid: UUID,
         repository: UserRepositoryInterface,
+        uuid: UUID = uuid4(),
     ):
-        self.cpf = ''.join(filter(str.isdigit, cpf))
+        self.cpf = "".join(filter(str.isdigit, cpf))
         self.email = email
         self.name = name
         self.password = password
@@ -56,12 +62,8 @@ class User(UserInterface):
         self._password = value
 
     @property
-    def uuid(self) -> UUID:
-        return self._uuid
-
-    @uuid.setter
-    def uuid(self, value: UUID):
-        self._uuid = value
+    def uuid(self) -> str:
+        return str(self._uuid)
 
     @property
     def validator(self) -> UserValidator:

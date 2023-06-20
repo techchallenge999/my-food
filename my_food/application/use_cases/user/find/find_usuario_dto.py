@@ -3,8 +3,12 @@ from dataclasses import dataclass
 
 @dataclass
 class FindUserInputDto:
-    pass
+    uuid: str
+
 
 @dataclass
-class FindUserOutputDtoDto:
-    pass
+class FindUserOutputDto:
+    cpf: str
+    email: str
+    name: str
+    uuid: str

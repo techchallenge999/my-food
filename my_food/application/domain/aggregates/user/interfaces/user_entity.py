@@ -53,12 +53,7 @@ class UserInterface(ABC):
 
     @abstractmethod
     @property
-    def uuid(self) -> UUID:
-        pass
-
-    @abstractmethod
-    @uuid.setter
-    def uuid(self, value: UUID):
+    def uuid(self) -> str:
         pass
 
     @abstractmethod

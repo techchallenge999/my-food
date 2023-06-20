@@ -5,12 +5,15 @@ from sqlalchemy.orm import Session
 
 from my_food.adapters.postgresql.database import engine
 from my_food.adapters.postgresql.models.user.user import UserModel
-from my_food.application.domain.aggregates.user.interfaces.user_entity import UserInterface
-from my_food.application.domain.aggregates.user.interfaces.user_repository import UserRepositoryInterface
+from my_food.application.domain.aggregates.user.interfaces.user_entity import (
+    UserInterface,
+)
+from my_food.application.domain.aggregates.user.interfaces.user_repository import (
+    UserRepositoryInterface,
+)
 
 
 class UserRepository(UserRepositoryInterface):
-
     def create(self, entity: UserInterface) -> None:
         with Session(engine) as session:
             new_user = UserModel(
@@ -18,6 +21,7 @@ class UserRepository(UserRepositoryInterface):
                 email=entity.email,
                 name=entity.name,
                 password=entity.password,
+                uuid=entity.uuid,
             )
             session.add(new_user)
             session.commit()
@@ -29,7 +33,7 @@ class UserRepository(UserRepositoryInterface):
 
     def update(self, entity: UserInterface) -> None:
         with Session(engine) as session:
-            user = session.query(UserModel).filter_by(uuid=entity.uuid).first()
+            user = session.query(UserModel).filter_by(uuid=UUID(entity.uuid)).first()
             if user:
                 user.cpf = entity.cpf
                 user.email = entity.email

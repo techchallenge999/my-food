@@ -3,11 +3,11 @@ from uuid import UUID
 
 from my_food.application.domain.aggregates.user.interfaces.user_entity import UserInterface
 from my_food.application.domain.aggregates.user.interfaces.user_repository import UserRepositoryInterface
-from my_food.application.domain.shared.interfaces.validator import InterfaceValidator
+from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
 
 
-class UserValidator(InterfaceValidator):
-    def __init__(self, entity: UserInterface, repository: UserRepositoryInterface) -> None:
+class UserValidator(ValidatorInterface):
+    def __init__(self, entity: UserInterface, repository: UserRepositoryInterface):
         self._user = entity
         self._repository = repository
 

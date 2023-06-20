@@ -5,13 +5,11 @@ from sqlalchemy.orm import Session
 
 from my_food.adapters.postgresql.database import engine
 from my_food.adapters.postgresql.models.user.user import UserModel
-from my_food.application.domain.aggregates.user.interfaces.user_dto import (
-    UserRepositoryDto,
-)
 from my_food.application.domain.aggregates.user.interfaces.user_entity import (
     UserInterface,
 )
 from my_food.application.domain.aggregates.user.interfaces.user_repository import (
+    UserRepositoryDto,
     UserRepositoryInterface,
 )
 
@@ -35,10 +33,10 @@ class UserRepository(UserRepositoryInterface):
             if user is None:
                 return None
             return UserRepositoryDto(
-                password=user.password,
                 cpf=user.cpf,
                 email=user.email,
                 name=user.name,
+                password=user.password,
                 uuid=str(user.uuid),
             )
 
@@ -58,10 +56,10 @@ class UserRepository(UserRepositoryInterface):
             if user is None:
                 return None
             return UserRepositoryDto(
-                password=user.password,
                 cpf=user.cpf,
                 email=user.email,
                 name=user.name,
+                password=user.password,
                 uuid=str(user.uuid),
             )
 
@@ -71,9 +69,9 @@ class UserRepository(UserRepositoryInterface):
             if user is None:
                 return None
             return UserRepositoryDto(
-                password=user.password,
                 cpf=user.cpf,
                 email=user.email,
                 name=user.name,
+                password=user.password,
                 uuid=str(user.uuid),
             )

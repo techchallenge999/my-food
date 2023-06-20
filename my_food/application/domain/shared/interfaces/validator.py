@@ -5,9 +5,9 @@ from typing import TypeVar
 GenericEntity = TypeVar('GenericEntity')
 
 
-class InterfaceValidator(ABC):
+class ValidatorInterface(ABC):
     @abstractmethod
-    def __init__(self, entity: GenericEntity) -> None:
+    def __init__(self, entity: GenericEntity):
         pass
 
     @abstractmethod

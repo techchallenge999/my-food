@@ -1,13 +1,18 @@
 from abc import abstractmethod
+from dataclasses import dataclass
 from typing import Optional
-from my_food.application.domain.aggregates.user.interfaces.user_dto import (
-    UserRepositoryDto,
-)
 
-from my_food.application.domain.aggregates.user.interfaces.user_entity import (
-    UserInterface,
-)
+from my_food.application.domain.aggregates.user.interfaces.user_entity import UserInterface
 from my_food.application.domain.shared.interfaces.repository import RepositoryInterface
+
+
+@dataclass
+class UserRepositoryDto:
+    cpf: str
+    email: str
+    name: str
+    password: str
+    uuid: str
 
 
 class UserRepositoryInterface(RepositoryInterface):

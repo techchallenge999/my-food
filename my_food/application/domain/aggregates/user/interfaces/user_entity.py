@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
-from my_food.application.domain.shared.interfaces.validator import InterfaceValidator
+from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
 
 
 class UserInterface(ABC):
@@ -9,54 +9,54 @@ class UserInterface(ABC):
     _name: str
     _password: str
     _uuid: UUID
-    _validator: InterfaceValidator
+    _validator: ValidatorInterface
 
-    @abstractmethod
     @property
+    @abstractmethod
     def cpf(self) -> str:
         pass
 
-    @abstractmethod
     @cpf.setter
+    @abstractmethod
     def cpf(self, value: str):
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def email(self) -> str:
         pass
 
-    @abstractmethod
     @email.setter
+    @abstractmethod
     def email(self, value: str):
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def name(self) -> str:
         pass
 
-    @abstractmethod
     @name.setter
+    @abstractmethod
     def name(self, value: str):
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def password(self) -> str:
         pass
 
-    @abstractmethod
     @password.setter
+    @abstractmethod
     def password(self, value: str):
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def uuid(self) -> str:
         pass
 
-    @abstractmethod
     @property
-    def validator(self) -> InterfaceValidator:
+    @abstractmethod
+    def validator(self) -> ValidatorInterface:
         pass

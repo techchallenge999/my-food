@@ -7,7 +7,7 @@ from my_food.application.use_cases.user.create.create_usuario_dto import (
 
 
 class CreateUserUseCase:
-    def __init__(self, repository: UserRepository) -> None:
+    def __init__(self, repository: UserRepository):
         self._repository = repository
 
     def execute(self, input: CreateUserInputDto) -> CreateUserOutputDto:

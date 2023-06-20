@@ -20,6 +20,11 @@ class UpdateUserUseCase:
             return None
         updated_user = User(
             cpf=user.cpf,
+            email=user.email,
+            name=user.email,
+            password=user.password,
+            repository=self._repository,
+            uuid=user.uuid,
         )
         self._repository.update(updated_user)
 

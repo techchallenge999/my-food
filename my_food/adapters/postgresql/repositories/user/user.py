@@ -5,6 +5,9 @@ from sqlalchemy.orm import Session
 
 from my_food.adapters.postgresql.database import engine
 from my_food.adapters.postgresql.models.user.user import UserModel
+from my_food.application.domain.aggregates.user.interfaces.user_dto import (
+    UserRepositoryDto,
+)
 from my_food.application.domain.aggregates.user.interfaces.user_entity import (
     UserInterface,
 )
@@ -26,10 +29,18 @@ class UserRepository(UserRepositoryInterface):
             session.add(new_user)
             session.commit()
 
-    def find(self, uuid: str) -> Optional[UserInterface]:
+    def find(self, uuid: str) -> Optional[UserRepositoryDto]:
         with Session(engine) as session:
             user = session.query(UserModel).filter_by(uuid=UUID(uuid)).first()
-            return user
+            if user is None:
+                return None
+            return UserRepositoryDto(
+                password=user.password,
+                cpf=user.cpf,
+                email=user.email,
+                name=user.name,
+                uuid=str(user.uuid),
+            )
 
     def update(self, entity: UserInterface) -> None:
         with Session(engine) as session:
@@ -41,12 +52,28 @@ class UserRepository(UserRepositoryInterface):
                 user.password = entity.password
                 session.commit()
 
-    def find_by_cpf(self, cpf: str) -> Optional[UserInterface]:
+    def find_by_cpf(self, cpf: str) -> Optional[UserRepositoryDto]:
         with Session() as session:
             user = session.query(UserModel).filter_by(cpf=cpf).first()
-            return user
+            if user is None:
+                return None
+            return UserRepositoryDto(
+                password=user.password,
+                cpf=user.cpf,
+                email=user.email,
+                name=user.name,
+                uuid=str(user.uuid),
+            )
 
-    def find_by_email(self, email: str) -> Optional[UserInterface]:
+    def find_by_email(self, email: str) -> Optional[UserRepositoryDto]:
         with Session() as session:
             user = session.query(UserModel).filter_by(email=email).first()
-            return user
+            if user is None:
+                return None
+            return UserRepositoryDto(
+                password=user.password,
+                cpf=user.cpf,
+                email=user.email,
+                name=user.name,
+                uuid=str(user.uuid),
+            )

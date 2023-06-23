@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, String
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from my_food.adapters.postgresql.database import Base
 
@@ -12,3 +12,4 @@ class UserModel(Base):
     name = Column(String)
     password = Column(String)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)
+    id = Column(Integer, primary_key=True)

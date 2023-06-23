@@ -51,7 +51,7 @@ class UserRepository(UserRepositoryInterface):
                 session.commit()
 
     def find_by_cpf(self, cpf: str) -> Optional[UserRepositoryDto]:
-        with Session() as session:
+        with Session(engine) as session:
             user = session.query(UserModel).filter_by(cpf=cpf).first()
             if user is None:
                 return None
@@ -64,7 +64,7 @@ class UserRepository(UserRepositoryInterface):
             )
 
     def find_by_email(self, email: str) -> Optional[UserRepositoryDto]:
-        with Session() as session:
+        with Session(engine) as session:
             user = session.query(UserModel).filter_by(email=email).first()
             if user is None:
                 return None

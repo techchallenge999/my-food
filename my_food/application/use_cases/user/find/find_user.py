@@ -31,7 +31,9 @@ class FindUserByCpfUseCase:
         self._repository = repository
 
     def execute(self, input_data: FindUserByCpfInputDto) -> Optional[FindUserByCpfOutputDto]:
-        user = self._repository.find_by_cpf(cpf=input_data.cpf)
+        cpf =  "".join(filter(str.isdigit, input_data.cpf))
+
+        user = self._repository.find_by_cpf(cpf=cpf)
 
         if user is None:
             return None

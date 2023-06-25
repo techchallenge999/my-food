@@ -19,7 +19,7 @@ class UserRepository(UserRepositoryInterface):
             password=entity.password,
             uuid=entity.uuid,
         )
-        new_user.save()
+        new_user.create()
 
     def find(self, uuid: str) -> Optional[UserRepositoryDto]:
         user = UserModel.retrieve(uuid)

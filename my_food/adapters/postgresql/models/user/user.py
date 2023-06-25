@@ -1,8 +1,12 @@
 import uuid
+from passlib.context import CryptContext
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
-from my_food.adapters.postgresql.database import Base
+from my_food.adapters.postgresql.database import Base, engine
 from my_food.adapters.postgresql.repositories.mixins.crud import CRUDMixin
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 class UserModel(Base, CRUDMixin):
@@ -14,3 +18,14 @@ class UserModel(Base, CRUDMixin):
     password = Column(String)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)
     id = Column(Integer, primary_key=True)
+
+    def create(self) -> None:
+        self.password = self.hash_password(self.password)
+        super().create()
+
+    def hash_password(self, password: str) -> str:
+        return pwd_context.hash(password)
+
+
+UserModel.metadata.bind = engine
+UserModel.metadata.create_all(engine)

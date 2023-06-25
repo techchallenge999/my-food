@@ -20,8 +20,9 @@ class UpdateUserUseCase:
         if user is None:
             return None
 
+        cpf = "".join(filter(str.isdigit, input_data.cpf))
         updated_user = User(
-            cpf=input_data.cpf,
+            cpf=cpf,
             email=input_data.email,
             name=input_data.name,
             password=user.password,

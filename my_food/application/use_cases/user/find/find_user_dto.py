@@ -12,3 +12,17 @@ class FindUserOutputDto:
     email: str
     name: str
     uuid: str
+
+
+@dataclass
+class FindUserByCpfInputDto:
+    cpf: str
+
+
+@dataclass
+class FindUserByCpfOutputDto:
+    cpf: str
+    email: str
+    name: str
+    password: str
+    uuid: str

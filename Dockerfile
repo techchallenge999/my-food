@@ -18,5 +18,3 @@ COPY ./requirements.txt ./requirements.txt
 RUN pip3 install --no-cache-dir --requirement ./requirements.txt
 
 COPY . .
-
-CMD ["uvicorn", "my_food.adapters.FastAPI.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -11,8 +11,10 @@ class CreateUserUseCase:
         self._repository = repository
 
     def execute(self, input_data: CreateUserInputDto) -> CreateUserOutputDto:
+        cpf =  "".join(filter(str.isdigit, input_data.cpf))
+
         new_user = User(
-            cpf=input_data.cpf,
+            cpf=cpf,
             email=input_data.email,
             name=input_data.name,
             password=input_data.password,

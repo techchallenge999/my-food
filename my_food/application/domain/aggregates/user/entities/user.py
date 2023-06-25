@@ -16,7 +16,7 @@ class User(UserInterface):
         repository: UserRepositoryInterface,
         uuid: UUID = uuid4(),
     ):
-        self.cpf = "".join(filter(str.isdigit, cpf))
+        self.cpf = cpf
         self.email = email
         self.name = name
         self.password = password

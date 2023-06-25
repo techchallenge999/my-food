@@ -1,13 +1,13 @@
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 from my_food.adapters.postgresql.database import engine
 
 
 class CRUDMixin:
     @classmethod
-    def retrieve(cls, uuid: UUID):
+    def retrieve(cls, uuid: str):
         with Session(engine) as session:
             instance = session.execute(select(cls).filter_by(uuid=UUID(uuid))).first()
             return instance
@@ -17,8 +17,14 @@ class CRUDMixin:
             session.add(self)
             session.commit()
 
-    def update(self):
-        pass
+    @classmethod
+    def update(cls, attributes: dict):
+        for attr in attributes:
+            if not hasattr(cls, attr):
+                raise ValueError(f"Invalid attribute {attr}")
+        with Session(engine) as session:
+            session.execute(update(cls), [attributes])
+            session.commit()
 
     def destroy(self):
         with Session(engine) as session:

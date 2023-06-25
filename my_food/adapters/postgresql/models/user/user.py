@@ -2,9 +2,10 @@ import uuid
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from my_food.adapters.postgresql.database import Base
+from my_food.adapters.postgresql.repositories.mixins.crud import CRUDMixin
 
 
-class UserModel(Base):
+class UserModel(Base, CRUDMixin):
     __tablename__ = "user"
 
     cpf = Column(String, index=True, unique=True)

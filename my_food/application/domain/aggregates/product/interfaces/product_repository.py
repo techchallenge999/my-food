@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import Optional
+from typing import List, Optional
 
 from my_food.application.domain.aggregates.product.interfaces.product_entity import (
     ProductInterface,
@@ -29,11 +29,15 @@ class ProductRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
+    def list(self, uuid: str) -> Optional[List[ProductRepositoryDto]]:
+        pass
+
+    @abstractmethod
     def update(self, entity: ProductInterface) -> None:
         pass
 
     @abstractmethod
-    def find_by_category(self, category: str) -> Optional[ProductRepositoryDto]:
+    def filter_by_category(self, category: str) -> Optional[List[ProductRepositoryDto]]:
         pass
 
     @abstractmethod

@@ -12,7 +12,7 @@ from my_food.application.domain.shared.interfaces.validator import ValidatorInte
 class OrderStatusCategory(Enum):
     PREPARING = 'preparando'
     READY = 'pronto'
-    WITHDRAWN  = 'retirado'
+    WITHDRAWN = 'retirado'
 
 
 class OrderItem(OrderItemInterface):

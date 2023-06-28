@@ -35,7 +35,7 @@ class OrderValidator(ValidatorInterface):
 
     def _raise_if_invalid_status(self) -> None:
         if self._is_invalid_status():
-            raise ValueError('Status de pedido inválido')
+            raise ValueError('StatusCategory de pedido inválido')
 
     def _raise_if_invalid_uuid(self) -> None:
         if self._is_invalid_uuid():

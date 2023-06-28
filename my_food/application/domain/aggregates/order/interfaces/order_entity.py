@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
-from my_food.application.domain.aggregates.order.entities.order import OrderStatusCategory
+from my_food.application.domain.aggregates.order.entities.order import OrderStatus
 from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
 
 
@@ -27,7 +27,7 @@ class OrderItemInterface(ABC):
 
 class OrderInterface(ABC):
     _items: list[OrderItemInterface]
-    _status: OrderStatusCategory
+    _status: OrderStatus
     _total_amount: str
     _uuid: UUID
     _validator: ValidatorInterface
@@ -39,7 +39,7 @@ class OrderInterface(ABC):
 
     @property
     @abstractmethod
-    def status(self) -> OrderStatusCategory:
+    def status(self) -> OrderStatus:
         pass
 
     @property

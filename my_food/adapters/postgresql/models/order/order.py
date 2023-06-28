@@ -4,14 +4,14 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from my_food.adapters.postgresql.database import Base, engine
 from my_food.adapters.postgresql.repositories.mixins.crud import CRUDMixin
-from my_food.application.domain.aggregates.order.interfaces.order_entity import OrderStatusCategory
+from my_food.application.domain.aggregates.order.interfaces.order_entity import OrderStatus
 
 
 class OrderModel(Base, CRUDMixin):
     __tablename__ = "order"
 
     items = relationship('OrderItemModel')
-    status = Column(Enum(OrderStatusCategory), default=OrderStatusCategory.PREPARING, nullable=False)
+    status = Column(Enum(OrderStatus), default=OrderStatus.PREPARING, nullable=False)
     total_amount = Column(String, nullable=False)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)
     id = Column(Integer, primary_key=True)

@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from my_food.adapters.postgresql.models.order.order import OrderModel
 from my_food.application.domain.aggregates.order.interfaces.order_entity import (
-    OrderStatusCategory,
+    OrderStatus,
     OrderInterface,
 )
 from my_food.application.domain.aggregates.order.interfaces.order_repository import (
@@ -14,7 +14,7 @@ from my_food.application.domain.aggregates.order.interfaces.order_repository imp
 class OrderRepository(OrderRepositoryInterface):
     def create(self, entity: OrderInterface) -> None:
         new_order = OrderModel(
-            status=OrderStatusCategory.PREPARING,
+            status=OrderStatus.PREPARING,
             total_amount=entity.total_amount,
             uuid=entity.uuid,
         )
@@ -69,7 +69,7 @@ class OrderRepository(OrderRepositoryInterface):
             uuid=order.uuid,
         )
 
-    def filter_by_status(self, status: OrderStatusCategory) -> Optional[List[OrderRepositoryDto]]:
+    def filter_by_status(self, status: OrderStatus) -> Optional[List[OrderRepositoryDto]]:
         orders = OrderModel.list_filtering_by_column('status', status)
 
         return [

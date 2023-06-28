@@ -9,7 +9,7 @@ from my_food.application.domain.aggregates.product.interfaces.product_repository
 from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
 
 
-class OrderStatusCategory(Enum):
+class OrderStatus(Enum):
     PREPARING = 'preparando'
     READY = 'pronto'
     WITHDRAWN = 'retirado'
@@ -45,7 +45,7 @@ class Order(OrderInterface):
         items: list[OrderItemInterface],
         order_repository: OrderRepositoryInterface,
         product_repository: ProductRepositoryInterface,
-        status: OrderStatusCategory = OrderStatusCategory.PREPARING,
+        status: OrderStatus = OrderStatus.PREPARING,
         uuid: UUID = uuid4(),
     ):
         self._items = items
@@ -60,7 +60,7 @@ class Order(OrderInterface):
         return self._items
 
     @property
-    def status(self) -> OrderStatusCategory:
+    def status(self) -> OrderStatus:
         return self._status
 
     @property

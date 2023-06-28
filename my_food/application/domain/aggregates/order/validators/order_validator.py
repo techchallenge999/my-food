@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from my_food.application.domain.aggregates.order.entities.order import OrderStatusCategory
+from my_food.application.domain.aggregates.order.entities.order import OrderStatus
 from my_food.application.domain.aggregates.order.interfaces.order_entity import OrderInterface
 from my_food.application.domain.aggregates.order.interfaces.order_repository import OrderRepositoryInterface
 from my_food.application.domain.aggregates.product.interfaces.product_repository import ProductRepositoryInterface
@@ -35,7 +35,7 @@ class OrderValidator(ValidatorInterface):
 
     def _raise_if_invalid_status(self) -> None:
         if self._is_invalid_status():
-            raise ValueError('StatusCategory de pedido inválido')
+            raise ValueError('Pedido com status inválido')
 
     def _raise_if_invalid_uuid(self) -> None:
         if self._is_invalid_uuid():
@@ -58,7 +58,7 @@ class OrderValidator(ValidatorInterface):
         return False
 
     def _is_invalid_status(self) -> bool:
-        return not isinstance(self._order.status, OrderStatusCategory)
+        return not isinstance(self._order.status, OrderStatus)
 
     def _is_invalid_uuid(self) -> bool:
         return not isinstance(self._order.uuid, UUID)

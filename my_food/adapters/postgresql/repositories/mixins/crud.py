@@ -25,11 +25,12 @@ class CRUDMixin:
             session.execute(update(cls), [attributes])
             session.commit()
 
-    def destroy(self):
+    @classmethod
+    def destroy(cls, uuid: str):
         with Session(engine) as session:
-            session.delete(self)
+            instance = session.execute(select(cls).filter_by(uuid=UUID(uuid))).first()
+            session.delete(instance)
             session.commit()
-            return self
 
     @classmethod
     def retrieve_by_column(cls, column: str, value):
@@ -40,3 +41,19 @@ class CRUDMixin:
                 select(cls).filter((getattr(cls, column) == value))
             ).first()
             return instance[0] if instance is not None else None
+
+    @classmethod
+    def list(cls):
+        with Session(engine) as session:
+            instance = session.execute(select(cls)).all()
+            return instance
+
+    @classmethod
+    def list_filtering_by_column(cls, column: str, value):
+        if not hasattr(cls, column):
+            return None
+        with Session(engine) as session:
+            instance = session.execute(
+                select(cls).filter((getattr(cls, column) == value))
+            ).all()
+            return instance

@@ -16,7 +16,7 @@ class ProductInterface(ABC):
     _category: ProductCategory
     _price: str
     _description: str
-    _image: str
+    _image: bytes
     _uuid: UUID
     _validator: ValidatorInterface
 
@@ -62,12 +62,12 @@ class ProductInterface(ABC):
 
     @property
     @abstractmethod
-    def image(self) -> str:
+    def image(self) -> bytes:
         pass
 
     @image.setter
     @abstractmethod
-    def image(self, value: str):
+    def image(self, value: bytes):
         pass
 
     @property

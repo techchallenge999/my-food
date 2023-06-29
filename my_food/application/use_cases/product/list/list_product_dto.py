@@ -11,5 +11,5 @@ class ListProductOutputDto:
     category: ProductCategory
     price: str
     description: str
-    image: str
+    image: bytes
     uuid: str

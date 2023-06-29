@@ -11,7 +11,7 @@ class UpdateProductInputDto:
     category: ProductCategory
     price: str
     description: str
-    image: str
+    image: bytes
     uuid: str
 
 
@@ -21,5 +21,5 @@ class UpdateProductOutputDto:
     category: ProductCategory
     price: str
     description: str
-    image: str
+    image: bytes
     uuid: str

@@ -11,7 +11,7 @@ class CreateProductInputDto:
     category: ProductCategory
     price: str
     description: str
-    image: str
+    image: bytes
 
 
 @dataclass
@@ -20,5 +20,5 @@ class CreateProductOutputDto:
     category: ProductCategory
     price: str
     description: str
-    image: str
+    image: bytes
     uuid: str

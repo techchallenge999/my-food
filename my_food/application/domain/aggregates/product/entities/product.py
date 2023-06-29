@@ -20,7 +20,7 @@ class Product(ProductInterface):
         category: ProductCategory,
         price: str,
         description: str,
-        image: str,
+        image: bytes,
         repository: ProductRepositoryInterface,
         uuid: UUID = uuid4(),
     ):
@@ -66,11 +66,11 @@ class Product(ProductInterface):
         self._description = value
 
     @property
-    def image(self) -> str:
+    def image(self) -> bytes:
         return self._image
 
     @image.setter
-    def image(self, value: str):
+    def image(self, value: bytes):
         self._image = value
 
     @property

@@ -8,6 +8,7 @@ class UserInterface(ABC):
     _email: str
     _name: str
     _password: str
+    _is_admin: bool
     _uuid: UUID
     _validator: ValidatorInterface
 
@@ -49,6 +50,11 @@ class UserInterface(ABC):
     @password.setter
     @abstractmethod
     def password(self, value: str):
+        pass
+
+    @property
+    @abstractmethod
+    def is_admin(self) -> bool:
         pass
 
     @property

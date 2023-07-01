@@ -2,15 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class UpdateUserInputDto:
-    cpf: str
-    email: str
-    name: str
-    uuid: str
-
-
-@dataclass
-class UpdateUserOutputDto:
+class ListUserOutputDto:
     cpf: str
     email: str
     name: str

@@ -14,7 +14,7 @@ from my_food.application.domain.aggregates.order.interfaces.order_repository imp
 class OrderRepository(OrderRepositoryInterface):
     def create(self, entity: OrderInterface) -> None:
         new_order = OrderModel(
-            status=OrderStatus.PREPARING,
+            status=OrderStatus.RECEIVED,
             total_amount=entity.total_amount,
             uuid=entity.uuid,
         )

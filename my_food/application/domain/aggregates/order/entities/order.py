@@ -10,6 +10,7 @@ from my_food.application.domain.shared.interfaces.validator import ValidatorInte
 
 
 class OrderStatus(Enum):
+    RECEIVED = 'recebido'
     PREPARING = 'preparando'
     READY = 'pronto'
     WITHDRAWN = 'retirado'
@@ -45,7 +46,7 @@ class Order(OrderInterface):
         items: list[OrderItemInterface],
         order_repository: OrderRepositoryInterface,
         product_repository: ProductRepositoryInterface,
-        status: OrderStatus = OrderStatus.PREPARING,
+        status: OrderStatus = OrderStatus.RECEIVED,
         uuid: UUID = uuid4(),
     ):
         self._items = items

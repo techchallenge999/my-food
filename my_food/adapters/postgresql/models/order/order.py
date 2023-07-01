@@ -11,7 +11,7 @@ class OrderModel(Base, CRUDMixin):
     __tablename__ = "order"
 
     items = relationship('OrderItemModel')
-    status = Column(Enum(OrderStatus), default=OrderStatus.PREPARING, nullable=False)
+    status = Column(Enum(OrderStatus), default=OrderStatus.RECEIVED, nullable=False)
     total_amount = Column(String, nullable=False)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)
     id = Column(Integer, primary_key=True)
@@ -22,7 +22,7 @@ OrderModel.metadata.create_all(engine)
 
 
 class OrderItemModel(Base, CRUDMixin):
-    __tablename__ = "order"
+    __tablename__ = "orderitem"
 
     comment = Column(String)
     order_uuid = Column(UUID(as_uuid=True), ForeignKey('order.uuid'))

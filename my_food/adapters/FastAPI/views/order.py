@@ -5,8 +5,8 @@ from my_food.adapters.postgresql.repositories.order.order import OrderRepository
 from my_food.adapters.postgresql.repositories.product.product import ProductRepository
 from my_food.application.use_cases.order.create.create_order import CreateOrderUseCase
 from my_food.application.use_cases.order.create.create_order_dto import CreateOrderInputDto, CreateOrderOutputDto
-from my_food.application.use_cases.order.find.find_order_dto import FindOrderOutputDto
 from my_food.application.use_cases.order.list.list_order import ListOrderUseCase
+from my_food.application.use_cases.order.list.list_order_dto import ListOrderOutputDto
 from my_food.application.use_cases.order.update.update_order import UpdateOrderUseCase
 from my_food.application.use_cases.order.update.update_order_dto import UpdateOrderInputDto, UpdateOrderOutputDto
 
@@ -24,7 +24,7 @@ async def create_order(input_data: CreateOrderInputDto) -> CreateOrderOutputDto:
 
 
 @router.get('/list-orders', status_code=200)
-async def list_orders() -> Optional[List[FindOrderOutputDto]]:
+async def list_orders() -> Optional[List[ListOrderOutputDto]]:
     repository = OrderRepository()
     list_use_case = ListOrderUseCase(repository)
     orders = list_use_case.execute()

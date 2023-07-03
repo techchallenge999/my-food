@@ -19,5 +19,6 @@ class FindOrderUseCase:
             items=[FindOrderItemOutputDto(**asdict(item)) for item in order.items],
             status=order.status,
             total_amount=order.total_amount,
+            user_uuid=order.user_uuid,
             uuid=order.uuid,
         )

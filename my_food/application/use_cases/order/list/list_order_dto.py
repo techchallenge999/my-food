@@ -15,4 +15,5 @@ class ListOrderOutputDto:
     items: list[ListOrderItemOutputDto]
     status: OrderStatus
     total_amount: str
+    user_uuid: str | None
     uuid: str

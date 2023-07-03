@@ -20,6 +20,7 @@ class CreateOrderItemOutputDto:
 @dataclass
 class CreateOrderInputDto:
     items: list[CreateOrderItemInputDto]
+    user_uuid: str | None
 
 
 @dataclass
@@ -27,4 +28,5 @@ class CreateOrderOutputDto:
     items: list[CreateOrderItemOutputDto]
     status: OrderStatus
     total_amount: str
+    user_uuid: str | None
     uuid: str

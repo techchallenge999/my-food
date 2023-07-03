@@ -19,4 +19,5 @@ class FindOrderOutputDto:
     items: list[FindOrderItemOutputDto]
     status: OrderStatus
     total_amount: str
+    user_uuid: str | None
     uuid: str

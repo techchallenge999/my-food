@@ -86,7 +86,7 @@ class ProductRepository(ProductRepositoryInterface):
 
     def filter_by_category(
         self, category: ProductCategory
-    ) -> Optional[ProductRepositoryDto]:
+    ) -> Optional[List[ProductRepositoryDto]]:
         products = ProductModel.list_filtering_by_column("category", category)
 
         return [

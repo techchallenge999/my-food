@@ -11,6 +11,7 @@ class FindUserOutputDto:
     cpf: str
     email: str
     name: str
+    is_admin: bool
     uuid: str
 
 
@@ -25,4 +26,5 @@ class FindUserByCpfOutputDto:
     email: str
     name: str
     password: str
+    is_admin: bool
     uuid: str

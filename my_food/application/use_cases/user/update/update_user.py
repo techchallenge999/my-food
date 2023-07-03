@@ -14,7 +14,13 @@ class UpdateUserUseCase:
     def __init__(self, repository: UserRepositoryInterface):
         self._repository = repository
 
-    def execute(self, input_data: UpdateUserInputDto) -> Optional[UpdateUserOutputDto]:
+    def execute(
+        self, input_data: UpdateUserInputDto, actor_uuid: str
+    ) -> Optional[UpdateUserOutputDto]:
+        actor = self._repository.find(actor_uuid)
+        if actor is None or (input_data.uuid != actor_uuid and not actor.is_admin):
+            return None
+
         user = self._repository.find(input_data.uuid)
 
         if user is None:
@@ -27,6 +33,7 @@ class UpdateUserUseCase:
             name=input_data.name,
             password=user.password,
             repository=self._repository,
+            is_admin=user.is_admin,
             uuid=UUID(input_data.uuid),
         )
 

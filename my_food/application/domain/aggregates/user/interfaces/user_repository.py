@@ -1,8 +1,10 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import Optional
+from typing import List, Optional
 
-from my_food.application.domain.aggregates.user.interfaces.user_entity import UserInterface
+from my_food.application.domain.aggregates.user.interfaces.user_entity import (
+    UserInterface,
+)
 from my_food.application.domain.shared.interfaces.repository import RepositoryInterface
 
 
@@ -12,6 +14,7 @@ class UserRepositoryDto:
     email: str
     name: str
     password: str
+    is_admin: bool
     uuid: str
 
 
@@ -22,6 +25,10 @@ class UserRepositoryInterface(RepositoryInterface):
 
     @abstractmethod
     def find(self, uuid: str) -> Optional[UserRepositoryDto]:
+        pass
+
+    @abstractmethod
+    def list(self) -> Optional[List[UserRepositoryDto]]:
         pass
 
     @abstractmethod

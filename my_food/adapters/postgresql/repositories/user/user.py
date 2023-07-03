@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from my_food.adapters.postgresql.models.user.user import UserModel
 from my_food.application.domain.aggregates.user.interfaces.user_entity import (
@@ -30,8 +30,24 @@ class UserRepository(UserRepositoryInterface):
             email=user.email,
             name=user.name,
             password=user.password,
+            is_admin=user.is_admin,
             uuid=str(user.uuid),
         )
+
+    def list(self) -> Optional[List[UserRepositoryDto]]:
+        users = UserModel.list()
+
+        return [
+            UserRepositoryDto(
+                cpf=user.cpf,
+                email=user.email,
+                name=user.name,
+                password=user.password,
+                is_admin=user.is_admin,
+                uuid=str(user.uuid),
+            )
+            for user in users
+        ]
 
     def update(self, entity: UserInterface) -> None:
         user = UserModel.retrieve(entity.uuid)
@@ -56,6 +72,7 @@ class UserRepository(UserRepositoryInterface):
             email=user.email,
             name=user.name,
             password=user.password,
+            is_admin=user.is_admin,
             uuid=str(user.uuid),
         )
 
@@ -68,5 +85,6 @@ class UserRepository(UserRepositoryInterface):
             email=user.email,
             name=user.name,
             password=user.password,
+            is_admin=user.is_admin,
             uuid=str(user.uuid),
         )

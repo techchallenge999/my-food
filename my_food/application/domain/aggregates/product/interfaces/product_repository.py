@@ -34,6 +34,10 @@ class ProductRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
+    def list_active(self) -> Optional[List[ProductRepositoryDto]]:
+        pass
+
+    @abstractmethod
     def update(self, entity: ProductInterface) -> None:
         pass
 

@@ -101,3 +101,19 @@ class ProductRepository(ProductRepositoryInterface):
             )
             for product in products
         ]
+
+    def list_active(self) -> Optional[ProductRepositoryDto]:
+        products = ProductModel.list_filtering_by_column("is_active", True)
+
+        return [
+            ProductRepositoryDto(
+                name=product.name,
+                category=product.category,
+                price=product.price,
+                description=product.description,
+                image=product.image,
+                is_active=product.is_active,
+                uuid=str(product.uuid),
+            )
+            for product in products
+        ]

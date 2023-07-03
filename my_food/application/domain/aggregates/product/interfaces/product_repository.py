@@ -16,6 +16,7 @@ class ProductRepositoryDto:
     price: str
     description: str
     image: bytes
+    is_active: bool
     uuid: str
 
 

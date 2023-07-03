@@ -30,5 +30,6 @@ class CreateProductUseCase:
             price=new_product.price,
             description=new_product.description,
             image=new_product.image,
+            is_active=new_product.is_active,
             uuid=new_product.uuid,
         )

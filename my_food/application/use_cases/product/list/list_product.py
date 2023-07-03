@@ -24,6 +24,7 @@ class ListProductUseCase:
                 price=product.price,
                 description=product.description,
                 image=product.image,
+                is_active=product.is_active,
                 uuid=product.uuid,
             )
             for product in products_list

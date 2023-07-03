@@ -33,6 +33,7 @@ class ProductRepository(ProductRepositoryInterface):
             price=product.price,
             description=product.description,
             image=product.image,
+            is_active=product.is_active,
             uuid=str(product.uuid),
         )
 
@@ -47,6 +48,7 @@ class ProductRepository(ProductRepositoryInterface):
                     "description": entity.description,
                     "image": entity.image,
                     "uuid": entity.uuid,
+                    "is_active": entity.is_active,
                     "id": product.id,
                 }
             )
@@ -61,6 +63,7 @@ class ProductRepository(ProductRepositoryInterface):
                 price=product.price,
                 description=product.description,
                 image=product.image,
+                is_active=product.is_active,
                 uuid=str(product.uuid),
             )
             for product in products
@@ -77,6 +80,7 @@ class ProductRepository(ProductRepositoryInterface):
             price=product.price,
             description=product.description,
             image=product.image,
+            is_active=product.is_active,
             uuid=str(product.uuid),
         )
 
@@ -92,6 +96,7 @@ class ProductRepository(ProductRepositoryInterface):
                 price=product.price,
                 description=product.description,
                 image=product.image,
+                is_active=product.is_active,
                 uuid=str(product.uuid),
             )
             for product in products

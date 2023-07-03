@@ -11,6 +11,7 @@ from my_food.application.domain.shared.interfaces.validator import ValidatorInte
 class PaymentStatus(Enum):
     PAID = 'pendente'
     PENDING = 'pago'
+    REFUSED = 'recusado'
 
 
 class Payment(PaymentInterface):

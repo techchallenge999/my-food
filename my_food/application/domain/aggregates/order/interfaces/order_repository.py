@@ -20,6 +20,7 @@ class OrderRepositoryDto:
     items: list[OrderItemRepositoryDto]
     status: OrderStatus
     total_amount: str
+    user_uuid: str
     uuid: str
 
 

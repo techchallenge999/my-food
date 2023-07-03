@@ -29,6 +29,7 @@ class OrderInterface(ABC):
     _items: list[OrderItemInterface]
     _status: OrderStatus
     _total_amount: str
+    _user_uuid: UUID | None
     _uuid: UUID
     _validator: ValidatorInterface
 
@@ -45,6 +46,11 @@ class OrderInterface(ABC):
     @property
     @abstractmethod
     def total_amount(self) -> str:
+        pass
+
+    @property
+    @abstractmethod
+    def user_uuid(self) -> str:
         pass
 
     @property

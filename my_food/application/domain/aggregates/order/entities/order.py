@@ -6,6 +6,7 @@ from my_food.application.domain.aggregates.order.interfaces.order_entity import 
 from my_food.application.domain.aggregates.order.interfaces.order_repository import OrderRepositoryInterface
 from my_food.application.domain.aggregates.order.validators.order_validator import OrderValidator
 from my_food.application.domain.aggregates.product.interfaces.product_repository import ProductRepositoryInterface
+from my_food.application.domain.aggregates.user.interfaces.user_repository import UserRepositoryInterface
 from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
 
 
@@ -46,14 +47,17 @@ class Order(OrderInterface):
         items: list[OrderItemInterface],
         order_repository: OrderRepositoryInterface,
         product_repository: ProductRepositoryInterface,
+        user_repository: UserRepositoryInterface,
         status: OrderStatus = OrderStatus.RECEIVED,
+        user_uuid: UUID | None = None,
         uuid: UUID = uuid4(),
     ):
         self._items = items
         self._status = status
         self._total_amount = self._get_total_amount(product_repository)
+        self._user_uuid = user_uuid
         self._uuid = uuid
-        self._validator = OrderValidator(self, order_repository, product_repository)
+        self._validator = OrderValidator(self, order_repository, product_repository, user_repository)
         self.validator.validate()
 
     @property
@@ -67,6 +71,12 @@ class Order(OrderInterface):
     @property
     def total_amount(self) -> str:
         return self._total_amount
+
+    @property
+    def user_uuid(self) -> str | None:
+        if isinstance(self._user_uuid, UUID):
+            return str(self._user_uuid)
+        return
 
     @property
     def uuid(self) -> str:

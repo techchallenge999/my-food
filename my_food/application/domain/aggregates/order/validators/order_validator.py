@@ -4,6 +4,7 @@ from my_food.application.domain.aggregates.order.entities.order import OrderStat
 from my_food.application.domain.aggregates.order.interfaces.order_entity import OrderInterface
 from my_food.application.domain.aggregates.order.interfaces.order_repository import OrderRepositoryInterface
 from my_food.application.domain.aggregates.product.interfaces.product_repository import ProductRepositoryInterface
+from my_food.application.domain.aggregates.user.interfaces.user_repository import UserRepositoryInterface
 from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
 
 
@@ -13,16 +14,19 @@ class OrderValidator(ValidatorInterface):
             entity: OrderInterface,
             order_repository: OrderRepositoryInterface,
             product_repository: ProductRepositoryInterface,
+            user_repository: UserRepositoryInterface,
         ):
         self._order = entity
         self._order_repository = order_repository
         self._product_repository = product_repository
+        self._user_repository = user_repository
 
     def validate(self):
         self._raise_if_has_unavailable_product()
         self._raise_if_has_invalid_quantity()
         self._raise_if_invalid_status()
         self._raise_if_invalid_uuid()
+        self._raise_if_nonexistent_user()
         self._raise_if_unavailable_uuid()
 
     def _raise_if_has_unavailable_product(self) -> None:
@@ -37,6 +41,10 @@ class OrderValidator(ValidatorInterface):
         if self._is_invalid_status():
             raise ValueError('Pedido com status inválido')
 
+    def _raise_if_nonexistent_user(self) -> None:
+        if self._is_nonexistent_user():
+            raise ValueError('Usuário inexistente')
+
     def _raise_if_invalid_uuid(self) -> None:
         if self._is_invalid_uuid():
             raise ValueError('uuid inválido')
@@ -45,9 +53,12 @@ class OrderValidator(ValidatorInterface):
         if self._is_unavailable_uuid():
             raise ValueError('uuid indisponível')
 
+    def _is_nonexistent_user(self) -> bool:
+        return self._user_repository.find(self._order.user_uuid) is not None
+
     def _has_unavailable_product(self) -> bool:
         for item in self._order.items:
-            if self._product_repository.find(str(item.product_uuid)) is None:
+            if self._product_repository.find(item.product_uuid) is None:
                 return True
         return False
 
@@ -64,4 +75,4 @@ class OrderValidator(ValidatorInterface):
         return not isinstance(self._order.uuid, UUID)
 
     def _is_unavailable_uuid(self) -> bool:
-        return self._order_repository.find(str(self._order.uuid)) is not None
+        return self._order_repository.find(self._order.uuid) is not None

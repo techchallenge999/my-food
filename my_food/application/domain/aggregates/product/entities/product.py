@@ -22,6 +22,7 @@ class Product(ProductInterface):
         description: str,
         image: bytes,
         repository: ProductRepositoryInterface,
+        is_active: bool = False,
         uuid: UUID = uuid4(),
     ):
         self._name = name
@@ -30,6 +31,7 @@ class Product(ProductInterface):
         self._description = description
         self._image = image
         self._uuid = uuid
+        self._is_active = is_active
         self._validator = ProductValidator(self, repository)
         self.validator.validate()
 
@@ -72,6 +74,20 @@ class Product(ProductInterface):
     @image.setter
     def image(self, value: bytes):
         self._image = value
+
+    @property
+    def is_active(self) -> bool:
+        return self._is_active
+
+    @is_active.setter
+    def is_active(self, value: bool):
+        self._is_active = value
+
+    def activate(self):
+        self.is_active = True
+
+    def deactivate(self):
+        self.is_active = False
 
     @property
     def uuid(self) -> str:

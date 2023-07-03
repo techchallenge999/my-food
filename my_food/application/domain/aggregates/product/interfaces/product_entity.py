@@ -17,6 +17,7 @@ class ProductInterface(ABC):
     _price: str
     _description: str
     _image: bytes
+    _is_active: bool
     _uuid: UUID
     _validator: ValidatorInterface
 
@@ -73,6 +74,24 @@ class ProductInterface(ABC):
     @property
     @abstractmethod
     def uuid(self) -> str:
+        pass
+
+    @property
+    @abstractmethod
+    def is_active(self) -> bool:
+        pass
+
+    @is_active.setter
+    @abstractmethod
+    def is_active(self, value: bool):
+        pass
+
+    @abstractmethod
+    def activate(self):
+        pass
+
+    @abstractmethod
+    def deactivate(self):
         pass
 
     @property

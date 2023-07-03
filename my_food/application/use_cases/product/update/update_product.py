@@ -39,6 +39,7 @@ class UpdateProductUseCase:
             price=input_data.price,
             description=input_data.description,
             image=input_data.image,
+            is_active=product.is_active,
             uuid=UUID(input_data.uuid),
             repository=self._repository,
         )
@@ -51,5 +52,6 @@ class UpdateProductUseCase:
             price=updated_product.price,
             description=updated_product.description,
             image=updated_product.image,
+            is_active=product.is_active,
             uuid=updated_product.uuid,
         )

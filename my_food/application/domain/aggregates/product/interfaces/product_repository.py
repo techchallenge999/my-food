@@ -16,6 +16,7 @@ class ProductRepositoryDto:
     price: str
     description: str
     image: bytes
+    is_active: bool
     uuid: str
 
 
@@ -30,6 +31,10 @@ class ProductRepositoryInterface(RepositoryInterface):
 
     @abstractmethod
     def list(self) -> Optional[List[ProductRepositoryDto]]:
+        pass
+
+    @abstractmethod
+    def list_active(self) -> Optional[List[ProductRepositoryDto]]:
         pass
 
     @abstractmethod

@@ -21,4 +21,5 @@ class CreateProductOutputDto:
     price: str
     description: str
     image: bytes
+    is_active: bool
     uuid: str

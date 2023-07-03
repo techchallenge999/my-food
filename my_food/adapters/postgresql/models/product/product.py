@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, Integer, String, Enum, Float, BLOB
+from sqlalchemy import Column, Integer, String, Enum, Float, BLOB, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from my_food.adapters.postgresql.database import Base, engine
@@ -17,6 +17,7 @@ class ProductModel(Base, CRUDMixin):
     price = Column(Float, nullable=False)
     description = Column(String)
     image = Column(BLOB)
+    is_active = Column(Boolean)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)
     id = Column(Integer, primary_key=True)
     order_items = relationship('OrderItemModel')

@@ -3,6 +3,9 @@ from my_food.application.domain.aggregates.product.entities.product import Produ
 from my_food.application.domain.aggregates.product.interfaces.product_repository import (
     ProductRepositoryInterface,
 )
+from my_food.application.domain.aggregates.user.interfaces.user_repository import (
+    UserRepositoryInterface,
+)
 from my_food.application.use_cases.product.update.update_product_dto import (
     UpdateProductInputDto,
     UpdateProductOutputDto,
@@ -10,10 +13,21 @@ from my_food.application.use_cases.product.update.update_product_dto import (
 
 
 class UpdateProductUseCase:
-    def __init__(self, repository: ProductRepositoryInterface):
+    def __init__(
+        self,
+        repository: ProductRepositoryInterface,
+        user_repository: UserRepositoryInterface,
+    ):
         self._repository = repository
+        self._user_repository = user_repository
 
-    def execute(self, input_data: UpdateProductInputDto) -> UpdateProductOutputDto:
+    def execute(
+        self, input_data: UpdateProductInputDto, creator_uuid: str
+    ) -> UpdateProductOutputDto:
+        creator = self._user_repository.find(creator_uuid)
+        if creator is None or not creator.is_admin:
+            return None
+
         product = self._repository.find(input_data.uuid)
 
         if product is None:

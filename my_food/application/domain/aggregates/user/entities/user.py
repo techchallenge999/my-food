@@ -1,8 +1,14 @@
 from uuid import UUID, uuid4
 
-from my_food.application.domain.aggregates.user.interfaces.user_entity import UserInterface
-from my_food.application.domain.aggregates.user.interfaces.user_repository import UserRepositoryInterface
-from my_food.application.domain.aggregates.user.validators.user_validator import UserValidator
+from my_food.application.domain.aggregates.user.interfaces.user_entity import (
+    UserInterface,
+)
+from my_food.application.domain.aggregates.user.interfaces.user_repository import (
+    UserRepositoryInterface,
+)
+from my_food.application.domain.aggregates.user.validators.user_validator import (
+    UserValidator,
+)
 from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
 
 
@@ -14,6 +20,7 @@ class User(UserInterface):
         name: str,
         password: str,
         repository: UserRepositoryInterface,
+        is_admin: bool = False,
         uuid: UUID = uuid4(),
     ):
         self.cpf = cpf
@@ -21,6 +28,7 @@ class User(UserInterface):
         self.name = name
         self.password = password
         self._uuid = uuid
+        self._is_admin = is_admin
         self._validator = UserValidator(self, repository)
         self.validator.validate()
 
@@ -59,6 +67,10 @@ class User(UserInterface):
     @property
     def uuid(self) -> str:
         return str(self._uuid)
+
+    @property
+    def is_admin(self) -> bool:
+        return self._is_admin
 
     @property
     def validator(self) -> ValidatorInterface:

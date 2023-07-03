@@ -1,6 +1,6 @@
 import uuid
 from passlib.context import CryptContext
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 from my_food.adapters.postgresql.database import Base, engine
 from my_food.adapters.postgresql.repositories.mixins.crud import CRUDMixin
@@ -16,6 +16,7 @@ class UserModel(Base, CRUDMixin):
     email = Column(String, index=True, unique=True)
     name = Column(String)
     password = Column(String)
+    is_admin = Column(Boolean, index=True, default=False)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)
     id = Column(Integer, primary_key=True)
 

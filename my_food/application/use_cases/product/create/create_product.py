@@ -5,6 +5,7 @@ from my_food.application.domain.aggregates.product.interfaces.product_repository
 from my_food.application.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
+from my_food.application.domain.shared.errors.exceptions.user import Unauthorized
 from my_food.application.use_cases.product.create.create_product_dto import (
     CreateProductInputDto,
     CreateProductOutputDto,
@@ -25,7 +26,7 @@ class CreateProductUseCase:
     ) -> CreateProductOutputDto:
         creator = self._user_repository.find(creator_uuid)
         if creator is None or not creator.is_admin:
-            return None
+            raise Unauthorized("User not Allowed!")
 
         new_product = Product(
             name=input_data.name,

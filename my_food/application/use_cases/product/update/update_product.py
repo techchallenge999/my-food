@@ -6,6 +6,10 @@ from my_food.application.domain.aggregates.product.interfaces.product_repository
 from my_food.application.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
+from my_food.application.domain.shared.errors.exceptions.product import (
+    UnavailableProductException,
+)
+from my_food.application.domain.shared.errors.exceptions.user import Unauthorized
 from my_food.application.use_cases.product.update.update_product_dto import (
     UpdateProductInputDto,
     UpdateProductOutputDto,
@@ -26,12 +30,12 @@ class UpdateProductUseCase:
     ) -> UpdateProductOutputDto:
         creator = self._user_repository.find(creator_uuid)
         if creator is None or not creator.is_admin:
-            return None
+            raise Unauthorized("User not Allowed!")
 
         product = self._repository.find(input_data.uuid)
 
         if product is None:
-            return None
+            return UnavailableProductException("Product Not Found!")
 
         updated_product = Product(
             name=input_data.name,

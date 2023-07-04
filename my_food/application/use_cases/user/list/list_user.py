@@ -2,6 +2,7 @@ from typing import Optional
 from my_food.application.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
+from my_food.application.domain.shared.errors.exceptions.user import Unauthorized
 from my_food.application.use_cases.user.list.list_user_dto import (
     ListUserOutputDto,
 )
@@ -14,7 +15,7 @@ class ListUserUseCase:
     def execute(self, actor_uuid: str) -> Optional[ListUserOutputDto]:
         actor = self._repository.find(actor_uuid)
         if actor is None or not actor.is_admin:
-            return None
+            raise Unauthorized("User not Allowed!")
 
         users = self._repository.list()
 

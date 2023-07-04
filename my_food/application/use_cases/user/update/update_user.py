@@ -4,6 +4,7 @@ from my_food.application.domain.aggregates.user.entities.user import User
 from my_food.application.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
+from my_food.application.domain.shared.errors.exceptions.user import Unauthorized
 from my_food.application.use_cases.user.update.update_user_dto import (
     UpdateUserInputDto,
     UpdateUserOutputDto,
@@ -19,7 +20,7 @@ class UpdateUserUseCase:
     ) -> Optional[UpdateUserOutputDto]:
         actor = self._repository.find(actor_uuid)
         if actor is None or (input_data.uuid != actor_uuid and not actor.is_admin):
-            return None
+            raise Unauthorized("User not Allowed!")
 
         user = self._repository.find(input_data.uuid)
 
@@ -43,5 +44,6 @@ class UpdateUserUseCase:
             cpf=updated_user.cpf,
             email=updated_user.email,
             name=updated_user.name,
+            is_admin=updated_user.is_admin,
             uuid=updated_user.uuid,
         )

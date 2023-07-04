@@ -2,6 +2,7 @@ from my_food.application.domain.aggregates.user.entities.user import User
 from my_food.application.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
+from my_food.application.domain.shared.errors.exceptions.user import Unauthorized
 from my_food.application.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,
     CreateUserOutputDto,
@@ -41,10 +42,10 @@ class CreateAdminUserUseCase:
     def execute(
         self, input_data: CreateUserInputDto, creator_uuid: str
     ) -> CreateUserOutputDto:
-        user = self._repository.find(creator_uuid.uuid)
+        user = self._repository.find(creator_uuid)
 
         if user is None or not user.is_admin:
-            return None
+            raise Unauthorized("User not Allowed!")
 
         cpf = "".join(filter(str.isdigit, input_data.cpf))
 

@@ -2,7 +2,7 @@ import uuid
 from passlib.context import CryptContext
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.dialects.postgresql import UUID
-from my_food.adapters.postgresql.database import Base, engine
+from my_food.adapters.postgresql.database import Base
 from my_food.adapters.postgresql.repositories.mixins.crud import CRUDMixin
 
 
@@ -26,7 +26,3 @@ class UserModel(Base, CRUDMixin):
 
     def hash_password(self, password: str) -> str:
         return pwd_context.hash(password)
-
-
-UserModel.metadata.bind = engine
-UserModel.metadata.create_all(engine)

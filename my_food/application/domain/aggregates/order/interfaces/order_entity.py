@@ -1,7 +1,14 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
-from my_food.application.domain.aggregates.order.entities.order import OrderStatus
+from enum import Enum
 from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
+
+
+class OrderStatus(Enum):
+    RECEIVED = "recebido"
+    PREPARING = "preparando"
+    READY = "pronto"
+    WITHDRAWN = "retirado"
 
 
 class OrderItemInterface(ABC):

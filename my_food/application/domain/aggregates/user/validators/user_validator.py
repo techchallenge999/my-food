@@ -3,6 +3,8 @@ from uuid import UUID
 
 from my_food.application.domain.aggregates.user.interfaces.user_entity import UserInterface
 from my_food.application.domain.aggregates.user.interfaces.user_repository import UserRepositoryInterface
+from my_food.application.domain.shared.errors.exceptions.base import InvalidUUIDException, UnavailableUUIDException
+from my_food.application.domain.shared.errors.exceptions.user import InvalidCPFException, InvalidEmailException, InvalidPasswordException, UnavailableCPFException
 from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
 
 
@@ -22,31 +24,31 @@ class UserValidator(ValidatorInterface):
 
     def _raise_if_invalid_cpf(self) -> None:
         if self._is_invalid_cpf():
-            raise ValueError('CPF inválido')
+            raise InvalidCPFException()
 
     def _raise_if_unavailable_cpf(self) -> None:
         if self._is_unavailable_cpf():
-            raise ValueError('CPF indisponível')
+            raise UnavailableCPFException()
 
     def _raise_if_invalid_email(self) -> None:
         if self._is_invalid_email():
-            raise ValueError('Email inválido')
+            raise InvalidEmailException()
 
     def _raise_if_unavailable_email(self) -> None:
         if self._is_unavailable_email():
-            raise ValueError('Email indisponível')
+            raise UnavailableUUIDException()
 
     def _raise_if_invalid_password(self) -> None:
         if self._is_invalid_password():
-            raise ValueError('Senha inválida')
+            raise InvalidPasswordException()
 
     def _raise_if_invalid_uuid(self) -> None:
         if self._is_invalid_uuid():
-            raise ValueError('uuid inválido')
+            raise InvalidUUIDException()
 
     def _raise_if_unavailable_uuid(self) -> None:
         if self._is_unavailable_uuid():
-            raise ValueError('uuid indisponível')
+            raise UnavailableUUIDException()
 
     def _is_invalid_cpf(self) -> bool:
         if (

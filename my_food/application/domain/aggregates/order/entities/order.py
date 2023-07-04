@@ -1,29 +1,33 @@
 from decimal import Decimal
-from enum import Enum
 from uuid import UUID, uuid4
 
-from my_food.application.domain.aggregates.order.interfaces.order_entity import OrderInterface, OrderItemInterface
-from my_food.application.domain.aggregates.order.interfaces.order_repository import OrderRepositoryInterface
-from my_food.application.domain.aggregates.order.validators.order_validator import OrderValidator
-from my_food.application.domain.aggregates.product.interfaces.product_repository import ProductRepositoryInterface
-from my_food.application.domain.aggregates.user.interfaces.user_repository import UserRepositoryInterface
+from my_food.application.domain.aggregates.order.interfaces.order_entity import (
+    OrderInterface,
+    OrderItemInterface,
+    OrderStatus,
+)
+from my_food.application.domain.aggregates.order.interfaces.order_repository import (
+    OrderRepositoryInterface,
+)
+from my_food.application.domain.aggregates.order.validators.order_validator import (
+    OrderValidator,
+)
+from my_food.application.domain.aggregates.product.interfaces.product_repository import (
+    ProductRepositoryInterface,
+)
+from my_food.application.domain.aggregates.user.interfaces.user_repository import (
+    UserRepositoryInterface,
+)
 from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
-
-
-class OrderStatus(Enum):
-    RECEIVED = 'recebido'
-    PREPARING = 'preparando'
-    READY = 'pronto'
-    WITHDRAWN = 'retirado'
 
 
 class OrderItem(OrderItemInterface):
     def __init__(
-            self,
-            comment: str,
-            product_uuid: UUID,
-            quantity: int,
-        ):
+        self,
+        comment: str,
+        product_uuid: UUID,
+        quantity: int,
+    ):
         self._comment = comment
         self._product_uuid = product_uuid
         self._quantity = quantity
@@ -57,7 +61,9 @@ class Order(OrderInterface):
         self._total_amount = self._get_total_amount(product_repository)
         self._user_uuid = user_uuid
         self._uuid = uuid
-        self._validator = OrderValidator(self, order_repository, product_repository, user_repository)
+        self._validator = OrderValidator(
+            self, order_repository, product_repository, user_repository
+        )
         self.validator.validate()
 
     @property
@@ -76,7 +82,7 @@ class Order(OrderInterface):
     def user_uuid(self) -> str | None:
         if isinstance(self._user_uuid, UUID):
             return str(self._user_uuid)
-        return
+        return None
 
     @property
     def uuid(self) -> str:
@@ -87,7 +93,7 @@ class Order(OrderInterface):
         return self._validator
 
     def _get_total_amount(self, product_repository: ProductRepositoryInterface) -> str:
-        total_amount = Decimal('0')
+        total_amount = Decimal("0")
         for item in self.items:
             product = product_repository.find(item.product_uuid)
             total_amount += Decimal(str(item.quantity)) * Decimal(product.price)

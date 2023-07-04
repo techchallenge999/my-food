@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from my_food.adapters.postgresql.models.product.product import ProductModel
 from my_food.application.domain.aggregates.product.interfaces.product_entity import (

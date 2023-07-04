@@ -6,6 +6,7 @@ from my_food.application.domain.aggregates.product.interfaces.product_entity imp
 from my_food.application.domain.aggregates.product.interfaces.product_repository import (
     ProductRepositoryInterface,
 )
+from my_food.application.domain.shared.errors.exceptions.base import InvalidUUIDException, UnavailableUUIDException
 from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
 
 
@@ -22,11 +23,11 @@ class ProductValidator(ValidatorInterface):
 
     def _raise_if_invalid_uuid(self) -> None:
         if self._is_invalid_uuid():
-            raise ValueError("uuid inválido")
+            raise InvalidUUIDException()
 
     def _raise_if_unavailable_uuid(self) -> None:
         if self._is_unavailable_uuid():
-            raise ValueError("uuid indisponível")
+            raise UnavailableUUIDException()
 
     def _is_invalid_uuid(self) -> bool:
         return isinstance(self._product.uuid, UUID)

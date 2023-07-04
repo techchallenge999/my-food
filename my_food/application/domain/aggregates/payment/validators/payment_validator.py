@@ -20,7 +20,7 @@ class PaymentValidator(ValidatorInterface):
 
     def validate(self):
         self._raise_if_nonexistent_order()
-        self._raise_if_invalid_status()
+        self._raise_if_invalid_payment_status()
         self._raise_if_invalid_uuid()
         self._raise_if_unavailable_uuid()
 
@@ -28,8 +28,8 @@ class PaymentValidator(ValidatorInterface):
         if self._is_nonexistent_order():
             raise ValueError('Pedido inválido')
 
-    def _raise_if_invalid_status(self) -> None:
-        if self._is_invalid_status():
+    def _raise_if_invalid_payment_status(self) -> None:
+        if self._is_invalid_payment_status():
             raise ValueError('Pagamento com status inválido')
 
     def _raise_if_invalid_uuid(self) -> None:
@@ -43,7 +43,7 @@ class PaymentValidator(ValidatorInterface):
     def _is_nonexistent_order(self) -> bool:
         return self._order_repository.find(self._payment.order_uuid) is None
 
-    def _is_invalid_status(self) -> bool:
+    def _is_invalid_payment_status(self) -> bool:
         return not isinstance(self._payment.status, PaymentStatus)
 
     def _is_invalid_uuid(self) -> bool:

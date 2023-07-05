@@ -4,6 +4,7 @@ from uuid import UUID
 from my_food.application.domain.aggregates.order.interfaces.order_repository import OrderRepositoryInterface
 from my_food.application.domain.aggregates.payment.entities.payment import Payment
 from my_food.application.domain.aggregates.payment.interfaces.payment_repository import PaymentRepositoryInterface
+from my_food.application.domain.shared.errors.exceptions.payment import PaymentNotFoundException
 from my_food.application.use_cases.payment.update.update_payment_dto import UpdatePaymentInputDto, UpdatePaymentOutputDto
 
 
@@ -20,7 +21,7 @@ class UpdatePaymentUseCase:
         payment = self._payment_repository.find(input_data.uuid)
 
         if payment is None:
-            return None
+            raise PaymentNotFoundException()
 
         updated_payment = Payment(
             order_uuid=UUID(payment.order_uuid),

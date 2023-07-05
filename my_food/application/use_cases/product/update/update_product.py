@@ -35,7 +35,7 @@ class UpdateProductUseCase:
         product = self._repository.find(input_data.uuid)
 
         if product is None:
-            return UnavailableProductException("Product Not Found!")
+            raise UnavailableProductException("Product Not Found!")
 
         updated_product = Product(
             name=input_data.name,

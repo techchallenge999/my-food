@@ -4,7 +4,7 @@ from my_food.application.domain.aggregates.user.entities.user import User
 from my_food.application.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
-from my_food.application.domain.shared.errors.exceptions.user import Unauthorized
+from my_food.application.domain.shared.errors.exceptions.user import Unauthorized, UserNotFoundException
 from my_food.application.use_cases.user.update.update_user_dto import (
     UpdateUserInputDto,
     UpdateUserOutputDto,
@@ -25,7 +25,7 @@ class UpdateUserUseCase:
         user = self._repository.find(input_data.uuid)
 
         if user is None:
-            return None
+            raise UserNotFoundException()
 
         cpf = "".join(filter(str.isdigit, input_data.cpf))
         updated_user = User(

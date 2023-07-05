@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 from my_food.application.domain.aggregates.payment.interfaces.payment_repository import PaymentRepositoryInterface
+from my_food.application.domain.shared.errors.exceptions.payment import NoPaymentFoundException
 from my_food.application.use_cases.payment.list.list_payment_dto import ListPaymentOutputDto
 
 
@@ -12,7 +13,7 @@ class ListPaymentUseCase:
         payments_list = self._repository.list()
 
         if payments_list is None:
-            return None
+            raise NoPaymentFoundException()
 
         return [
             ListPaymentOutputDto(

@@ -6,6 +6,7 @@ from my_food.application.domain.aggregates.order.entities.order import Order, Or
 from my_food.application.domain.aggregates.order.interfaces.order_repository import OrderRepositoryInterface
 from my_food.application.domain.aggregates.product.interfaces.product_repository import ProductRepositoryInterface
 from my_food.application.domain.aggregates.user.interfaces.user_repository import UserRepositoryInterface
+from my_food.application.domain.shared.errors.exceptions.order import OrderNotFoundException
 from my_food.application.use_cases.order.update.update_order_dto import (
     UpdateOrderInputDto,
     UpdateOrderItemOutputDto,
@@ -29,7 +30,7 @@ class UpdateOrderUseCase:
         order = self._order_repository.find(input_data.uuid)
 
         if order is None:
-            return None
+            raise OrderNotFoundException()
 
         updated_order = Order(
             items=[

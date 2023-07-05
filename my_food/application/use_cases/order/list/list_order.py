@@ -2,6 +2,7 @@ from dataclasses import asdict
 from typing import List, Optional
 
 from my_food.application.domain.aggregates.order.interfaces.order_repository import OrderRepositoryInterface
+from my_food.application.domain.shared.errors.exceptions.order import NoOrderFoundException
 from my_food.application.use_cases.order.list.list_order_dto import ListOrderItemOutputDto, ListOrderOutputDto
 
 
@@ -13,7 +14,7 @@ class ListOrderUseCase:
         orders_list = self._repository.list()
 
         if orders_list is None:
-            return None
+            raise NoOrderFoundException()
 
         return [
             ListOrderOutputDto(

@@ -1,20 +1,24 @@
 from dataclasses import asdict
 from typing import List, Optional
 
-from my_food.application.domain.aggregates.order.interfaces.order_repository import OrderRepositoryInterface
-from my_food.application.domain.shared.errors.exceptions.order import NoOrderFoundException
-from my_food.application.use_cases.order.list.list_order_dto import ListOrderItemOutputDto, ListOrderOutputDto
+from my_food.application.domain.aggregates.order.interfaces.order_repository import (
+    OrderRepositoryInterface,
+)
+from my_food.application.use_cases.order.list.list_order_dto import (
+    ListOrderItemOutputDto,
+    ListOrderOutputDto,
+)
 
 
 class ListOrderUseCase:
     def __init__(self, repository: OrderRepositoryInterface):
         self._repository = repository
 
-    def execute(self) -> Optional[List[ListOrderOutputDto]]:
-        orders_list = self._repository.list()
+    def execute(self, filters: dict = {}) -> Optional[List[ListOrderOutputDto]]:
+        orders_list = self._repository.list(filters)
 
         if orders_list is None:
-            raise NoOrderFoundException()
+            return []
 
         return [
             ListOrderOutputDto(

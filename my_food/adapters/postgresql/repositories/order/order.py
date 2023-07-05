@@ -44,8 +44,10 @@ class OrderRepository(OrderRepositoryInterface):
                 }
             )
 
-    def list(self) -> Optional[OrderRepositoryDto]:
-        orders = OrderModel.list()
+    def list(self, filters={}) -> Optional[OrderRepositoryDto]:
+        orders = OrderModel.list_filtering_by_column(filters)
+        if orders is None:
+            return []
 
         return [
             OrderRepositoryDto(
@@ -73,6 +75,8 @@ class OrderRepository(OrderRepositoryInterface):
         self, status: OrderStatus
     ) -> Optional[List[OrderRepositoryDto]]:
         orders = OrderModel.list_filtering_by_column({"status": status})
+        if orders is None:
+            return []
 
         return [
             OrderRepositoryDto(

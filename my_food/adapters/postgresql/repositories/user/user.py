@@ -37,6 +37,9 @@ class UserRepository(UserRepositoryInterface):
     def list(self) -> Optional[List[UserRepositoryDto]]:
         users = UserModel.list()
 
+        if users is None:
+            return []
+
         return [
             UserRepositoryDto(
                 cpf=user.cpf,

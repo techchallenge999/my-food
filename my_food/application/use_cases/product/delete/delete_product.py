@@ -5,13 +5,13 @@ from my_food.application.domain.aggregates.product.interfaces.product_repository
 from my_food.application.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
-from my_food.application.use_cases.product.find.find_product_dto import (
-    FindProductInputDto,
-    FindProductOutputDto,
+from my_food.application.use_cases.product.delete.delete_product_dto import (
+    DeleteProductInputDto,
+    DeleteProductOutputDto,
 )
 
 
-class FindProductUseCase:
+class DeleteProductUseCase:
     def __init__(
         self,
         repository: ProductRepositoryInterface,
@@ -21,19 +21,18 @@ class FindProductUseCase:
         self._user_repository = user_repository
 
     def execute(
-        self, input_data: FindProductInputDto, actor_uuid: str
-    ) -> Optional[FindProductOutputDto]:
-        actor = self._user_repository.find(actor_uuid)
+        self, input_data: DeleteProductInputDto, actor_uuid: str
+    ) -> Optional[DeleteProductOutputDto]:
+        actor = self._user_repository.delete(actor_uuid)
+        if actor is None or not actor.is_admin:
+            return None
 
-        product = self._repository.find(uuid=input_data.uuid)
+        product = self._repository.delete(uuid=input_data.uuid)
 
         if product is None:
             return None
 
-        if (actor is None or not actor.is_admin) and not product.is_active:
-            return None
-
-        return FindProductOutputDto(
+        return DeleteProductOutputDto(
             name=product.name,
             category=product.category,
             price=product.price,

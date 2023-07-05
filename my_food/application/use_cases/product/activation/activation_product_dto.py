@@ -14,7 +14,7 @@ class ActivateProductInputDto:
 class ActivateProductOutputDto:
     name: str
     category: ProductCategory
-    price: str
+    price: float
     description: str
     image: bytes
     is_active: bool
@@ -30,7 +30,7 @@ class DeactivateProductInputDto:
 class DeactivateProductOutputDto:
     name: str
     category: ProductCategory
-    price: str
+    price: float
     description: str
     image: bytes
     is_active: bool

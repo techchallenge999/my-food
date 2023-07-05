@@ -9,7 +9,7 @@ from my_food.application.domain.aggregates.product.interfaces.product_entity imp
 class UpdateProductInputDto:
     name: str
     category: ProductCategory
-    price: str
+    price: float
     description: str
     image: bytes
     uuid: str
@@ -19,7 +19,7 @@ class UpdateProductInputDto:
 class UpdateProductOutputDto:
     name: str
     category: ProductCategory
-    price: str
+    price: float
     description: str
     image: bytes
     is_active: bool

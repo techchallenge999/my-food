@@ -13,7 +13,7 @@ from my_food.application.domain.shared.interfaces.repository import RepositoryIn
 class ProductRepositoryDto:
     name: str
     category: ProductCategory
-    price: str
+    price: float
     description: str
     image: bytes
     is_active: bool
@@ -34,15 +34,7 @@ class ProductRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def list_active(self) -> Optional[List[ProductRepositoryDto]]:
-        pass
-
-    @abstractmethod
     def update(self, entity: ProductInterface) -> None:
-        pass
-
-    @abstractmethod
-    def filter_by_category(self, category: str) -> Optional[List[ProductRepositoryDto]]:
         pass
 
     @abstractmethod

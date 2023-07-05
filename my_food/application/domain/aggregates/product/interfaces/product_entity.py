@@ -14,7 +14,7 @@ class ProductCategory(Enum):
 class ProductInterface(ABC):
     _name: str
     _category: ProductCategory
-    _price: str
+    _price: float
     _description: str
     _image: bytes
     _is_active: bool
@@ -43,12 +43,12 @@ class ProductInterface(ABC):
 
     @property
     @abstractmethod
-    def price(self) -> str:
+    def price(self) -> float:
         pass
 
     @price.setter
     @abstractmethod
-    def price(self, value: str):
+    def price(self, value: float):
         pass
 
     @property

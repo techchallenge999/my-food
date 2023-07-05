@@ -36,11 +36,11 @@ class OrderRepository(OrderRepositoryInterface):
         if order:
             OrderModel.update(
                 {
-                    'items': entity.items,
-                    'status': entity.status,
-                    'total_amount': entity.total_amount,
-                    'uuid': entity.uuid,
-                    'id': order.id,
+                    "items": entity.items,
+                    "status": entity.status,
+                    "total_amount": entity.total_amount,
+                    "uuid": entity.uuid,
+                    "id": order.id,
                 }
             )
 
@@ -69,8 +69,10 @@ class OrderRepository(OrderRepositoryInterface):
             uuid=order.uuid,
         )
 
-    def filter_by_status(self, status: OrderStatus) -> Optional[List[OrderRepositoryDto]]:
-        orders = OrderModel.list_filtering_by_column('status', status)
+    def filter_by_status(
+        self, status: OrderStatus
+    ) -> Optional[List[OrderRepositoryDto]]:
+        orders = OrderModel.list_filtering_by_column({"status": status})
 
         return [
             OrderRepositoryDto(

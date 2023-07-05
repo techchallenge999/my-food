@@ -49,11 +49,12 @@ class CRUDMixin:
             return instance
 
     @classmethod
-    def list_filtering_by_column(cls, column: str, value):
-        if not hasattr(cls, column):
-            return None
+    def list_filtering_by_column(cls, filters: dict = {}):
+        stmt = select(cls)
+        for column in filters.keys():
+            if not hasattr(cls, column):
+                return None
+            stmt = stmt.filter((getattr(cls, column) == filters.get(column)))
         with Session(engine) as session:
-            instance = session.execute(
-                select(cls).filter((getattr(cls, column) == value))
-            ).all()
+            instance = session.execute(stmt).all()
             return instance

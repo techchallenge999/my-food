@@ -6,7 +6,12 @@ from my_food.application.domain.aggregates.product.interfaces.product_entity imp
 
 
 @dataclass
-class ListProductOutputDto:
+class DeleteProductInputDto:
+    uuid: str
+
+
+@dataclass
+class DeleteProductOutputDto:
     name: str
     category: ProductCategory
     price: float

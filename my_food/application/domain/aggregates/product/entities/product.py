@@ -18,7 +18,7 @@ class Product(ProductInterface):
         self,
         name: str,
         category: ProductCategory,
-        price: str,
+        price: float,
         description: str,
         image: bytes,
         repository: ProductRepositoryInterface,

@@ -1,8 +1,7 @@
-from typing import List, Optional
+from typing import Optional
 
 from my_food.adapters.postgresql.models.product.product import ProductModel
 from my_food.application.domain.aggregates.product.interfaces.product_entity import (
-    ProductCategory,
     ProductInterface,
 )
 from my_food.application.domain.aggregates.product.interfaces.product_repository import (
@@ -19,6 +18,7 @@ class ProductRepository(ProductRepositoryInterface):
             price=entity.price,
             description=entity.description,
             image=entity.image,
+            is_active=entity.is_active,
             uuid=entity.uuid,
         )
         new_product.create()
@@ -53,18 +53,21 @@ class ProductRepository(ProductRepositoryInterface):
                 }
             )
 
-    def list(self) -> Optional[ProductRepositoryDto]:
-        products = ProductModel.list()
+    def list(self, filters) -> Optional[ProductRepositoryDto]:
+        products = ProductModel.list_filtering_by_column(filters)
+
+        if products is None:
+            return []
 
         return [
             ProductRepositoryDto(
-                name=product.name,
-                category=product.category,
-                price=product.price,
-                description=product.description,
-                image=product.image,
-                is_active=product.is_active,
-                uuid=str(product.uuid),
+                name=product[0].name,
+                category=product[0].category,
+                price=product[0].price,
+                description=product[0].description,
+                image=product[0].image,
+                is_active=product[0].is_active,
+                uuid=str(product[0].uuid),
             )
             for product in products
         ]
@@ -83,37 +86,3 @@ class ProductRepository(ProductRepositoryInterface):
             is_active=product.is_active,
             uuid=str(product.uuid),
         )
-
-    def filter_by_category(
-        self, category: ProductCategory
-    ) -> Optional[List[ProductRepositoryDto]]:
-        products = ProductModel.list_filtering_by_column("category", category)
-
-        return [
-            ProductRepositoryDto(
-                name=product.name,
-                category=product.category,
-                price=product.price,
-                description=product.description,
-                image=product.image,
-                is_active=product.is_active,
-                uuid=str(product.uuid),
-            )
-            for product in products
-        ]
-
-    def list_active(self) -> Optional[ProductRepositoryDto]:
-        products = ProductModel.list_filtering_by_column("is_active", True)
-
-        return [
-            ProductRepositoryDto(
-                name=product.name,
-                category=product.category,
-                price=product.price,
-                description=product.description,
-                image=product.image,
-                is_active=product.is_active,
-                uuid=str(product.uuid),
-            )
-            for product in products
-        ]

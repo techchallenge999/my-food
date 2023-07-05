@@ -9,7 +9,7 @@ from my_food.application.domain.aggregates.product.interfaces.product_entity imp
 class CreateProductInputDto:
     name: str
     category: ProductCategory
-    price: str
+    price: float
     description: str
     image: bytes
 
@@ -18,7 +18,7 @@ class CreateProductInputDto:
 class CreateProductOutputDto:
     name: str
     category: ProductCategory
-    price: str
+    price: float
     description: str
     image: bytes
     is_active: bool

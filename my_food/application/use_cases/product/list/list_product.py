@@ -19,12 +19,14 @@ class ListProductUseCase:
         self._repository = repository
         self._user_repository = user_repository
 
-    def execute(self, creator_uuid: str) -> Optional[List[ListProductOutputDto]]:
-        creator = self._user_repository.find(creator_uuid)
-        if creator is None or not creator.is_admin:
-            products_list = self._repository.list_active()
-        else:
-            products_list = self._repository.list()
+    def execute(
+        self, actor_uuid: str, filters: dict = {}
+    ) -> Optional[List[ListProductOutputDto]]:
+        actor = self._user_repository.find(actor_uuid)
+        if actor is None or not actor.is_admin:
+            filters["is_active"] = True
+
+        products_list = self._repository.list(filters)
 
         if products_list is None:
             return None

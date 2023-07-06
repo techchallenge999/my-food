@@ -1,9 +1,15 @@
 from typing import List, Optional
+from my_food.application.domain.aggregates.product.interfaces.product_entity import (
+    ProductCategory,
+)
 from my_food.application.domain.aggregates.product.interfaces.product_repository import (
     ProductRepositoryInterface,
 )
 from my_food.application.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
+)
+from my_food.application.domain.shared.errors.exceptions.product import (
+    InvalidProductCategoryException,
 )
 from my_food.application.use_cases.product.list.list_product_dto import (
     ListProductOutputDto,
@@ -25,6 +31,11 @@ class ListProductUseCase:
         actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:
             filters["is_active"] = True
+        if "category" in filters.keys():
+            try:
+                ProductCategory(filters["category"])
+            except ValueError as err:
+                raise InvalidProductCategoryException(err.args[0])
 
         products_list = self._repository.list(filters)
 

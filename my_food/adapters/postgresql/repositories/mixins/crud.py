@@ -11,7 +11,9 @@ class CRUDMixin:
             session.commit()
 
     @classmethod
-    def retrieve(cls, uuid: str):
+    def retrieve(cls, uuid: str | None):
+        if uuid is None:
+            return None
         with Session(engine) as session:
             instance = session.execute(select(cls).filter_by(uuid=UUID(uuid))).first()
             return instance[0] if instance is not None else None

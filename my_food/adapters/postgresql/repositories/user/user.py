@@ -21,7 +21,7 @@ class UserRepository(UserRepositoryInterface):
         )
         new_user.create()
 
-    def find(self, uuid: str) -> Optional[UserRepositoryDto]:
+    def find(self, uuid: str | None) -> Optional[UserRepositoryDto]:
         user = UserModel.retrieve(uuid)
         if user is None:
             return None

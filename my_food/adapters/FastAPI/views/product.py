@@ -10,6 +10,7 @@ from fastapi import (
     Request,
 )
 from my_food.adapters.FastAPI.utils.image import bytes_to_base_64
+from my_food.adapters.FastAPI.utils.schemas import EmptyUser
 from my_food.adapters.postgresql.repositories.user.user import UserRepository
 from my_food.application.domain.aggregates.product.interfaces.product_entity import (
     ProductCategory,
@@ -46,7 +47,10 @@ from my_food.application.use_cases.product.find.find_product_dto import (
     FindProductInputDto,
     FindProductOutputDto,
 )
-from my_food.adapters.FastAPI.utils.auth import get_current_user
+from my_food.adapters.FastAPI.utils.auth import (
+    get_current_user,
+    get_current_user_optional,
+)
 from my_food.adapters.postgresql.repositories.product.product import ProductRepository
 from my_food.application.use_cases.product.list.list_product import ListProductUseCase
 from my_food.application.use_cases.product.list.list_product_dto import (
@@ -69,7 +73,9 @@ router = APIRouter()
 
 @router.get("/", response_model=list[ListProductOutputDto])
 async def list_products(
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
+    current_user: Annotated[
+        FindUserOutputDto | EmptyUser, Depends(get_current_user_optional)
+    ],
     request: Request,
 ):
     try:
@@ -94,10 +100,12 @@ async def list_products(
         )
 
 
-@router.get("/{product_uuid}", response_model=FindProductOutputDto)
+@router.get("/{product_uuid}/", response_model=FindProductOutputDto)
 async def retrieve_product(
     product_uuid: str,
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
+    current_user: Annotated[
+        FindUserOutputDto | EmptyUser, Depends(get_current_user_optional)
+    ],
 ):
     try:
         repository = ProductRepository()

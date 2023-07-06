@@ -24,7 +24,7 @@ class UserRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def find(self, uuid: str) -> Optional[UserRepositoryDto]:
+    def find(self, uuid: str | None) -> Optional[UserRepositoryDto]:
         pass
 
     @abstractmethod

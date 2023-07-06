@@ -1,10 +1,10 @@
 from abc import abstractmethod
 from dataclasses import dataclass
 from typing import List, Optional
-from my_food.application.domain.aggregates.order.entities.order import OrderStatus
 
 from my_food.application.domain.aggregates.order.interfaces.order_entity import (
     OrderInterface,
+    OrderStatus,
 )
 from my_food.application.domain.aggregates.product.interfaces.product_repository import (
     ProductRepositoryDto,

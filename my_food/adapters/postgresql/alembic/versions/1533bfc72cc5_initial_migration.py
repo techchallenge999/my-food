@@ -36,7 +36,13 @@ def upgrade() -> None:
         sa.Column("name", sa.String(), nullable=False),
         sa.Column(
             "category",
-            sa.Enum("SNACK", "SIDE_DISH", "DRINK", "DESSERT", name="productcategory"),
+            sa.Enum(
+                "lanche",
+                "acompanhamento",
+                "bebida",
+                "sobremesa",
+                name="productcategory",
+            ),
             nullable=False,
         ),
         sa.Column("price", sa.Float(), nullable=False),

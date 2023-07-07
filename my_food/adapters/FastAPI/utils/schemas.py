@@ -21,3 +21,13 @@ class UpdateProductSchema(BaseModel):
 @dataclass
 class EmptyUser:
     uuid: str = None
+
+
+class CreateOrderItemSchema(BaseModel):
+    comment: str
+    product_uuid: str
+    quantity: int
+
+
+class CreateOrderSchema(BaseModel):
+    items: list[CreateOrderItemSchema]

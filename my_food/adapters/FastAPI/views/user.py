@@ -69,7 +69,7 @@ async def list_users(
         )
 
 
-@router.get("/{user_uuid}", response_model=FindUserOutputDto)
+@router.get("/{user_uuid}/", response_model=FindUserOutputDto)
 async def retrieve_user(
     user_uuid: str,
     current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],

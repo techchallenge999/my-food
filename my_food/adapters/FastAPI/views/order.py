@@ -1,5 +1,7 @@
-from typing import List, Optional
-from fastapi import APIRouter, HTTPException, status, Request
+from typing import Annotated, List, Optional
+from fastapi import APIRouter, HTTPException, status, Request, Depends
+from my_food.adapters.FastAPI.utils.auth import get_current_user_optional
+from my_food.adapters.FastAPI.utils.schemas import CreateOrderSchema, EmptyUser
 
 from my_food.adapters.postgresql.repositories.order.order import OrderRepository
 from my_food.adapters.postgresql.repositories.product.product import ProductRepository
@@ -27,27 +29,34 @@ from my_food.application.use_cases.order.update.update_order_dto import (
     UpdateOrderInputDto,
     UpdateOrderOutputDto,
 )
+from my_food.application.use_cases.user.find.find_user_dto import FindUserOutputDto
 
 
 router = APIRouter()
 
 
 @router.post("/", status_code=201)
-async def create_order(input_data: CreateOrderInputDto) -> CreateOrderOutputDto:
+async def create_order(
+    input_data: CreateOrderSchema,
+    current_user: Annotated[
+        FindUserOutputDto | EmptyUser, Depends(get_current_user_optional)
+    ],
+) -> CreateOrderOutputDto:
     try:
         order_repository = OrderRepository()
         product_repository = ProductRepository()
         user_repository = UserRepository()
+        user_uuid = current_user.uuid if current_user else None
         create_use_case = CreateOrderUseCase(
             order_repository, product_repository, user_repository
         )
         new_user = create_use_case.execute(
-            CreateOrderInputDto(items=input_data.items, user_uuid=input_data.user_uuid)
+            CreateOrderInputDto(items=input_data.items, user_uuid=user_uuid)
         )
         return new_user
     except DomainException as err:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -69,7 +78,7 @@ async def list_orders(request: Request) -> Optional[List[ListOrderOutputDto]]:
         )
 
 
-@router.get("/", status_code=200)
+@router.put("/", status_code=200)
 async def update_orders(
     input_data: UpdateOrderInputDto,
 ) -> Optional[UpdateOrderOutputDto]:
@@ -90,7 +99,7 @@ async def update_orders(
         )
 
 
-@router.get("/{order_uuid}", status_code=200, response_model=FindOrderOutputDto)
+@router.get("/{order_uuid}/", status_code=200, response_model=FindOrderOutputDto)
 async def retireve_order(order_uuid: str):
     try:
         repository = OrderRepository()
@@ -105,7 +114,7 @@ async def retireve_order(order_uuid: str):
         )
 
 
-@router.delete("/{order_uuid}", status_code=200, response_model=DeleteOrderOutputDto)
+@router.delete("/{order_uuid}/", status_code=200, response_model=DeleteOrderOutputDto)
 async def delete_order(order_uuid: str):
     try:
         repository = OrderRepository()

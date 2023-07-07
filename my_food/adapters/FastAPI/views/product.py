@@ -210,7 +210,7 @@ async def create_product(
         )
 
 
-@router.put("/activate", response_model=ActivateProductOutputDto)
+@router.put("/activate/", response_model=ActivateProductOutputDto)
 async def activate_product(
     current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
     input_data: ActivateProductInputDto,
@@ -238,7 +238,7 @@ async def activate_product(
         )
 
 
-@router.put("/deactivate", response_model=DeactivateProductOutputDto)
+@router.put("/deactivate/", response_model=DeactivateProductOutputDto)
 async def deactivate_product(
     current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
     input_data: DeactivateProductInputDto,
@@ -266,7 +266,7 @@ async def deactivate_product(
         )
 
 
-@router.delete("/{product_uuid}", response_model=DeleteProductOutputDto)
+@router.delete("/{product_uuid}/", response_model=DeleteProductOutputDto)
 async def delete_product(
     product_uuid: str,
     current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],

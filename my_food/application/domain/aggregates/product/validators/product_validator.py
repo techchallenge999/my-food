@@ -27,4 +27,7 @@ class ProductValidator(ValidatorInterface):
             raise InvalidUUIDException()
 
     def _is_invalid_uuid(self) -> bool:
-        return isinstance(self._product.uuid, UUID)
+        try:
+            return not isinstance(UUID(self._product.uuid), UUID)
+        except ValueError:
+            return True

@@ -13,7 +13,7 @@ from my_food.application.domain.aggregates.order.interfaces.order_entity import 
 class OrderModel(Base, CRUDMixin):
     __tablename__ = "order"
 
-    items = relationship("OrderItemModel")
+    items = relationship("OrderItemModel", lazy="subquery")
     status = Column(Enum(OrderStatus), default=OrderStatus.RECEIVED, nullable=False)
     total_amount = Column(String, nullable=False)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)

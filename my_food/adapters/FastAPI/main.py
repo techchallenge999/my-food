@@ -6,7 +6,7 @@ from my_food.adapters.FastAPI.views.order import router as orders_router
 
 
 app = FastAPI()
-app.include_router(auth_router)
-app.include_router(users_router, prefix="/users")
-app.include_router(products_router, prefix="/products")
-app.include_router(orders_router, prefix="/orders")
+app.include_router(auth_router, tags=["Auth"])
+app.include_router(users_router, prefix="/users", tags=["Users"])
+app.include_router(products_router, prefix="/products", tags=["Products"])
+app.include_router(orders_router, prefix="/orders", tags=["Orders"])

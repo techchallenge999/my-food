@@ -1,6 +1,7 @@
 import uuid
 from passlib.context import CryptContext
 from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 from my_food.adapters.postgresql.database import Base
 from my_food.adapters.postgresql.repositories.mixins.crud import CRUDMixin
@@ -18,6 +19,7 @@ class UserModel(Base, CRUDMixin):
     password = Column(String)
     is_admin = Column(Boolean, index=True, default=False)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)
+    orders = relationship("OrderModel", lazy="subquery")
     id = Column(Integer, primary_key=True)
 
     def create(self) -> None:

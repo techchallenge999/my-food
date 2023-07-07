@@ -1,6 +1,6 @@
 from uuid import UUID
 from sqlalchemy import select, update
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, subqueryload
 from my_food.adapters.postgresql.database import engine
 
 
@@ -51,8 +51,11 @@ class CRUDMixin:
             return instance
 
     @classmethod
-    def list_filtering_by_column(cls, filters: dict = {}):
+    def list_filtering_by_column(cls, filters: dict = {}, children: list = []):
         stmt = select(cls)
+        for child in children:
+            if hasattr(cls, child):
+                stmt = stmt.options(subqueryload(getattr(cls, child)))
         for column in filters.keys():
             if not hasattr(cls, column):
                 return None

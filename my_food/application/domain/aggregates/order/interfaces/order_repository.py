@@ -6,16 +6,13 @@ from my_food.application.domain.aggregates.order.interfaces.order_entity import 
     OrderInterface,
     OrderStatus,
 )
-from my_food.application.domain.aggregates.product.interfaces.product_repository import (
-    ProductRepositoryDto,
-)
 from my_food.application.domain.shared.interfaces.repository import RepositoryInterface
 
 
 @dataclass
 class OrderItemRepositoryDto:
     comment: str
-    product: ProductRepositoryDto
+    product_uuid: str
     quantity: int
 
 

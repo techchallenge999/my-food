@@ -17,6 +17,7 @@ class OrderModel(Base, CRUDMixin):
     status = Column(Enum(OrderStatus), default=OrderStatus.RECEIVED, nullable=False)
     total_amount = Column(String, nullable=False)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)
+    user_uuid = Column(UUID(as_uuid=True), ForeignKey("user.uuid"), nullable=True)
     id = Column(Integer, primary_key=True)
 
 

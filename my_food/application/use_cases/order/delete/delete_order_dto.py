@@ -1,14 +1,11 @@
 from dataclasses import dataclass
 from my_food.application.domain.aggregates.order.entities.order import OrderStatus
-from my_food.application.use_cases.product.delete.delete_product_dto import (
-    DeleteProductOutputDto,
-)
 
 
 @dataclass
 class DeleteOrderItemOutputDto:
     comment: str
-    product: DeleteProductOutputDto
+    product_uuid: str
     quantity: int
 
 

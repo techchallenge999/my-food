@@ -1,8 +1,9 @@
 from dataclasses import asdict
 from uuid import UUID
 
-from my_food.application.domain.aggregates.order.entities.order import Order, OrderItem
+from my_food.application.domain.aggregates.order.entities.order import Order
 from my_food.application.domain.aggregates.order.interfaces.order_repository import OrderRepositoryInterface
+from my_food.application.domain.aggregates.order.value_objects.order_item import OrderItem
 from my_food.application.domain.aggregates.product.interfaces.product_repository import ProductRepositoryInterface
 from my_food.application.domain.aggregates.user.interfaces.user_repository import UserRepositoryInterface
 from my_food.application.use_cases.order.create.create_order_dto import CreateOrderInputDto, CreateOrderItemOutputDto, CreateOrderOutputDto

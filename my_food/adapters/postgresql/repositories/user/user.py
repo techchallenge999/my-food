@@ -42,12 +42,12 @@ class UserRepository(UserRepositoryInterface):
 
         return [
             UserRepositoryDto(
-                cpf=user.cpf,
-                email=user.email,
-                name=user.name,
-                password=user.password,
-                is_admin=user.is_admin,
-                uuid=str(user.uuid),
+                cpf=user[0].cpf,
+                email=user[0].email,
+                name=user[0].name,
+                password=user[0].password,
+                is_admin=user[0].is_admin,
+                uuid=str(user[0].uuid),
             )
             for user in users
         ]

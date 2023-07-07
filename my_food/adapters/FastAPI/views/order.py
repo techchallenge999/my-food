@@ -72,7 +72,7 @@ async def list_orders(request: Request) -> Optional[List[ListOrderOutputDto]]:
         return orders
     except DomainException as err:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -93,7 +93,7 @@ async def update_orders(
         return orders
     except DomainException as err:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -108,7 +108,7 @@ async def retireve_order(order_uuid: str):
         return order
     except DomainException as err:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -123,7 +123,7 @@ async def delete_order(order_uuid: str):
         return order
     except DomainException as err:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )

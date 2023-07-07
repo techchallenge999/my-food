@@ -1,5 +1,3 @@
-from dataclasses import asdict
-
 from my_food.application.domain.aggregates.order.interfaces.order_repository import (
     OrderRepositoryInterface,
 )
@@ -26,7 +24,14 @@ class DeleteOrderUseCase:
         self._repository.delete(uuid=order.uuid)
 
         return DeleteOrderOutputDto(
-            items=[DeleteOrderItemOutputDto(**asdict(item)) for item in order.items],
+            items=[
+                DeleteOrderItemOutputDto(
+                    comment=item.comment,
+                    product_uuid=item.product.uuid,
+                    quantity=item.quantity,
+                )
+                for item in order.items
+            ],
             status=order.status,
             total_amount=order.total_amount,
             user_uuid=order.user_uuid,

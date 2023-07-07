@@ -15,7 +15,6 @@ from my_food.application.domain.aggregates.user.interfaces.user_repository impor
 )
 from my_food.application.domain.shared.errors.exceptions.base import (
     InvalidUUIDException,
-    UnavailableUUIDException,
 )
 from my_food.application.domain.shared.errors.exceptions.order import (
     InvalidOrderStatusException,
@@ -49,7 +48,6 @@ class OrderValidator(ValidatorInterface):
         self._raise_if_invalid_order_status()
         self._raise_if_invalid_uuid()
         self._raise_if_nonexistent_user()
-        self._raise_if_unavailable_uuid()
 
     def _raise_if_has_unavailable_product(self) -> None:
         if self._has_unavailable_product():
@@ -70,10 +68,6 @@ class OrderValidator(ValidatorInterface):
     def _raise_if_invalid_uuid(self) -> None:
         if self._is_invalid_uuid():
             raise InvalidUUIDException()
-
-    def _raise_if_unavailable_uuid(self) -> None:
-        if self._is_unavailable_uuid():
-            raise UnavailableUUIDException()
 
     def _is_nonexistent_user(self) -> bool:
         return (
@@ -101,6 +95,3 @@ class OrderValidator(ValidatorInterface):
             return not isinstance(UUID(self._order.uuid), UUID)
         except ValueError:
             return True
-
-    def _is_unavailable_uuid(self) -> bool:
-        return self._order_repository.find(self._order.uuid) is not None

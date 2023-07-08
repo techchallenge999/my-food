@@ -6,10 +6,9 @@ ENV PYTHONDONTWRITEBYTECODE 1 \
 WORKDIR /app
 
 RUN apt-get update && apt-get --no-install-recommends --no-upgrade -y install \
-    # build-essential \
-    # libmediainfo-dev \
-    # libpq-dev \
-    # python3-dev \
+    build-essential \
+    libpq-dev \
+    python3-dev \
     python3-pip \
     && apt-get -y autoremove \
     && apt-get -y clean \
@@ -19,5 +18,3 @@ COPY ./requirements.txt ./requirements.txt
 RUN pip3 install --no-cache-dir --requirement ./requirements.txt
 
 COPY . .
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

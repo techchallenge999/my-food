@@ -43,13 +43,14 @@ class FindUserByCpfUseCase:
     def execute(
         self, input_data: FindUserByCpfInputDto, actor_cpf: str
     ) -> Optional[FindUserByCpfOutputDto]:
-        actor = self._repository.find_by_cpf(cpf=actor_cpf)
-        if actor is None or (input_data.cpf != actor.cpf and not actor.is_admin):
+        cleaned_actor_cpf = "".join(filter(str.isdigit, actor_cpf))
+        cleaned_input_data_cpf = "".join(filter(str.isdigit, input_data.cpf))
+
+        actor = self._repository.find_by_cpf(cpf=cleaned_actor_cpf)
+        if actor is None or (cleaned_input_data_cpf != actor.cpf and not actor.is_admin):
             raise Unauthorized("User not Allowed!")
 
-        cpf = "".join(filter(str.isdigit, input_data.cpf))
-
-        user = self._repository.find_by_cpf(cpf=cpf)
+        user = self._repository.find_by_cpf(cpf=cleaned_input_data_cpf)
 
         if user is None:
             return None

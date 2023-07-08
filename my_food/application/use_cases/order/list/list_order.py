@@ -27,6 +27,8 @@ class ListOrderUseCase:
                 total_amount=order.total_amount,
                 user_uuid=order.user_uuid,
                 uuid=order.uuid,
+                created_at=order.created_at,
+                updated_at=order.updated_at,
             )
             for order in orders_list
         ]

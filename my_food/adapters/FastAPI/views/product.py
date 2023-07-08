@@ -193,10 +193,10 @@ async def create_product(
         )
         repository = ProductRepository()
         user_repository = UserRepository()
-        find_use_case = CreateProductUseCase(
+        create_use_case = CreateProductUseCase(
             repository=repository, user_repository=user_repository
         )
-        return find_use_case.execute(input_data, current_user.uuid)
+        return create_use_case.execute(input_data, current_user.uuid)
     except Unauthorized as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

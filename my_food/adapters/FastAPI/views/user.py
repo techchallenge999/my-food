@@ -1,5 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
+from my_food.application.domain.shared.errors.exceptions.base import DomainException
 from my_food.application.domain.shared.errors.exceptions.user import Unauthorized
 from my_food.application.use_cases.user.create.create_user import CreateAdminUserUseCase
 from my_food.application.use_cases.user.create.create_user_dto import (
@@ -68,6 +69,12 @@ async def list_users(
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )
+    except DomainException as err:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=err.message,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 
 @router.get("/{user_uuid}/", response_model=FindUserOutputDto)
@@ -84,6 +91,12 @@ async def retrieve_user(
     except Unauthorized as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=err.message,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except DomainException as err:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -106,6 +119,12 @@ async def update_user(
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )
+    except DomainException as err:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=err.message,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 
 @router.post("/admin/", response_model=CreateUserOutputDto)
@@ -120,6 +139,12 @@ async def create_admin_user(
     except Unauthorized as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=err.message,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except DomainException as err:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )

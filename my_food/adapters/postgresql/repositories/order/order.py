@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import select
@@ -11,13 +11,15 @@ from my_food.application.domain.aggregates.order.interfaces.order_entity import 
     OrderInterface,
 )
 from my_food.application.domain.aggregates.order.interfaces.order_repository import (
-    DeleteOrderItemRepositoryDto,
-    OrderItemRepositoryDto,
-    OrderRepositoryDto,
+    OrderItemRepositoryOutputDto,
+    OrderRepositoryOutputDto,
     OrderRepositoryInterface,
 )
 from my_food.application.domain.aggregates.product.interfaces.product_repository import (
     ProductRepositoryDto,
+)
+from my_food.application.domain.shared.errors.exceptions.order import (
+    OrderNotFoundException,
 )
 
 
@@ -39,7 +41,7 @@ class OrderRepository(OrderRepositoryInterface):
             )
             new_order_item.create()
 
-    def find(self, uuid: str) -> Optional[OrderRepositoryDto]:
+    def find(self, uuid: str) -> Optional[OrderRepositoryOutputDto]:
         with get_session() as session:
             stmt = select(OrderModel)
             stmt = stmt.options(
@@ -50,10 +52,10 @@ class OrderRepository(OrderRepositoryInterface):
             instance = session.execute(stmt.filter_by(uuid=UUID(uuid))).first()
             order = instance[0] if instance is not None else None
         if order is None:
-            return None
-        return OrderRepositoryDto(
+            raise OrderNotFoundException()
+        return OrderRepositoryOutputDto(
             items=[
-                OrderItemRepositoryDto(
+                OrderItemRepositoryOutputDto(
                     comment=item.comment,
                     product=ProductRepositoryDto(
                         name=item.product.name,
@@ -72,6 +74,8 @@ class OrderRepository(OrderRepositoryInterface):
             total_amount=order.total_amount,
             uuid=str(order.uuid),
             user_uuid=str(order.user_uuid),
+            created_at=order.created_at,
+            updated_at=order.updated_at,
         )
 
     def update(self, entity: OrderInterface) -> None:
@@ -97,7 +101,7 @@ class OrderRepository(OrderRepositoryInterface):
                 }
             )
 
-    def list(self, filters={}) -> Optional[OrderRepositoryDto]:
+    def list(self, filters={}) -> Optional[OrderRepositoryOutputDto]:
         with get_session() as session:
             stmt = select(OrderModel)
             stmt = stmt.options(
@@ -116,9 +120,9 @@ class OrderRepository(OrderRepositoryInterface):
             return []
 
         return [
-            OrderRepositoryDto(
+            OrderRepositoryOutputDto(
                 items=[
-                    OrderItemRepositoryDto(
+                    OrderItemRepositoryOutputDto(
                         comment=item.comment,
                         product=ProductRepositoryDto(
                             name=item.product.name,
@@ -137,43 +141,14 @@ class OrderRepository(OrderRepositoryInterface):
                 total_amount=order[0].total_amount,
                 uuid=str(order[0].uuid),
                 user_uuid=str(order[0].user_uuid),
+                created_at=order[0].created_at,
+                updated_at=order[0].updated_at,
             )
             for order in orders
         ]
 
-    def delete(self, uuid: str) -> Optional[OrderRepositoryDto]:
+    def delete(self, uuid: str) -> Optional[OrderRepositoryOutputDto]:
         order = OrderModel.retrieve(uuid)
         if order is None:
-            return None
+            raise OrderNotFoundException()
         OrderModel.destroy(str(order.uuid))
-        return OrderRepositoryDto(
-            items=[
-                DeleteOrderItemRepositoryDto(
-                    comment=item.comment,
-                    product_uuid=str(item.product_uuid),
-                    quantity=item.quantity,
-                )
-                for item in order.items
-            ],
-            status=order.status,
-            total_amount=order.total_amount,
-            uuid=str(order.uuid),
-            user_uuid=str(order.user_uuid),
-        )
-
-    def filter_by_status(
-        self, status: OrderStatus
-    ) -> Optional[List[OrderRepositoryDto]]:
-        orders = OrderModel.list_filtering_by_column({"status": status})
-        if orders is None:
-            return []
-
-        return [
-            OrderRepositoryDto(
-                items=order.items,
-                status=order.status,
-                total_amount=order.total_amount,
-                uuid=str(order.uuid),
-            )
-            for order in orders
-        ]

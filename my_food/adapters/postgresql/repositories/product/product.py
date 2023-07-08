@@ -8,6 +8,9 @@ from my_food.application.domain.aggregates.product.interfaces.product_repository
     ProductRepositoryDto,
     ProductRepositoryInterface,
 )
+from my_food.application.domain.shared.errors.exceptions.product import (
+    ProductNotFoundException,
+)
 
 
 class ProductRepository(ProductRepositoryInterface):
@@ -26,7 +29,7 @@ class ProductRepository(ProductRepositoryInterface):
     def find(self, uuid: str) -> Optional[ProductRepositoryDto]:
         product = ProductModel.retrieve(uuid)
         if product is None:
-            return None
+            raise ProductNotFoundException()
         return ProductRepositoryDto(
             name=product.name,
             category=product.category,
@@ -75,8 +78,8 @@ class ProductRepository(ProductRepositoryInterface):
     def delete(self, uuid: str) -> Optional[ProductRepositoryDto]:
         product = ProductModel.retrieve(uuid)
         if product is None:
-            return None
-        ProductModel.destroy(product.uuid)
+            raise ProductNotFoundException()
+        ProductModel.destroy(str(product.uuid))
         return ProductRepositoryDto(
             name=product.name,
             category=product.category,

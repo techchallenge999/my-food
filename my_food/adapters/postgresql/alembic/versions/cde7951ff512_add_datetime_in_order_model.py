@@ -28,7 +28,13 @@ def upgrade() -> None:
         ),
     )
     op.add_column(
-        "order", sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True)
+        "order",
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=True,
+        ),
     )
     # ### end Alembic commands ###
 

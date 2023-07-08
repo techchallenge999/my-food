@@ -23,14 +23,14 @@ class Product(ProductInterface):
         image: bytes,
         repository: ProductRepositoryInterface,
         is_active: bool = False,
-        uuid: UUID = uuid4(),
+        uuid: UUID = None,
     ):
         self._name = name
         self._category = category
         self._price = price
         self._description = description
         self._image = image
-        self._uuid = uuid
+        self._uuid = uuid or uuid4()
         self._is_active = is_active
         self._validator = ProductValidator(self, repository)
         self.validator.validate()

@@ -8,6 +8,9 @@ from my_food.application.domain.aggregates.user.interfaces.user_repository impor
     UserRepositoryDto,
     UserRepositoryInterface,
 )
+from my_food.application.domain.shared.errors.exceptions.user import (
+    UserNotFoundException,
+)
 
 
 class UserRepository(UserRepositoryInterface):
@@ -24,7 +27,7 @@ class UserRepository(UserRepositoryInterface):
     def find(self, uuid: str | None) -> Optional[UserRepositoryDto]:
         user = UserModel.retrieve(uuid)
         if user is None:
-            return None
+            raise UserNotFoundException()
         return UserRepositoryDto(
             cpf=user.cpf,
             email=user.email,
@@ -69,7 +72,7 @@ class UserRepository(UserRepositoryInterface):
     def find_by_cpf(self, cpf: str) -> Optional[UserRepositoryDto]:
         user = UserModel.retrieve_by_column("cpf", cpf)
         if user is None:
-            return None
+            raise UserNotFoundException()
         return UserRepositoryDto(
             cpf=user.cpf,
             email=user.email,
@@ -82,7 +85,7 @@ class UserRepository(UserRepositoryInterface):
     def find_by_email(self, email: str) -> Optional[UserRepositoryDto]:
         user = UserModel.retrieve_by_column("email", email)
         if user is None:
-            return None
+            raise UserNotFoundException()
         return UserRepositoryDto(
             cpf=user.cpf,
             email=user.email,

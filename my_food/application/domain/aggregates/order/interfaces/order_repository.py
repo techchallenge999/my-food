@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from dataclasses import dataclass
+from datetime import datetime
 from typing import List, Optional
 
 from my_food.application.domain.aggregates.order.interfaces.order_entity import (
@@ -13,25 +14,20 @@ from my_food.application.domain.shared.interfaces.repository import RepositoryIn
 
 
 @dataclass
-class OrderItemRepositoryDto:
+class OrderItemRepositoryOutputDto:
     comment: str
     product: ProductRepositoryDto
     quantity: int
 
 
 @dataclass
-class DeleteOrderItemRepositoryDto:
-    comment: str
-    product_uuid: str
-    quantity: int
-
-
-@dataclass
-class OrderRepositoryDto:
-    items: list[OrderItemRepositoryDto]
+class OrderRepositoryOutputDto:
+    items: list[OrderItemRepositoryOutputDto]
     status: OrderStatus
     total_amount: str
     user_uuid: str | None
+    created_at: datetime
+    updated_at: datetime
     uuid: str
 
 
@@ -41,11 +37,11 @@ class OrderRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def find(self, uuid: str) -> Optional[OrderRepositoryDto]:
+    def find(self, uuid: str) -> Optional[OrderRepositoryOutputDto]:
         pass
 
     @abstractmethod
-    def list(self, filters: dict) -> Optional[List[OrderRepositoryDto]]:
+    def list(self, filters: dict) -> Optional[List[OrderRepositoryOutputDto]]:
         pass
 
     @abstractmethod

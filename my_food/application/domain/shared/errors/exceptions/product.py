@@ -14,3 +14,8 @@ class UnavailableProductException(DomainException):
 class InvalidProductCategoryException(DomainException):
     def __init__(self, message="Invalid product category."):
         super().__init__(message)
+
+
+class ProductNotFoundException(DomainException):
+    def __init__(self, message="Product not found."):
+        super().__init__(message)

@@ -4,13 +4,14 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from my_food.adapters.postgresql.database import Base
 from my_food.adapters.postgresql.repositories.mixins.crud import CRUDMixin
+from my_food.adapters.postgresql.repositories.mixins.timestamp import TimestampMixin
 from my_food.adapters.postgresql.repositories.product.product import ProductModel
 from my_food.application.domain.aggregates.order.interfaces.order_entity import (
     OrderStatus,
 )
 
 
-class OrderModel(Base, CRUDMixin):
+class OrderModel(Base, CRUDMixin, TimestampMixin):
     __tablename__ = "order"
 
     items = relationship(

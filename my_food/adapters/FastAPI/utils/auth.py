@@ -15,6 +15,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = config("ACCESS_TOKEN_EXPIRE_MINUTES", cast=int)
 JWT_SECRET = config("JWT_SECRET")
 
+oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="token", auto_error=False)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
@@ -32,8 +33,12 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     return user
 
 
-async def get_current_user_optional(token: Annotated[str, Depends(oauth2_scheme)]):
+async def get_current_user_optional(
+    token: Annotated[str | None, Depends(oauth2_scheme_optional)]
+):
     try:
+        if token is None:
+            return EmptyUser()
         payload = decode_access_token(token)
         username: str = payload["sub"]
         if username is None:

@@ -13,7 +13,8 @@ services:
       - source: .
         target: /app
         type: bind
-    command: uvicorn my_food.adapters.FastAPI.main:app --host 0.0.0.0 --port 8000 --reload
+    command: bash init_app.sh
+
   db:
     container_name: my-food-db
     image: postgres:14

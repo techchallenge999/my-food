@@ -2,8 +2,10 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from typing import List, Optional
 
-from my_food.application.domain.aggregates.payment.entities.payment import PaymentStatus
-from my_food.application.domain.aggregates.payment.interfaces.payment_entity import PaymentInterface
+from my_food.application.domain.aggregates.payment.interfaces.payment_entity import (
+    PaymentInterface,
+    PaymentStatus,
+)
 from my_food.application.domain.shared.interfaces.repository import RepositoryInterface
 
 

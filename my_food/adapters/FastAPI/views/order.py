@@ -1,11 +1,14 @@
 from typing import Annotated, List, Optional
-from fastapi import APIRouter, HTTPException, status, Request, Depends
+from fastapi import APIRouter, HTTPException, status as status_code, Depends
 from my_food.adapters.FastAPI.utils.auth import get_current_user_optional
 from my_food.adapters.FastAPI.utils.schemas import CreateOrderSchema, EmptyUser
 
 from my_food.adapters.postgresql.repositories.order.order import OrderRepository
 from my_food.adapters.postgresql.repositories.product.product import ProductRepository
 from my_food.adapters.postgresql.repositories.user.user import UserRepository
+from my_food.application.domain.aggregates.order.interfaces.order_entity import (
+    OrderStatus,
+)
 from my_food.application.domain.shared.errors.exceptions.base import DomainException
 from my_food.application.use_cases.order.create.create_order import CreateOrderUseCase
 from my_food.application.use_cases.order.create.create_order_dto import (
@@ -27,7 +30,9 @@ from my_food.application.use_cases.order.list.list_order_dto import ListOrderOut
 from my_food.application.use_cases.order.update.update_order import UpdateOrderUseCase
 from my_food.application.use_cases.order.update.update_order_dto import (
     UpdateOrderInputDto,
+    UpdateOrderItemInputDto,
     UpdateOrderOutputDto,
+    UpdateStatusOrderInputDto,
 )
 from my_food.application.use_cases.user.find.find_user_dto import FindUserOutputDto
 
@@ -56,23 +61,25 @@ async def create_order(
         return new_user
     except DomainException as err:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status_code.HTTP_400_BAD_REQUEST,
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )
 
 
 @router.get("/", status_code=200)
-async def list_orders(request: Request) -> Optional[List[ListOrderOutputDto]]:
+async def list_orders(status: str | None = None) -> Optional[List[ListOrderOutputDto]]:
     try:
         repository = OrderRepository()
         list_use_case = ListOrderUseCase(repository)
-        filters = request.query_params._dict
+        filters = {}
+        if status is not None:
+            filters["status"] = OrderStatus(status).name
         orders = list_use_case.execute(filters)
         return orders
     except DomainException as err:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status_code.HTTP_400_BAD_REQUEST,
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -93,7 +100,7 @@ async def update_orders(
         return orders
     except DomainException as err:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status_code.HTTP_400_BAD_REQUEST,
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -108,7 +115,7 @@ async def retireve_order(order_uuid: str):
         return order
     except DomainException as err:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status_code.HTTP_400_BAD_REQUEST,
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -123,7 +130,45 @@ async def delete_order(order_uuid: str):
         return order
     except DomainException as err:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status_code.HTTP_400_BAD_REQUEST,
+            detail=err.message,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
+@router.put("/{order_uuid}/update-status/", status_code=200)
+async def update_status_order(
+    input_data: UpdateStatusOrderInputDto,
+    order_uuid: str,
+) -> Optional[UpdateOrderOutputDto]:
+    try:
+        order_repository = OrderRepository()
+        product_repository = ProductRepository()
+        user_repository = UserRepository()
+
+        find_use_case = FindOrderUseCase(order_repository)
+        order = find_use_case.execute(FindOrderInputDto(uuid=order_uuid))
+        order = UpdateOrderInputDto(
+            items=[
+                UpdateOrderItemInputDto(
+                    comment=item.comment,
+                    product_uuid=item.product["uuid"],
+                    quantity=item.quantity,
+                )
+                for item in order.items
+            ],
+            status=input_data.status,
+            uuid=order.uuid,
+        )
+
+        update_use_case = UpdateOrderUseCase(
+            order_repository, product_repository, user_repository
+        )
+        orders = update_use_case.execute(order)
+        return orders
+    except DomainException as err:
+        raise HTTPException(
+            status_code=status_code.HTTP_400_BAD_REQUEST,
             detail=err.message,
             headers={"WWW-Authenticate": "Bearer"},
         )

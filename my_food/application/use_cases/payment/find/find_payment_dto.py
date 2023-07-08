@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from my_food.application.domain.aggregates.payment.entities.payment import PaymentStatus
+from my_food.application.domain.aggregates.payment.interfaces.payment_entity import (
+    PaymentStatus,
+)
 
 
 @dataclass

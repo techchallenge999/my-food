@@ -1,8 +1,14 @@
 from abc import ABC, abstractmethod
+from enum import Enum
 from uuid import UUID
 
-from my_food.application.domain.aggregates.payment.entities.payment import PaymentStatus
 from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
+
+
+class PaymentStatus(Enum):
+    PENDING = "pendente"
+    PAID = "pago"
+    REFUSED = "recusado"
 
 
 class PaymentInterface(ABC):

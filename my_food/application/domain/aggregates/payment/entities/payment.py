@@ -1,17 +1,19 @@
-from enum import Enum
 from uuid import UUID, uuid4
 
-from my_food.application.domain.aggregates.order.interfaces.order_repository import OrderRepositoryInterface
-from my_food.application.domain.aggregates.payment.interfaces.payment_entity import PaymentInterface
-from my_food.application.domain.aggregates.payment.interfaces.payment_repository import PaymentRepositoryInterface
-from my_food.application.domain.aggregates.payment.validators.payment_validator import PaymentValidator
+from my_food.application.domain.aggregates.order.interfaces.order_repository import (
+    OrderRepositoryInterface,
+)
+from my_food.application.domain.aggregates.payment.interfaces.payment_entity import (
+    PaymentInterface,
+    PaymentStatus,
+)
+from my_food.application.domain.aggregates.payment.interfaces.payment_repository import (
+    PaymentRepositoryInterface,
+)
+from my_food.application.domain.aggregates.payment.validators.payment_validator import (
+    PaymentValidator,
+)
 from my_food.application.domain.shared.interfaces.validator import ValidatorInterface
-
-
-class PaymentStatus(Enum):
-    PAID = 'pendente'
-    PENDING = 'pago'
-    REFUSED = 'recusado'
 
 
 class Payment(PaymentInterface):

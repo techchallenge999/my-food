@@ -47,10 +47,12 @@ class FindUserByCpfUseCase:
         cleaned_input_data_cpf = "".join(filter(str.isdigit, input_data.cpf))
 
         actor = self._repository.find_by_cpf(cpf=cleaned_actor_cpf)
-        if actor is None or (cleaned_input_data_cpf != cleaned_actor_cpf and not actor.is_admin):
+        if actor is None or (
+            cleaned_input_data_cpf != actor.cpf and not actor.is_admin
+        ):
             raise Unauthorized("User not Allowed!")
 
-        user = self._repository.find_by_cpf(cpf=cleaned_actor_cpf)
+        user = self._repository.find_by_cpf(cpf=cleaned_input_data_cpf)
 
         if user is None:
             return None

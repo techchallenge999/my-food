@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from my_food.application.domain.aggregates.order.entities.order import OrderStatus
-from my_food.application.use_cases.product.find.find_product_dto import FindProductOutputDto
+from my_food.application.use_cases.product.find.find_product_dto import (
+    FindProductOutputDto,
+)
 
 
 @dataclass
@@ -15,6 +17,11 @@ class UpdateOrderItemOutputDto:
     comment: str
     product: FindProductOutputDto
     quantity: int
+
+
+@dataclass
+class UpdateStatusOrderInputDto:
+    status: OrderStatus
 
 
 @dataclass

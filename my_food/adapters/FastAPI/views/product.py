@@ -7,7 +7,6 @@ from fastapi import (
     File,
     Form,
     UploadFile,
-    Request,
 )
 from my_food.adapters.FastAPI.utils.image import bytes_to_base_64
 from my_food.adapters.FastAPI.utils.schemas import EmptyUser
@@ -76,12 +75,14 @@ async def list_products(
     current_user: Annotated[
         FindUserOutputDto | EmptyUser, Depends(get_current_user_optional)
     ],
-    request: Request,
+    category: str | None = None,
 ):
     try:
         repository = ProductRepository()
         user_repository = UserRepository()
-        filters = request.query_params._dict
+        filters = {}
+        if category is not None:
+            filters["category"] = ProductCategory(category).name
         list_use_case = ListProductUseCase(
             repository=repository, user_repository=user_repository
         )

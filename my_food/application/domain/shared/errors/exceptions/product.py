@@ -9,3 +9,8 @@ class InvalidProductQuantityException(DomainException):
 class UnavailableProductException(DomainException):
     def __init__(self, message="Unavailable product."):
         super().__init__(message)
+
+
+class InvalidProductCategoryException(DomainException):
+    def __init__(self, message="Invalid product category."):
+        super().__init__(message)

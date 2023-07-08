@@ -1,7 +1,10 @@
 from uuid import UUID
 from sqlalchemy import select, update
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, subqueryload
 from my_food.adapters.postgresql.database import engine
+from my_food.application.domain.shared.errors.exceptions.order import (
+    OrderNotFoundException,
+)
 
 
 class CRUDMixin:
@@ -10,8 +13,15 @@ class CRUDMixin:
             session.add(self)
             session.commit()
 
+    def self_destroy(self) -> None:
+        with Session(engine) as session:
+            session.delete(self)
+            session.commit()
+
     @classmethod
-    def retrieve(cls, uuid: str):
+    def retrieve(cls, uuid: str | None):
+        if uuid is None:
+            return None
         with Session(engine) as session:
             instance = session.execute(select(cls).filter_by(uuid=UUID(uuid))).first()
             return instance[0] if instance is not None else None
@@ -29,7 +39,9 @@ class CRUDMixin:
     def destroy(cls, uuid: str):
         with Session(engine) as session:
             instance = session.execute(select(cls).filter_by(uuid=UUID(uuid))).first()
-            session.delete(instance)
+            if instance is None:
+                raise OrderNotFoundException()
+            session.delete(instance[0])
             session.commit()
 
     @classmethod
@@ -49,8 +61,11 @@ class CRUDMixin:
             return instance
 
     @classmethod
-    def list_filtering_by_column(cls, filters: dict = {}):
+    def list_filtering_by_column(cls, filters: dict = {}, children: list = []):
         stmt = select(cls)
+        for child in children:
+            if hasattr(cls, child):
+                stmt = stmt.options(subqueryload(getattr(cls, child)))
         for column in filters.keys():
             if not hasattr(cls, column):
                 return None

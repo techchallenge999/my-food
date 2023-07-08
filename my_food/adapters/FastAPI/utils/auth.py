@@ -4,6 +4,7 @@ from decouple import config
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
+from my_food.adapters.FastAPI.utils.schemas import EmptyUser
 from my_food.adapters.postgresql.models.user.user import pwd_context
 from my_food.adapters.postgresql.repositories.user.user import UserRepository
 from my_food.application.use_cases.user.find.find_user_dto import FindUserByCpfInputDto
@@ -25,6 +26,20 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
             raise_credentials_exception("Could not validate credentials")
     except JWTError:
         raise_credentials_exception("Could not validate credentials")
+    user = await get_user_by_cpf(username)
+    if user is None:
+        raise_credentials_exception("Could not validate credentials")
+    return user
+
+
+async def get_current_user_optional(token: Annotated[str, Depends(oauth2_scheme)]):
+    try:
+        payload = decode_access_token(token)
+        username: str = payload["sub"]
+        if username is None:
+            return EmptyUser()
+    except JWTError:
+        return EmptyUser()
     user = await get_user_by_cpf(username)
     if user is None:
         raise_credentials_exception("Could not validate credentials")

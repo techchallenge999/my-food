@@ -1,12 +1,14 @@
 from dataclasses import dataclass
 from my_food.application.domain.aggregates.order.entities.order import OrderStatus
-from my_food.application.use_cases.product.find.find_product_dto import FindProductOutputDto
+from my_food.application.domain.aggregates.product.interfaces.product_repository import (
+    ProductRepositoryDto,
+)
 
 
 @dataclass
 class ListOrderItemOutputDto:
     comment: str
-    product: FindProductOutputDto
+    product: ProductRepositoryDto
     quantity: int
 
 

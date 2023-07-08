@@ -5,10 +5,10 @@ from my_food.application.domain.shared.interfaces.validator import ValidatorInte
 
 
 class ProductCategory(Enum):
-    SNACK = "lanche"
-    SIDE_DISH = "acompanhamento"
-    DRINK = "bebida"
-    DESSERT = "sobremesa"
+    lanche = "lanche"
+    acompanhamento = "acompanhamento"
+    bebida = "bebida"
+    sobremesa = "sobremesa"
 
 
 class ProductInterface(ABC):

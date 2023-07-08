@@ -108,4 +108,7 @@ class UserValidator(ValidatorInterface):
         )
 
     def _is_invalid_uuid(self) -> bool:
-        return isinstance(self._user.uuid, UUID)
+        try:
+            return not isinstance(UUID(self._user.uuid), UUID)
+        except ValueError:
+            return True

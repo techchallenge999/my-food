@@ -15,6 +15,7 @@ from my_food.application.use_cases.user.find.find_user_dto import (
 from my_food.adapters.FastAPI.utils.auth import get_current_user
 from my_food.adapters.postgresql.repositories.user.user import UserRepository
 from my_food.application.use_cases.user.list.list_user import ListUserUseCase
+from my_food.application.use_cases.user.list.list_user_dto import ListUserOutputDto
 
 
 from my_food.application.use_cases.user.update.update_user import UpdateUserUseCase
@@ -53,7 +54,7 @@ async def update_users_me(
         )
 
 
-@router.get("/", response_model=FindUserOutputDto)
+@router.get("/", response_model=list[ListUserOutputDto])
 async def list_users(
     current_user: Annotated[FindUserOutputDto, Depends(get_current_user)]
 ):
@@ -69,7 +70,7 @@ async def list_users(
         )
 
 
-@router.get("/{user_uuid}", response_model=FindUserOutputDto)
+@router.get("/{user_uuid}/", response_model=FindUserOutputDto)
 async def retrieve_user(
     user_uuid: str,
     current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],

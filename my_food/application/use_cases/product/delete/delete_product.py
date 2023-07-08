@@ -23,14 +23,16 @@ class DeleteProductUseCase:
     def execute(
         self, input_data: DeleteProductInputDto, actor_uuid: str
     ) -> Optional[DeleteProductOutputDto]:
-        actor = self._user_repository.delete(actor_uuid)
+        actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:
             return None
 
-        product = self._repository.delete(uuid=input_data.uuid)
+        product = self._repository.find(uuid=input_data.uuid)
 
         if product is None:
             return None
+
+        self._repository.delete(uuid=input_data.uuid)
 
         return DeleteProductOutputDto(
             name=product.name,

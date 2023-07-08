@@ -20,4 +20,4 @@ class ProductModel(Base, CRUDMixin):
     is_active = Column(Boolean, default=False)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)
     id = Column(Integer, primary_key=True)
-    order_items = relationship("OrderItemModel")
+    order_items = relationship("OrderItemModel", back_populates="product")

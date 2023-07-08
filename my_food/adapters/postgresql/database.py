@@ -1,6 +1,6 @@
 from decouple import config
 from sqlalchemy import create_engine
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, Session
 
 
 class Base(DeclarativeBase):
@@ -14,3 +14,7 @@ postgres_password = config("POSTGRES_PASSWORD")
 
 sqlalchemy_database_url = f"postgresql://{postgres_user}:{postgres_password}@{postgres_url}:5432/{postgres_db}"
 engine = create_engine(sqlalchemy_database_url)
+
+
+def get_session():
+    return Session(engine)

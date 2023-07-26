@@ -3,7 +3,7 @@ FROM ubuntu:22.04
 ENV PYTHONDONTWRITEBYTECODE 1 \
     PYTHONUNBUFFERED 1
 
-WORKDIR /app
+WORKDIR /src
 
 RUN apt-get update && apt-get --no-install-recommends --no-upgrade -y install \
     build-essential \

@@ -1,26 +1,26 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
-from src.application.domain.shared.errors.exceptions.base import DomainException
-from src.application.domain.shared.errors.exceptions.user import Unauthorized
-from src.application.use_cases.user.create.create_user import CreateAdminUserUseCase
-from src.application.use_cases.user.create.create_user_dto import (
+from src.domain.shared.errors.exceptions.base import DomainException
+from src.domain.shared.errors.exceptions.user import Unauthorized
+from src.use_cases.user.create.create_user import CreateAdminUserUseCase
+from src.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,
     CreateUserOutputDto,
 )
-from src.application.use_cases.user.find.find_user import FindUserUseCase
+from src.use_cases.user.find.find_user import FindUserUseCase
 
-from src.application.use_cases.user.find.find_user_dto import (
+from src.use_cases.user.find.find_user_dto import (
     FindUserInputDto,
     FindUserOutputDto,
 )
 from src.infrastructure.FastAPI.utils.auth import get_current_user
 from src.infrastructure.postgresql.repositories.user.user import UserRepository
-from src.application.use_cases.user.list.list_user import ListUserUseCase
-from src.application.use_cases.user.list.list_user_dto import ListUserOutputDto
+from src.use_cases.user.list.list_user import ListUserUseCase
+from src.use_cases.user.list.list_user_dto import ListUserOutputDto
 
 
-from src.application.use_cases.user.update.update_user import UpdateUserUseCase
-from src.application.use_cases.user.update.update_user_dto import (
+from src.use_cases.user.update.update_user import UpdateUserUseCase
+from src.use_cases.user.update.update_user_dto import (
     UpdateUserInputDto,
     UpdateUserOutputDto,
 )

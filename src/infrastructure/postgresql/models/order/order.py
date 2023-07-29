@@ -6,7 +6,7 @@ from src.infrastructure.postgresql.database import Base
 from src.infrastructure.postgresql.repositories.mixins.crud import CRUDMixin
 from src.infrastructure.postgresql.repositories.mixins.timestamp import TimestampMixin
 from src.infrastructure.postgresql.repositories.product.product import ProductModel
-from src.application.domain.aggregates.order.interfaces.order_entity import (
+from src.domain.aggregates.order.interfaces.order_entity import (
     OrderStatus,
 )
 

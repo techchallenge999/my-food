@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID, BYTEA
 from sqlalchemy.orm import relationship
 from src.infrastructure.postgresql.database import Base
 from src.infrastructure.postgresql.repositories.mixins.crud import CRUDMixin
-from src.application.domain.aggregates.product.interfaces.product_entity import (
+from src.domain.aggregates.product.interfaces.product_entity import (
     ProductCategory,
 )
 

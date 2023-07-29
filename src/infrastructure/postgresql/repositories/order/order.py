@@ -6,19 +6,19 @@ from sqlalchemy.orm import subqueryload
 
 from src.infrastructure.postgresql.database import get_session
 from src.infrastructure.postgresql.models.order.order import OrderItemModel, OrderModel
-from src.application.domain.aggregates.order.interfaces.order_entity import (
+from src.domain.aggregates.order.interfaces.order_entity import (
     OrderStatus,
     OrderInterface,
 )
-from src.application.domain.aggregates.order.interfaces.order_repository import (
+from src.domain.aggregates.order.interfaces.order_repository import (
     OrderItemRepositoryOutputDto,
     OrderRepositoryOutputDto,
     OrderRepositoryInterface,
 )
-from src.application.domain.aggregates.product.interfaces.product_repository import (
+from src.domain.aggregates.product.interfaces.product_repository import (
     ProductRepositoryDto,
 )
-from src.application.domain.shared.errors.exceptions.order import (
+from src.domain.shared.errors.exceptions.order import (
     OrderNotFoundException,
 )
 

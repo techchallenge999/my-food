@@ -1,14 +1,14 @@
 from typing import List, Optional
 
 from src.infrastructure.postgresql.models.user.user import UserModel
-from src.application.domain.aggregates.user.interfaces.user_entity import (
+from src.domain.aggregates.user.interfaces.user_entity import (
     UserInterface,
 )
-from src.application.domain.aggregates.user.interfaces.user_repository import (
+from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryDto,
     UserRepositoryInterface,
 )
-from src.application.domain.shared.errors.exceptions.user import (
+from src.domain.shared.errors.exceptions.user import (
     UserNotFoundException,
 )
 

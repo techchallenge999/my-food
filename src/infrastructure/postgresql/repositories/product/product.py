@@ -1,14 +1,14 @@
 from typing import Optional
 
 from src.infrastructure.postgresql.models.product.product import ProductModel
-from src.application.domain.aggregates.product.interfaces.product_entity import (
+from src.domain.aggregates.product.interfaces.product_entity import (
     ProductInterface,
 )
-from src.application.domain.aggregates.product.interfaces.product_repository import (
+from src.domain.aggregates.product.interfaces.product_repository import (
     ProductRepositoryDto,
     ProductRepositoryInterface,
 )
-from src.application.domain.shared.errors.exceptions.product import (
+from src.domain.shared.errors.exceptions.product import (
     ProductNotFoundException,
 )
 

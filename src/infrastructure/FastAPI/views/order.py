@@ -6,35 +6,35 @@ from src.infrastructure.FastAPI.utils.schemas import CreateOrderSchema, EmptyUse
 from src.infrastructure.postgresql.repositories.order.order import OrderRepository
 from src.infrastructure.postgresql.repositories.product.product import ProductRepository
 from src.infrastructure.postgresql.repositories.user.user import UserRepository
-from src.application.domain.aggregates.order.interfaces.order_entity import (
+from src.domain.aggregates.order.interfaces.order_entity import (
     OrderStatus,
 )
-from src.application.domain.shared.errors.exceptions.base import DomainException
-from src.application.use_cases.order.create.create_order import CreateOrderUseCase
-from src.application.use_cases.order.create.create_order_dto import (
+from src.domain.shared.errors.exceptions.base import DomainException
+from src.use_cases.order.create.create_order import CreateOrderUseCase
+from src.use_cases.order.create.create_order_dto import (
     CreateOrderInputDto,
     CreateOrderOutputDto,
 )
-from src.application.use_cases.order.delete.delete_order import DeleteOrderUseCase
-from src.application.use_cases.order.delete.delete_order_dto import (
+from src.use_cases.order.delete.delete_order import DeleteOrderUseCase
+from src.use_cases.order.delete.delete_order_dto import (
     DeleteOrderInputDto,
     DeleteOrderOutputDto,
 )
-from src.application.use_cases.order.find.find_order import FindOrderUseCase
-from src.application.use_cases.order.find.find_order_dto import (
+from src.use_cases.order.find.find_order import FindOrderUseCase
+from src.use_cases.order.find.find_order_dto import (
     FindOrderInputDto,
     FindOrderOutputDto,
 )
-from src.application.use_cases.order.list.list_order import ListOrderUseCase
-from src.application.use_cases.order.list.list_order_dto import ListOrderOutputDto
-from src.application.use_cases.order.update.update_order import UpdateOrderUseCase
-from src.application.use_cases.order.update.update_order_dto import (
+from src.use_cases.order.list.list_order import ListOrderUseCase
+from src.use_cases.order.list.list_order_dto import ListOrderOutputDto
+from src.use_cases.order.update.update_order import UpdateOrderUseCase
+from src.use_cases.order.update.update_order_dto import (
     UpdateOrderInputDto,
     UpdateOrderItemInputDto,
     UpdateOrderOutputDto,
     UpdateStatusOrderInputDto,
 )
-from src.application.use_cases.user.find.find_user_dto import FindUserOutputDto
+from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 
 
 router = APIRouter()

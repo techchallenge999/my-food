@@ -2,8 +2,8 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestFormStrict
 
-from src.application.use_cases.user.create.create_user import CreateUserUseCase
-from src.application.use_cases.user.create.create_user_dto import (
+from src.use_cases.user.create.create_user import CreateUserUseCase
+from src.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,
     CreateUserOutputDto,
 )

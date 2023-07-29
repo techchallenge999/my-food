@@ -7,8 +7,8 @@ from jose import jwt, JWTError
 from src.infrastructure.FastAPI.utils.schemas import EmptyUser
 from src.infrastructure.postgresql.models.user.user import pwd_context
 from src.infrastructure.postgresql.repositories.user.user import UserRepository
-from src.application.use_cases.user.find.find_user_dto import FindUserByCpfInputDto
-from src.application.use_cases.user.find import find_user
+from src.use_cases.user.find.find_user_dto import FindUserByCpfInputDto
+from src.use_cases.user.find import find_user
 
 
 ALGORITHM = "HS256"

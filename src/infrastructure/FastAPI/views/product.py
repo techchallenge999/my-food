@@ -11,38 +11,38 @@ from fastapi import (
 from src.infrastructure.FastAPI.utils.image import bytes_to_base_64
 from src.infrastructure.FastAPI.utils.schemas import EmptyUser
 from src.infrastructure.postgresql.repositories.user.user import UserRepository
-from src.application.domain.aggregates.product.interfaces.product_entity import (
+from src.domain.aggregates.product.interfaces.product_entity import (
     ProductCategory,
 )
-from src.application.domain.shared.errors.exceptions.base import DomainException
-from src.application.domain.shared.errors.exceptions.user import Unauthorized
-from src.application.use_cases.product.activation.activation_update_product import (
+from src.domain.shared.errors.exceptions.base import DomainException
+from src.domain.shared.errors.exceptions.user import Unauthorized
+from src.use_cases.product.activation.activation_update_product import (
     ActivateProductUseCase,
     DeactivateProductUseCase,
 )
-from src.application.use_cases.product.activation.activation_product_dto import (
+from src.use_cases.product.activation.activation_product_dto import (
     ActivateProductInputDto,
     ActivateProductOutputDto,
     DeactivateProductInputDto,
     DeactivateProductOutputDto,
 )
-from src.application.use_cases.product.create.create_product import (
+from src.use_cases.product.create.create_product import (
     CreateProductUseCase,
 )
-from src.application.use_cases.product.create.create_product_dto import (
+from src.use_cases.product.create.create_product_dto import (
     CreateProductOutputDto,
     CreateProductInputDto,
 )
-from src.application.use_cases.product.delete.delete_product import (
+from src.use_cases.product.delete.delete_product import (
     DeleteProductUseCase,
 )
-from src.application.use_cases.product.delete.delete_product_dto import (
+from src.use_cases.product.delete.delete_product_dto import (
     DeleteProductInputDto,
     DeleteProductOutputDto,
 )
-from src.application.use_cases.product.find.find_product import FindProductUseCase
+from src.use_cases.product.find.find_product import FindProductUseCase
 
-from src.application.use_cases.product.find.find_product_dto import (
+from src.use_cases.product.find.find_product_dto import (
     FindProductInputDto,
     FindProductOutputDto,
 )
@@ -51,20 +51,20 @@ from src.infrastructure.FastAPI.utils.auth import (
     get_current_user_optional,
 )
 from src.infrastructure.postgresql.repositories.product.product import ProductRepository
-from src.application.use_cases.product.list.list_product import ListProductUseCase
-from src.application.use_cases.product.list.list_product_dto import (
+from src.use_cases.product.list.list_product import ListProductUseCase
+from src.use_cases.product.list.list_product_dto import (
     ListProductOutputDto,
 )
 
 
-from src.application.use_cases.product.update.update_product import (
+from src.use_cases.product.update.update_product import (
     UpdateProductUseCase,
 )
-from src.application.use_cases.product.update.update_product_dto import (
+from src.use_cases.product.update.update_product_dto import (
     UpdateProductInputDto,
     UpdateProductOutputDto,
 )
-from src.application.use_cases.user.find.find_user_dto import FindUserOutputDto
+from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 
 
 router = APIRouter()

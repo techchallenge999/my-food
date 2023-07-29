@@ -2,10 +2,10 @@ import uuid
 from sqlalchemy import Column, Enum, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-from src.adapters.postgresql.database import Base
-from src.adapters.postgresql.repositories.mixins.crud import CRUDMixin
-from src.adapters.postgresql.repositories.mixins.timestamp import TimestampMixin
-from src.adapters.postgresql.repositories.product.product import ProductModel
+from src.infrastructure.postgresql.database import Base
+from src.infrastructure.postgresql.repositories.mixins.crud import CRUDMixin
+from src.infrastructure.postgresql.repositories.mixins.timestamp import TimestampMixin
+from src.infrastructure.postgresql.repositories.product.product import ProductModel
 from src.application.domain.aggregates.order.interfaces.order_entity import (
     OrderStatus,
 )

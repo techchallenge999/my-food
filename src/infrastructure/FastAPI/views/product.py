@@ -8,9 +8,9 @@ from fastapi import (
     Form,
     UploadFile,
 )
-from src.adapters.FastAPI.utils.image import bytes_to_base_64
-from src.adapters.FastAPI.utils.schemas import EmptyUser
-from src.adapters.postgresql.repositories.user.user import UserRepository
+from src.infrastructure.FastAPI.utils.image import bytes_to_base_64
+from src.infrastructure.FastAPI.utils.schemas import EmptyUser
+from src.infrastructure.postgresql.repositories.user.user import UserRepository
 from src.application.domain.aggregates.product.interfaces.product_entity import (
     ProductCategory,
 )
@@ -46,11 +46,11 @@ from src.application.use_cases.product.find.find_product_dto import (
     FindProductInputDto,
     FindProductOutputDto,
 )
-from src.adapters.FastAPI.utils.auth import (
+from src.infrastructure.FastAPI.utils.auth import (
     get_current_user,
     get_current_user_optional,
 )
-from src.adapters.postgresql.repositories.product.product import ProductRepository
+from src.infrastructure.postgresql.repositories.product.product import ProductRepository
 from src.application.use_cases.product.list.list_product import ListProductUseCase
 from src.application.use_cases.product.list.list_product_dto import (
     ListProductOutputDto,

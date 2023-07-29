@@ -26,8 +26,8 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from src.adapters.postgresql.database import Base
-from src.adapters.postgresql.models import *
+from src.infrastructure.postgresql.database import Base
+from src.infrastructure.postgresql.models import *
 
 target_metadata = Base.metadata
 

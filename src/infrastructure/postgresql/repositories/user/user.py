@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from src.adapters.postgresql.models.user.user import UserModel
+from src.infrastructure.postgresql.models.user.user import UserModel
 from src.application.domain.aggregates.user.interfaces.user_entity import (
     UserInterface,
 )

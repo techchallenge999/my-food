@@ -7,14 +7,14 @@ from src.application.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,
     CreateUserOutputDto,
 )
-from src.adapters.FastAPI.utils.auth import (
+from src.infrastructure.FastAPI.utils.auth import (
     create_access_token,
     get_user_by_cpf,
     raise_credentials_exception,
     verify_password,
 )
-from src.adapters.FastAPI.utils.schemas import TokenModel
-from src.adapters.postgresql.repositories.user.user import UserRepository
+from src.infrastructure.FastAPI.utils.schemas import TokenModel
+from src.infrastructure.postgresql.repositories.user.user import UserRepository
 
 
 router = APIRouter()

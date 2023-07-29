@@ -1,5 +1,5 @@
 from uuid import UUID
-from src.adapters.checkout.mock_checkout import MockCheckout
+from src.infrastructure.checkout.mock_checkout import MockCheckout
 from src.application.domain.aggregates.order.entities.order import Order
 from src.application.domain.aggregates.order.interfaces.order_entity import (
     OrderStatus,

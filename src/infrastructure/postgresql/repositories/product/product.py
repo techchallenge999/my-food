@@ -1,6 +1,6 @@
 from typing import Optional
 
-from src.adapters.postgresql.models.product.product import ProductModel
+from src.infrastructure.postgresql.models.product.product import ProductModel
 from src.application.domain.aggregates.product.interfaces.product_entity import (
     ProductInterface,
 )

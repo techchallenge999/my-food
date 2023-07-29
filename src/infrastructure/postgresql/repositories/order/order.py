@@ -4,8 +4,8 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.orm import subqueryload
 
-from src.adapters.postgresql.database import get_session
-from src.adapters.postgresql.models.order.order import OrderItemModel, OrderModel
+from src.infrastructure.postgresql.database import get_session
+from src.infrastructure.postgresql.models.order.order import OrderItemModel, OrderModel
 from src.application.domain.aggregates.order.interfaces.order_entity import (
     OrderStatus,
     OrderInterface,

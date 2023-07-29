@@ -14,8 +14,8 @@ from src.infrastructure.postgresql.repositories.user.user import UserRepository
 from src.domain.aggregates.product.interfaces.product_entity import (
     ProductCategory,
 )
-from src.domain.shared.errors.exceptions.base import DomainException
-from src.domain.shared.errors.exceptions.user import Unauthorized
+from src.domain.shared.exceptions.base import DomainException
+from src.domain.shared.exceptions.user import Unauthorized
 from src.use_cases.product.activation.activation_update_product import (
     ActivateProductUseCase,
     DeactivateProductUseCase,

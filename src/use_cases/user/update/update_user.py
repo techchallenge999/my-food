@@ -4,7 +4,7 @@ from src.domain.aggregates.user.entities.user import User
 from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
-from src.domain.shared.errors.exceptions.user import Unauthorized, UserNotFoundException
+from src.domain.shared.exceptions.user import Unauthorized, UserNotFoundException
 from src.use_cases.user.update.update_user_dto import (
     UpdateUserInputDto,
     UpdateUserOutputDto,

@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
-from src.domain.shared.errors.exceptions.base import DomainException
-from src.domain.shared.errors.exceptions.user import Unauthorized
+from src.domain.shared.exceptions.base import DomainException
+from src.domain.shared.exceptions.user import Unauthorized
 from src.use_cases.user.create.create_user import CreateAdminUserUseCase
 from src.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,

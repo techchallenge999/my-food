@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, status as status_code
 from src.infrastructure.postgresql.repositories.order.order import OrderRepository
 from src.infrastructure.postgresql.repositories.product.product import ProductRepository
 from src.infrastructure.postgresql.repositories.user.user import UserRepository
-from src.domain.shared.errors.exceptions.base import DomainException
+from src.domain.shared.exceptions.base import DomainException
 from src.use_cases.payment.create.create_payment import (
     CreatePaymentUseCase,
 )

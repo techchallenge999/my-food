@@ -1,4 +1,4 @@
-from src.domain.shared.errors.exceptions.base import DomainException
+from src.domain.shared.exceptions.base import DomainException
 
 
 class InvalidOrderStatusException(DomainException):

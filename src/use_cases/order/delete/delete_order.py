@@ -1,7 +1,7 @@
 from src.domain.aggregates.order.interfaces.order_repository import (
     OrderRepositoryInterface,
 )
-from src.domain.shared.errors.exceptions.order import (
+from src.domain.shared.exceptions.order import (
     OrderNotFoundException,
 )
 from src.use_cases.order.delete.delete_order_dto import (

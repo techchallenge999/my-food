@@ -2,7 +2,7 @@ from typing import List, Optional
 from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
-from src.domain.shared.errors.exceptions.user import Unauthorized
+from src.domain.shared.exceptions.user import Unauthorized
 from src.use_cases.user.list.list_user_dto import (
     ListUserOutputDto,
 )

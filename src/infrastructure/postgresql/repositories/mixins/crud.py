@@ -2,7 +2,7 @@ from uuid import UUID
 from sqlalchemy import select, update
 from sqlalchemy.orm import Session, subqueryload
 from src.infrastructure.postgresql.database import engine
-from src.domain.shared.errors.exceptions.order import (
+from src.domain.shared.exceptions.order import (
     OrderNotFoundException,
 )
 

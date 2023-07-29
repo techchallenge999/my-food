@@ -6,7 +6,7 @@ from src.domain.aggregates.product.interfaces.product_entity import (
 from src.domain.aggregates.product.interfaces.product_repository import (
     ProductRepositoryInterface,
 )
-from src.domain.shared.errors.exceptions.base import (
+from src.domain.shared.exceptions.base import (
     InvalidUUIDException,
 )
 from src.domain.shared.interfaces.validator import ValidatorInterface

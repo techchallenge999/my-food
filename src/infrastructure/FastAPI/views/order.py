@@ -9,7 +9,7 @@ from src.infrastructure.postgresql.repositories.user.user import UserRepository
 from src.domain.aggregates.order.interfaces.order_entity import (
     OrderStatus,
 )
-from src.domain.shared.errors.exceptions.base import DomainException
+from src.domain.shared.exceptions.base import DomainException
 from src.use_cases.order.create.create_order import CreateOrderUseCase
 from src.use_cases.order.create.create_order_dto import (
     CreateOrderInputDto,

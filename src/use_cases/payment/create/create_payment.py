@@ -24,7 +24,7 @@ from src.use_cases.payment.create.create_payment_dto import (
     CreatePaymentInputDto,
     CreatePaymentOutputDto,
 )
-from src.domain.shared.errors.exceptions.order import (
+from src.domain.shared.exceptions.order import (
     OrderNotFoundException,
 )
 

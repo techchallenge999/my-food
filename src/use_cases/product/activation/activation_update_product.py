@@ -6,10 +6,10 @@ from src.domain.aggregates.product.interfaces.product_repository import (
 from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
-from src.domain.shared.errors.exceptions.product import (
+from src.domain.shared.exceptions.product import (
     UnavailableProductException,
 )
-from src.domain.shared.errors.exceptions.user import Unauthorized
+from src.domain.shared.exceptions.user import Unauthorized
 from src.use_cases.product.activation.activation_product_dto import (
     ActivateProductInputDto,
     ActivateProductOutputDto,

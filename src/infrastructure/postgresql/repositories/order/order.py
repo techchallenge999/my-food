@@ -18,7 +18,7 @@ from src.domain.aggregates.order.interfaces.order_repository import (
 from src.domain.aggregates.product.interfaces.product_repository import (
     ProductRepositoryDto,
 )
-from src.domain.shared.errors.exceptions.order import (
+from src.domain.shared.exceptions.order import (
     OrderNotFoundException,
 )
 

@@ -7,11 +7,11 @@ from src.domain.aggregates.user.interfaces.user_entity import (
 from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
-from src.domain.shared.errors.exceptions.base import (
+from src.domain.shared.exceptions.base import (
     InvalidUUIDException,
     UnavailableUUIDException,
 )
-from src.domain.shared.errors.exceptions.user import (
+from src.domain.shared.exceptions.user import (
     InvalidCPFException,
     InvalidEmailException,
     InvalidPasswordException,

@@ -16,7 +16,7 @@ from src.domain.aggregates.product.interfaces.product_repository import (
 from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
-from src.domain.shared.errors.exceptions.order import (
+from src.domain.shared.exceptions.order import (
     OrderNotFoundException,
 )
 from src.use_cases.order.update.update_order_dto import (

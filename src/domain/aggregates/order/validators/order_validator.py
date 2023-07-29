@@ -13,17 +13,17 @@ from src.domain.aggregates.product.interfaces.product_repository import (
 from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
-from src.domain.shared.errors.exceptions.base import (
+from src.domain.shared.exceptions.base import (
     InvalidUUIDException,
 )
-from src.domain.shared.errors.exceptions.order import (
+from src.domain.shared.exceptions.order import (
     InvalidOrderStatusException,
 )
-from src.domain.shared.errors.exceptions.product import (
+from src.domain.shared.exceptions.product import (
     InvalidProductQuantityException,
     UnavailableProductException,
 )
-from src.domain.shared.errors.exceptions.user import (
+from src.domain.shared.exceptions.user import (
     UserNotFoundException,
 )
 from src.domain.shared.interfaces.validator import ValidatorInterface

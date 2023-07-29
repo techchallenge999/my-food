@@ -8,7 +8,7 @@ from src.domain.aggregates.product.interfaces.product_repository import (
     ProductRepositoryDto,
     ProductRepositoryInterface,
 )
-from src.domain.shared.errors.exceptions.product import (
+from src.domain.shared.exceptions.product import (
     ProductNotFoundException,
 )
 

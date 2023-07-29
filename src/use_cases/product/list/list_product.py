@@ -8,7 +8,7 @@ from src.domain.aggregates.product.interfaces.product_repository import (
 from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
-from src.domain.shared.errors.exceptions.product import (
+from src.domain.shared.exceptions.product import (
     InvalidProductCategoryException,
 )
 from src.use_cases.product.list.list_product_dto import (

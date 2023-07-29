@@ -5,7 +5,7 @@ from src.domain.aggregates.product.interfaces.product_repository import (
 from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
-from src.domain.shared.errors.exceptions.user import Unauthorized
+from src.domain.shared.exceptions.user import Unauthorized
 from src.use_cases.product.create.create_product_dto import (
     CreateProductInputDto,
     CreateProductOutputDto,

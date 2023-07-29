@@ -4,7 +4,7 @@ from uuid import UUID
 from src.domain.aggregates.order.interfaces.order_repository import OrderRepositoryInterface
 from src.domain.aggregates.payment.entities.payment import Payment
 from src.domain.aggregates.payment.interfaces.payment_repository import PaymentRepositoryInterface
-from src.domain.shared.errors.exceptions.payment import PaymentNotFoundException
+from src.domain.shared.exceptions.payment import PaymentNotFoundException
 from src.use_cases.payment.update.update_payment_dto import UpdatePaymentInputDto, UpdatePaymentOutputDto
 
 

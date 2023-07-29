@@ -8,7 +8,7 @@ from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryDto,
     UserRepositoryInterface,
 )
-from src.domain.shared.errors.exceptions.user import (
+from src.domain.shared.exceptions.user import (
     UserNotFoundException,
 )
 

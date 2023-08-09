@@ -26,7 +26,7 @@ class ListProductUseCase:
         self._user_repository = user_repository
 
     def execute(
-        self, actor_uuid: str, filters: dict = {}
+        self, actor_uuid: str | None, filters: dict = {}
     ) -> Optional[List[ListProductOutputDto]]:
         actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:

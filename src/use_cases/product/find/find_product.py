@@ -21,7 +21,7 @@ class FindProductUseCase:
         self._user_repository = user_repository
 
     def execute(
-        self, input_data: FindProductInputDto, actor_uuid: str
+        self, input_data: FindProductInputDto, actor_uuid: str | None
     ) -> Optional[FindProductOutputDto]:
         actor = self._user_repository.find(actor_uuid)
 

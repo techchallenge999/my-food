@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from pydantic import BaseModel
 from src.domain.aggregates.product.interfaces.product_entity import (
     ProductCategory,
@@ -16,11 +15,6 @@ class UpdateProductSchema(BaseModel):
     price: float
     description: str
     uuid: str
-
-
-@dataclass
-class EmptyUser:
-    uuid: str = None
 
 
 class CreateOrderItemSchema(BaseModel):

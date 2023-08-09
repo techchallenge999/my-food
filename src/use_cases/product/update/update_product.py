@@ -26,7 +26,7 @@ class UpdateProductUseCase:
         self._user_repository = user_repository
 
     def execute(
-        self, input_data: UpdateProductInputDto, actor_uuid: str
+        self, input_data: UpdateProductInputDto, actor_uuid: str | None
     ) -> UpdateProductOutputDto:
         actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:

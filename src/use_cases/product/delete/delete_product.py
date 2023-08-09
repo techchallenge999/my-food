@@ -21,7 +21,7 @@ class DeleteProductUseCase:
         self._user_repository = user_repository
 
     def execute(
-        self, input_data: DeleteProductInputDto, actor_uuid: str
+        self, input_data: DeleteProductInputDto, actor_uuid: str | None
     ) -> Optional[DeleteProductOutputDto]:
         actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:

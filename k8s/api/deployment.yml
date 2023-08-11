@@ -15,6 +15,8 @@ spec:
       containers:
         - name: api
           image: my-food-app:latest
+          imagePullPolicy: Never
+          command: ["uvicorn src.infrastructure.FastAPI.main:app --host 0.0.0.0 --port 8000 --reload"]
           ports:
             - containerPort: 8000
           env:
@@ -38,5 +40,3 @@ spec:
                 secretKeyRef:
                   name: api-secrets
                   key: POSTGRES_HOST
-
-          command: bash init_app.sh

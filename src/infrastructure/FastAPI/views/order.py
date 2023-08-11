@@ -1,7 +1,7 @@
 from typing import Annotated, List, Optional
 from fastapi import APIRouter, HTTPException, status as status_code, Depends
 from src.infrastructure.FastAPI.utils.auth import get_current_user_optional
-from src.infrastructure.FastAPI.utils.schemas import CreateOrderSchema, EmptyUser
+from src.infrastructure.FastAPI.utils.schemas import CreateOrderSchema
 
 from src.infrastructure.postgresql.repositories.order.order import OrderRepository
 from src.infrastructure.postgresql.repositories.product.product import ProductRepository
@@ -10,6 +10,7 @@ from src.domain.aggregates.order.interfaces.order_entity import (
     OrderStatus,
 )
 from src.domain.shared.exceptions.base import DomainException
+from src.interface_adapters.presenters.auth import EmptyUser
 from src.use_cases.order.create.create_order import CreateOrderUseCase
 from src.use_cases.order.create.create_order_dto import (
     CreateOrderInputDto,

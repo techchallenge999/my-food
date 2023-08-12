@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from uuid import UUID
 
 from sqlalchemy import select
@@ -101,7 +101,7 @@ class OrderRepository(OrderRepositoryInterface):
                 }
             )
 
-    def list(self, filters={}) -> Optional[OrderRepositoryOutputDto]:
+    def list(self, filters={}) -> List[Optional[OrderRepositoryOutputDto]]:
         with get_session() as session:
             stmt = select(OrderModel)
             stmt = stmt.options(
@@ -112,7 +112,7 @@ class OrderRepository(OrderRepositoryInterface):
 
             for column in filters.keys():
                 if not hasattr(OrderModel, column):
-                    return None
+                    return []
                 stmt = stmt.filter((getattr(OrderModel, column) == filters.get(column)))
 
             orders = session.execute(stmt).all()

@@ -1,7 +1,5 @@
 from pydantic import BaseModel
-from src.domain.aggregates.product.interfaces.product_entity import (
-    ProductCategory,
-)
+from src.domain.aggregates.product.interfaces.product_entity import ProductCategory
 
 
 class TokenModel(BaseModel):

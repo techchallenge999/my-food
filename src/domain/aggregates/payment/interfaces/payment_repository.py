@@ -26,6 +26,10 @@ class PaymentRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
+    def find_by_order(self, order_uuid: str) -> Optional[PaymentRepositoryDto]:
+        pass
+
+    @abstractmethod
     def list(self) -> Optional[List[PaymentRepositoryDto]]:
         pass
 

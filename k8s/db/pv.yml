@@ -9,5 +9,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /mnt/minikube/postgres
+    path: /data/postgres/
     type: DirectoryOrCreate

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
-from uuid import UUID
+from datetime import datetime
 from enum import Enum
+from uuid import UUID
 from src.domain.shared.interfaces.validator import ValidatorInterface
 
 
@@ -38,6 +39,8 @@ class OrderInterface(ABC):
     _total_amount: str
     _user_uuid: UUID | None
     _uuid: UUID
+    _created_at: datetime
+    _updated_at: datetime
     _validator: ValidatorInterface
 
     @property

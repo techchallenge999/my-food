@@ -123,6 +123,8 @@ class OrderRepository(OrderRepositoryInterface):
                     (getattr(OrderModel, column) != exclusive_filters.get(column))
                 )
 
+            stmt = stmt.order_by(OrderModel.created_at)
+
             orders = session.execute(stmt).all()
         if orders is None:
             return []

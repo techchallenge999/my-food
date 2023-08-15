@@ -56,14 +56,22 @@ class OrderController:
         )
         return new_user
 
-    def list_orders(self, status: str | None) -> Optional[List[ListOrderOutputDto]]:
+    def list_orders(
+        self,
+        filter_by_status: str | None = None,
+        exclusive_filter_by_status: str | None = None,
+    ) -> Optional[List[ListOrderOutputDto]]:
         list_use_case = ListOrderUseCase(self.repository)
 
         filters = {}
-        if status is not None:
-            filters["status"] = OrderStatus(status).name
+        if filter_by_status is None:
+            filters["status"] = OrderStatus(filter_by_status).name
 
-        orders = list_use_case.execute(filters)
+        exclusive_filters = {}
+        if exclusive_filter_by_status is None:
+            exclusive_filters["status"] = OrderStatus(exclusive_filter_by_status).name
+
+        orders = list_use_case.execute(filters, exclusive_filters)
         return orders
 
     def update_order(

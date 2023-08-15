@@ -41,7 +41,9 @@ class OrderRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def list(self, filters: dict) -> Optional[List[OrderRepositoryOutputDto]]:
+    def list(
+        self, filters: dict, exclusive_filters: dict
+    ) -> Optional[List[OrderRepositoryOutputDto]]:
         pass
 
     @abstractmethod

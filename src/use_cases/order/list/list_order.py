@@ -14,8 +14,10 @@ class ListOrderUseCase:
     def __init__(self, repository: OrderRepositoryInterface):
         self._repository = repository
 
-    def execute(self, filters: dict = {}) -> Optional[List[ListOrderOutputDto]]:
-        orders_list = self._repository.list(filters)
+    def execute(
+        self, filters: dict = {}, exclusive_filters: dict = {}
+    ) -> Optional[List[ListOrderOutputDto]]:
+        orders_list = self._repository.list(filters, exclusive_filters)
 
         if orders_list is None:
             return []

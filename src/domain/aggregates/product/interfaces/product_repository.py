@@ -30,7 +30,7 @@ class ProductRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def list(self) -> Optional[List[ProductRepositoryDto]]:
+    def list(self, filters: dict) -> Optional[List[ProductRepositoryDto]]:
         pass
 
     @abstractmethod

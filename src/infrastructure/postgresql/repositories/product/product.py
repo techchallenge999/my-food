@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from src.infrastructure.postgresql.models.product.product import ProductModel
 from src.domain.aggregates.product.interfaces.product_entity import (
@@ -56,7 +56,7 @@ class ProductRepository(ProductRepositoryInterface):
                 }
             )
 
-    def list(self, filters) -> Optional[ProductRepositoryDto]:
+    def list(self, filters: dict) -> List[ProductRepositoryDto]:
         products = ProductModel.list_filtering_by_column(filters)
 
         if products is None:

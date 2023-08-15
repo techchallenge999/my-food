@@ -101,7 +101,9 @@ class OrderRepository(OrderRepositoryInterface):
                 }
             )
 
-    def list(self, filters={}) -> List[Optional[OrderRepositoryOutputDto]]:
+    def list(
+        self, filters: dict = {}, exclusive_filters: dict = {}
+    ) -> List[Optional[OrderRepositoryOutputDto]]:
         with get_session() as session:
             stmt = select(OrderModel)
             stmt = stmt.options(
@@ -114,6 +116,12 @@ class OrderRepository(OrderRepositoryInterface):
                 if not hasattr(OrderModel, column):
                     return []
                 stmt = stmt.filter((getattr(OrderModel, column) == filters.get(column)))
+            for column in exclusive_filters.keys():
+                if not hasattr(OrderModel, column):
+                    return []
+                stmt = stmt.filter(
+                    (getattr(OrderModel, column) != exclusive_filters.get(column))
+                )
 
             orders = session.execute(stmt).all()
         if orders is None:

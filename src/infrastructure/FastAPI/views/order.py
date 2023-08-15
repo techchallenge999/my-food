@@ -46,9 +46,11 @@ async def create_order(
 
 
 @router.get("/", status_code=200)
-async def list_orders(status: str | None = None) -> Optional[List[ListOrderOutputDto]]:
+async def list_orders() -> Optional[List[ListOrderOutputDto]]:
     try:
-        return OrderController(OrderRepository()).list_orders(status)
+        return OrderController(OrderRepository()).list_orders(
+            exclusive_filter_by_status="WITHDRAWN"
+        )
     except DomainException as err:
         raise HTTPException(
             status_code=status_code.HTTP_400_BAD_REQUEST,

@@ -6,7 +6,7 @@ from src.domain.aggregates.product.interfaces.product_repository import (
 from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
-from src.interface_adapters.presenters.auth import EmptyUser
+from src.interface_adapters.gateways.auth import EmptyUser
 from src.interface_adapters.utils.image import bytes_to_base_64
 from src.use_cases.product.activation.activation_product_dto import (
     ActivateProductInputDto,

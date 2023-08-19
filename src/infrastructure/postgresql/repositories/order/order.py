@@ -1,7 +1,7 @@
 from typing import List, Optional
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import case, select
 from sqlalchemy.orm import subqueryload
 
 from src.infrastructure.postgresql.database import get_session
@@ -102,7 +102,9 @@ class OrderRepository(OrderRepositoryInterface):
             )
 
     def list(
-        self, filters: dict = {}, exclusive_filters: dict = {}
+        self,
+        filters: dict = {},
+        exclusive_filters: dict = {},
     ) -> List[Optional[OrderRepositoryOutputDto]]:
         with get_session() as session:
             stmt = select(OrderModel)
@@ -115,17 +117,28 @@ class OrderRepository(OrderRepositoryInterface):
             for column in filters.keys():
                 if not hasattr(OrderModel, column):
                     return []
-                stmt = stmt.filter((getattr(OrderModel, column) == filters.get(column)))
+                stmt = stmt.filter(getattr(OrderModel, column) == filters.get(column))
             for column in exclusive_filters.keys():
                 if not hasattr(OrderModel, column):
                     return []
                 stmt = stmt.filter(
-                    (getattr(OrderModel, column) != exclusive_filters.get(column))
+                    getattr(OrderModel, column) != exclusive_filters.get(column)
                 )
 
             stmt = stmt.order_by(OrderModel.created_at)
+            stmt = stmt.order_by(
+                case(
+                    {
+                        OrderModel.status == OrderStatus.READY: 0,
+                        OrderModel.status == OrderStatus.PREPARING: 1,
+                        OrderModel.status == OrderStatus.RECEIVED: 2,
+                    },
+                    else_=3,
+                )
+            )
 
             orders = session.execute(stmt).all()
+
         if orders is None:
             return []
 

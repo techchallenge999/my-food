@@ -69,7 +69,7 @@ class CRUDMixin:
         for column in filters.keys():
             if not hasattr(cls, column):
                 return None
-            stmt = stmt.filter((getattr(cls, column) == filters.get(column)))
+            stmt = stmt.filter(getattr(cls, column) == filters.get(column))
         with Session(engine) as session:
             instance = session.execute(stmt).all()
             return instance

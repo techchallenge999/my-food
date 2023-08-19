@@ -9,7 +9,8 @@ from src.domain.aggregates.product.interfaces.product_repository import (
 from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
-from src.interface_adapters.presenters.auth import EmptyUser
+from src.interface_adapters.gateways.auth import EmptyUser
+from src.interface_adapters.gateways.order import CreateOrderParser
 from src.use_cases.order.create.create_order import CreateOrderUseCase
 from src.use_cases.order.create.create_order_dto import (
     CreateOrderInputDto,
@@ -25,7 +26,10 @@ from src.use_cases.order.find.find_order_dto import (
     FindOrderInputDto,
     FindOrderOutputDto,
 )
-from src.use_cases.order.list.list_order import ListOrderUseCase
+from src.use_cases.order.list.list_order import (
+    ListAllButWithdrawOrdersUseCase,
+    ListOrderUseCase,
+)
 from src.use_cases.order.list.list_order_dto import ListOrderOutputDto
 from src.use_cases.order.update.update_order import UpdateOrderUseCase
 from src.use_cases.order.update.update_order_dto import (
@@ -43,7 +47,8 @@ class OrderController:
 
     def create_order(
         self,
-        input_data,
+        input_data: CreateOrderInputDto,
+        create_order_parser: CreateOrderParser,
         product_repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
         current_user: FindUserOutputDto | EmptyUser,
@@ -52,27 +57,25 @@ class OrderController:
             self.repository, product_repository, user_repository
         )
         new_user = create_use_case.execute(
-            CreateOrderInputDto(items=input_data.items, user_uuid=current_user.uuid)
+            create_order_parser.get_dto(input_data, current_user)
         )
         return new_user
 
     def list_orders(
         self,
-        filter_by_status: str | None = None,
-        exclusive_filter_by_status: str | None = None,
+        status: str | None = None,
     ) -> Optional[List[ListOrderOutputDto]]:
         list_use_case = ListOrderUseCase(self.repository)
 
         filters = {}
-        if filter_by_status is None:
-            filters["status"] = OrderStatus(filter_by_status).name
+        if status is not None:
+            filters["status"] = OrderStatus(status).name
 
-        exclusive_filters = {}
-        if exclusive_filter_by_status is None:
-            exclusive_filters["status"] = OrderStatus(exclusive_filter_by_status).name
-
-        orders = list_use_case.execute(filters, exclusive_filters)
+        orders = list_use_case.execute(filters)
         return orders
+
+    def list_all_but_withdrawn(self) -> Optional[List[ListOrderOutputDto]]:
+        return ListAllButWithdrawOrdersUseCase(self.repository).execute()
 
     def update_order(
         self,

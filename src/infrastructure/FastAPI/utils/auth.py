@@ -4,8 +4,9 @@ from decouple import config
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
+
 from src.infrastructure.postgresql.models.user.user import pwd_context
-from src.interface_adapters.presenters.auth import EmptyUser
+from src.interface_adapters.gateways.auth import EmptyUser
 from src.use_cases.user.find.find_user_dto import FindUserByCpfOutputDto
 
 

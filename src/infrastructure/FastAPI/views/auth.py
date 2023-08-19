@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestFormStrict
 from src.interface_adapters.controllers.auth import AuthController
-from src.interface_adapters.gateways.auth import FindUserParserGateway
+from src.interface_adapters.gateways.auth import FindUserParser
 from src.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,
     CreateUserOutputDto,
@@ -28,8 +28,9 @@ async def sign_up(input_data: CreateUserInputDto) -> CreateUserOutputDto:
 async def sign_in(
     form_data: Annotated[OAuth2PasswordRequestFormStrict, Depends()]
 ) -> dict:
-    find_user_parser_gateway = FindUserParserGateway(form_data.username)
-    user = AuthController(UserRepository()).find_user_by_cpf(find_user_parser_gateway)
+    user = AuthController(UserRepository()).find_user_by_cpf(
+        FindUserParser(form_data.username)
+    )
 
     if not (user is not None and verify_password(form_data.password, user.password)):
         raise_credentials_exception("Incorrect username or password")

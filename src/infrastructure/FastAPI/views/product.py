@@ -15,7 +15,7 @@ from src.domain.aggregates.product.interfaces.product_entity import (
 from src.domain.shared.exceptions.base import DomainException
 from src.domain.shared.exceptions.user import Unauthorized
 from src.interface_adapters.controllers.product import ProductController
-from src.interface_adapters.presenters.auth import EmptyUser
+from src.interface_adapters.gateways.auth import EmptyUser
 from src.use_cases.product.activation.activation_product_dto import (
     ActivateProductInputDto,
     ActivateProductOutputDto,

@@ -13,13 +13,3 @@ class UpdateProductSchema(BaseModel):
     price: float
     description: str
     uuid: str
-
-
-class CreateOrderItemSchema(BaseModel):
-    comment: str
-    product_uuid: str
-    quantity: int
-
-
-class CreateOrderSchema(BaseModel):
-    items: list[CreateOrderItemSchema]

@@ -20,7 +20,7 @@ class CreateOrderItemOutputDto:
 @dataclass
 class CreateOrderInputDto:
     items: list[CreateOrderItemInputDto]
-    user_uuid: str | None
+    user_uuid: str | None = None
 
 
 @dataclass

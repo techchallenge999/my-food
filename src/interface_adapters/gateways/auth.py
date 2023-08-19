@@ -1,7 +1,13 @@
+from dataclasses import dataclass
 from src.use_cases.user.find.find_user_dto import FindUserByCpfInputDto
 
 
-class FindUserParserGateway:
+@dataclass
+class EmptyUser:
+    uuid: str | None = None
+
+
+class FindUserParser:
     def __init__(self, cpf: str):
         self.cpf = cpf
 

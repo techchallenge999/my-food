@@ -1,14 +1,17 @@
 from typing import Annotated, List, Optional
 from fastapi import APIRouter, HTTPException, status as status_code, Depends
 from src.infrastructure.FastAPI.utils.auth import get_current_user_optional
-from src.infrastructure.FastAPI.utils.schemas import CreateOrderSchema
 from src.infrastructure.postgresql.repositories.order.order import OrderRepository
 from src.infrastructure.postgresql.repositories.product.product import ProductRepository
 from src.infrastructure.postgresql.repositories.user.user import UserRepository
 from src.domain.shared.exceptions.base import DomainException
 from src.interface_adapters.controllers.order import OrderController
-from src.interface_adapters.presenters.auth import EmptyUser
-from src.use_cases.order.create.create_order_dto import CreateOrderOutputDto
+from src.interface_adapters.gateways.auth import EmptyUser
+from src.interface_adapters.gateways.order import CreateOrderParser
+from src.use_cases.order.create.create_order_dto import (
+    CreateOrderInputDto,
+    CreateOrderOutputDto,
+)
 from src.use_cases.order.delete.delete_order_dto import DeleteOrderOutputDto
 from src.use_cases.order.find.find_order_dto import FindOrderOutputDto
 from src.use_cases.order.list.list_order_dto import ListOrderOutputDto
@@ -25,7 +28,7 @@ router = APIRouter()
 
 @router.post("/", status_code=201)
 async def create_order(
-    input_data: CreateOrderSchema,
+    input_data: CreateOrderInputDto,
     current_user: Annotated[
         FindUserOutputDto | EmptyUser, Depends(get_current_user_optional)
     ],
@@ -33,6 +36,7 @@ async def create_order(
     try:
         return OrderController(OrderRepository()).create_order(
             input_data,
+            CreateOrderParser(),
             ProductRepository(),
             UserRepository(),
             current_user,
@@ -46,11 +50,9 @@ async def create_order(
 
 
 @router.get("/", status_code=200)
-async def list_orders() -> Optional[List[ListOrderOutputDto]]:
+async def list_all_but_withdrawn_orders() -> Optional[List[ListOrderOutputDto]]:
     try:
-        return OrderController(OrderRepository()).list_orders(
-            exclusive_filter_by_status="WITHDRAWN"
-        )
+        return OrderController(OrderRepository()).list_all_but_withdrawn()
     except DomainException as err:
         raise HTTPException(
             status_code=status_code.HTTP_400_BAD_REQUEST,

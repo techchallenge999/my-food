@@ -1,5 +1,6 @@
 from typing import List, Optional
 from src.domain.aggregates.order.interfaces.order_entity import OrderStatus
+from src.infrastructure.fast_api.utils.auth import EmptyUser
 from src.interface_adapters.gateways.repositories.order import (
     OrderRepositoryInterface,
 )
@@ -9,7 +10,6 @@ from src.interface_adapters.gateways.repositories.product import (
 from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
-from src.interface_adapters.gateways.auth import EmptyUser
 from src.interface_adapters.gateways.order import CreateOrderParser
 from src.use_cases.order.create.create_order import CreateOrderUseCase
 from src.use_cases.order.create.create_order_dto import (

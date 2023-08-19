@@ -1,4 +1,4 @@
-from src.interface_adapters.gateways.auth import EmptyUser
+from src.infrastructure.fast_api.utils.auth import EmptyUser
 from src.use_cases.order.create.create_order_dto import CreateOrderInputDto
 from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 

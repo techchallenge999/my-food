@@ -1,12 +1,12 @@
 from datetime import datetime, timedelta
 from typing import Annotated, Optional
+from dataclasses import dataclass
 from decouple import config
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 
 from src.infrastructure.postgresql.models.user.user import pwd_context
-from src.interface_adapters.gateways.auth import EmptyUser
 from src.use_cases.user.find.find_user_dto import FindUserByCpfOutputDto
 
 
@@ -16,6 +16,11 @@ JWT_SECRET = config("JWT_SECRET")
 
 oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="token", auto_error=False)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+
+@dataclass
+class EmptyUser:
+    uuid: str | None = None
 
 
 async def get_current_user(

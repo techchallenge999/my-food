@@ -1,12 +1,12 @@
 from typing import List, Optional
 from src.domain.aggregates.product.interfaces.product_entity import ProductCategory
+from src.infrastructure.fast_api.utils.auth import EmptyUser
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
 from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
-from src.interface_adapters.gateways.auth import EmptyUser
 from src.interface_adapters.utils.image import bytes_to_base_64
 from src.use_cases.product.activation.activation_product_dto import (
     ActivateProductInputDto,

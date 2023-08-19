@@ -1,19 +1,15 @@
 from dataclasses import asdict
 from uuid import UUID
 
-from src.domain.aggregates.order.entities.order import (
-    Order
-)
-from src.domain.aggregates.order.interfaces.order_repository import (
+from src.domain.aggregates.order.entities.order import Order
+from src.interface_adapters.gateways.repositories.order import (
     OrderRepositoryInterface,
 )
-from src.domain.aggregates.order.value_objects.order_item import (
-    OrderItem
-)
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.domain.aggregates.order.value_objects.order_item import OrderItem
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
-from src.domain.aggregates.user.interfaces.user_repository import (
+from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
 from src.domain.shared.exceptions.order import (

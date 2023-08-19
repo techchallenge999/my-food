@@ -1,6 +1,6 @@
 from typing import List, Optional
 from src.domain.aggregates.payment.interfaces.payment_entity import PaymentInterface
-from src.domain.aggregates.payment.interfaces.payment_repository import (
+from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryDto,
     PaymentRepositoryInterface,
 )

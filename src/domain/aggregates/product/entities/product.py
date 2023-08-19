@@ -4,7 +4,7 @@ from src.domain.aggregates.product.interfaces.product_entity import (
     ProductInterface,
     ProductCategory,
 )
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
 from src.domain.aggregates.product.validators.product_validator import (

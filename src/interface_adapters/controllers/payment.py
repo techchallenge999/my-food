@@ -1,14 +1,14 @@
 from typing import Optional
-from src.domain.aggregates.order.interfaces.order_repository import (
+from src.interface_adapters.gateways.repositories.order import (
     OrderRepositoryInterface,
 )
-from src.domain.aggregates.payment.interfaces.payment_repository import (
+from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryInterface,
 )
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
-from src.domain.aggregates.user.interfaces.user_repository import (
+from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
 from src.use_cases.payment.create.create_payment import CreatePaymentUseCase

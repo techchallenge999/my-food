@@ -1,6 +1,6 @@
 from typing import Optional
 
-from src.domain.aggregates.payment.interfaces.payment_repository import (
+from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryInterface,
 )
 from src.domain.shared.exceptions.payment import PaymentNotFoundException

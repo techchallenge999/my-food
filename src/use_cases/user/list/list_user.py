@@ -1,5 +1,5 @@
 from typing import List, Optional
-from src.domain.aggregates.user.interfaces.user_repository import (
+from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
 from src.domain.shared.exceptions.user import Unauthorized

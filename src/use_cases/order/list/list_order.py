@@ -2,7 +2,7 @@ from dataclasses import asdict
 from typing import List, Optional
 from src.domain.aggregates.order.interfaces.order_entity import OrderStatus
 
-from src.domain.aggregates.order.interfaces.order_repository import (
+from src.interface_adapters.gateways.repositories.order import (
     OrderRepositoryInterface,
 )
 from src.use_cases.order.list.list_order_dto import (

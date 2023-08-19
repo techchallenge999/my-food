@@ -4,10 +4,10 @@ from src.domain.aggregates.payment.entities.payment import PaymentStatus
 from src.domain.aggregates.payment.interfaces.payment_entity import (
     PaymentInterface,
 )
-from src.domain.aggregates.payment.interfaces.payment_repository import (
+from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryInterface,
 )
-from src.domain.aggregates.order.interfaces.order_repository import (
+from src.interface_adapters.gateways.repositories.order import (
     OrderRepositoryInterface,
 )
 from src.domain.shared.interfaces.validator import ValidatorInterface

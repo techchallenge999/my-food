@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 from src.domain.aggregates.order.entities.order import OrderStatus
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryDto,
 )
 

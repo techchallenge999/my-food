@@ -2,10 +2,10 @@ from typing import List, Optional
 from src.domain.aggregates.product.interfaces.product_entity import (
     ProductCategory,
 )
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
-from src.domain.aggregates.user.interfaces.user_repository import (
+from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
 from src.domain.shared.exceptions.product import (

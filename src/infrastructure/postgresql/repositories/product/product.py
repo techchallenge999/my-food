@@ -4,7 +4,7 @@ from src.infrastructure.postgresql.models.product.product import ProductModel
 from src.domain.aggregates.product.interfaces.product_entity import (
     ProductInterface,
 )
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryDto,
     ProductRepositoryInterface,
 )

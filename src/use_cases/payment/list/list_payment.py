@@ -1,6 +1,8 @@
 from typing import List, Optional
 
-from src.domain.aggregates.payment.interfaces.payment_repository import PaymentRepositoryInterface
+from src.interface_adapters.gateways.repositories.payment import (
+    PaymentRepositoryInterface,
+)
 from src.domain.shared.exceptions.payment import NoPaymentFoundException
 from src.use_cases.payment.list.list_payment_dto import ListPaymentOutputDto
 

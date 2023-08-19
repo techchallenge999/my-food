@@ -1,23 +1,30 @@
 from typing import Optional
 from uuid import UUID
 
-from src.domain.aggregates.order.interfaces.order_repository import OrderRepositoryInterface
+from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.domain.aggregates.payment.entities.payment import Payment
-from src.domain.aggregates.payment.interfaces.payment_repository import PaymentRepositoryInterface
+from src.interface_adapters.gateways.repositories.payment import (
+    PaymentRepositoryInterface,
+)
 from src.domain.shared.exceptions.payment import PaymentNotFoundException
-from src.use_cases.payment.update.update_payment_dto import UpdatePaymentInputDto, UpdatePaymentOutputDto
+from src.use_cases.payment.update.update_payment_dto import (
+    UpdatePaymentInputDto,
+    UpdatePaymentOutputDto,
+)
 
 
 class UpdatePaymentUseCase:
     def __init__(
-            self,
-            payment_repository: PaymentRepositoryInterface,
-            order_repository: OrderRepositoryInterface,
-        ):
+        self,
+        payment_repository: PaymentRepositoryInterface,
+        order_repository: OrderRepositoryInterface,
+    ):
         self._payment_repository = payment_repository
         self._order_repository = order_repository
 
-    def execute(self, input_data: UpdatePaymentInputDto) -> Optional[UpdatePaymentOutputDto]:
+    def execute(
+        self, input_data: UpdatePaymentInputDto
+    ) -> Optional[UpdatePaymentOutputDto]:
         payment = self._payment_repository.find(input_data.uuid)
 
         if payment is None:

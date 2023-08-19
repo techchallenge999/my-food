@@ -1,12 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestFormStrict
-from src.interface_adapters.controllers.auth import AuthController
-from src.interface_adapters.gateways.auth import FindUserParser
-from src.use_cases.user.create.create_user_dto import (
-    CreateUserInputDto,
-    CreateUserOutputDto,
-)
+
 from src.infrastructure.FastAPI.utils.auth import (
     create_access_token,
     raise_credentials_exception,
@@ -14,6 +9,11 @@ from src.infrastructure.FastAPI.utils.auth import (
 )
 from src.infrastructure.FastAPI.utils.schemas import TokenModel
 from src.infrastructure.postgresql.repositories.user.user import UserRepository
+from src.interface_adapters.controllers.auth import AuthController
+from src.use_cases.user.create.create_user_dto import (
+    CreateUserInputDto,
+    CreateUserOutputDto,
+)
 
 
 router = APIRouter()
@@ -28,9 +28,7 @@ async def sign_up(input_data: CreateUserInputDto) -> CreateUserOutputDto:
 async def sign_in(
     form_data: Annotated[OAuth2PasswordRequestFormStrict, Depends()]
 ) -> dict:
-    user = AuthController(UserRepository()).find_user_by_cpf(
-        FindUserParser(form_data.username)
-    )
+    user = AuthController(UserRepository()).find_user_by_cpf(form_data.username)
 
     if not (user is not None and verify_password(form_data.password, user.password)):
         raise_credentials_exception("Incorrect username or password")

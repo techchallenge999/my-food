@@ -10,12 +10,12 @@ from src.domain.aggregates.order.interfaces.order_entity import (
     OrderStatus,
     OrderInterface,
 )
-from src.domain.aggregates.order.interfaces.order_repository import (
+from src.interface_adapters.gateways.repositories.order import (
     OrderItemRepositoryOutputDto,
     OrderRepositoryOutputDto,
     OrderRepositoryInterface,
 )
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryDto,
 )
 from src.domain.shared.exceptions.order import (

@@ -3,7 +3,7 @@ from uuid import UUID
 from src.domain.aggregates.product.interfaces.product_entity import (
     ProductInterface,
 )
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
 from src.domain.shared.exceptions.base import (

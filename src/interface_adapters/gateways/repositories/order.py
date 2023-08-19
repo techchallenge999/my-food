@@ -7,7 +7,7 @@ from src.domain.aggregates.order.interfaces.order_entity import (
     OrderInterface,
     OrderStatus,
 )
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryDto,
 )
 from src.domain.shared.interfaces.repository import RepositoryInterface

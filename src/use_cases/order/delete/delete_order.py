@@ -1,4 +1,4 @@
-from src.domain.aggregates.order.interfaces.order_repository import (
+from src.interface_adapters.gateways.repositories.order import (
     OrderRepositoryInterface,
 )
 from src.domain.shared.exceptions.order import (

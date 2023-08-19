@@ -1,13 +1,15 @@
+from typing import Optional
 from src.domain.aggregates.user.interfaces.user_repository import (
     UserRepositoryInterface,
 )
+from src.interface_adapters.gateways.auth import FindUserParserGateway
 from src.use_cases.user.create.create_user import CreateUserUseCase
 from src.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,
     CreateUserOutputDto,
 )
 from src.use_cases.user.find.find_user import FindUserByCpfUseCase
-from src.use_cases.user.find.find_user_dto import FindUserByCpfInputDto
+from src.use_cases.user.find.find_user_dto import FindUserByCpfOutputDto
 
 
 class AuthController:
@@ -18,8 +20,10 @@ class AuthController:
         new_user = CreateUserUseCase(self.repository).execute(input_data)
         return new_user
 
-    def find_user_by_cpf(self, cpf: str):
+    def find_user_by_cpf(
+        self, auth_parser_gateway: FindUserParserGateway
+    ) -> Optional[FindUserByCpfOutputDto]:
         user = FindUserByCpfUseCase(self.repository).execute(
-            FindUserByCpfInputDto(cpf=cpf), actor_cpf=cpf
+            auth_parser_gateway.get_dto(), actor_cpf=auth_parser_gateway.get_actor_cpf()
         )
         return user

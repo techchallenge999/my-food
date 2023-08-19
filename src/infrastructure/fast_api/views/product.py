@@ -31,7 +31,7 @@ from src.use_cases.product.delete.delete_product_dto import (
 from src.use_cases.product.find.find_product_dto import (
     FindProductOutputDto,
 )
-from src.infrastructure.FastAPI.utils.auth import (
+from src.infrastructure.fast_api.utils.auth import (
     get_current_user,
     get_current_user_optional,
 )

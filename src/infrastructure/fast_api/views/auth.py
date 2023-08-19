@@ -2,12 +2,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestFormStrict
 
-from src.infrastructure.FastAPI.utils.auth import (
+from src.infrastructure.fast_api.utils.auth import (
     create_access_token,
     raise_credentials_exception,
     verify_password,
 )
-from src.infrastructure.FastAPI.utils.schemas import TokenModel
+from src.infrastructure.fast_api.utils.schemas import TokenModel
 from src.infrastructure.postgresql.repositories.user.user import UserRepository
 from src.interface_adapters.controllers.auth import AuthController
 from src.use_cases.user.create.create_user_dto import (

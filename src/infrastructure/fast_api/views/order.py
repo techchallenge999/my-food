@@ -1,6 +1,6 @@
 from typing import Annotated, List, Optional
 from fastapi import APIRouter, HTTPException, status as status_code, Depends
-from src.infrastructure.FastAPI.utils.auth import get_current_user_optional
+from src.infrastructure.fast_api.utils.auth import get_current_user_optional
 from src.infrastructure.postgresql.repositories.order.order import OrderRepository
 from src.infrastructure.postgresql.repositories.product.product import ProductRepository
 from src.infrastructure.postgresql.repositories.user.user import UserRepository

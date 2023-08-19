@@ -13,7 +13,7 @@ from src.use_cases.user.find.find_user_dto import (
     FindUserInputDto,
     FindUserOutputDto,
 )
-from src.infrastructure.FastAPI.utils.auth import get_current_user
+from src.infrastructure.fast_api.utils.auth import get_current_user
 from src.infrastructure.postgresql.repositories.user.user import UserRepository
 from src.use_cases.user.list.list_user import ListUserUseCase
 from src.use_cases.user.list.list_user_dto import ListUserOutputDto

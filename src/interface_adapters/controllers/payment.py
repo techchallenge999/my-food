@@ -29,6 +29,9 @@ from src.use_cases.payment.update.update_payment_dto import (
 
 
 class PaymentController:
+    def __init__(self, repository: PaymentRepositoryInterface):
+        self.repository = repository
+
     def checkout(
         self,
         input_data: CreatePaymentInputDto,
@@ -42,19 +45,16 @@ class PaymentController:
         payment = create_use_case.execute(input_data)
         return payment
 
-    def get_payment_status(
-        self, order_uuid: str, payment_repository: PaymentRepositoryInterface
-    ) -> Optional[FindPaymentOutputDto]:
-        find_use_case = FindPaymentByOrderUseCase(payment_repository)
+    def get_payment_status(self, order_uuid: str) -> Optional[FindPaymentOutputDto]:
+        find_use_case = FindPaymentByOrderUseCase(self.repository)
         payment = find_use_case.execute(FindPaymentByOrderInputDto(order_uuid))
         return payment
 
     def webhook(
         self,
         input_data: UpdatePaymentInputDto,
-        payment_repository: PaymentRepositoryInterface,
         order_repository: OrderRepositoryInterface,
     ) -> Optional[UpdatePaymentOutputDto]:
-        update_use_case = UpdatePaymentUseCase(payment_repository, order_repository)
+        update_use_case = UpdatePaymentUseCase(self.repository, order_repository)
         payment = update_use_case.execute(input_data)
         return payment

@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, status as status_code
+from src.domain.shared.exceptions.base import DomainException
 from src.infrastructure.postgresql.repositories.order.order import OrderRepository
 from src.infrastructure.postgresql.repositories.payment.payment import PaymentRepository
 from src.infrastructure.postgresql.repositories.product.product import ProductRepository
 from src.infrastructure.postgresql.repositories.user.user import UserRepository
-from src.domain.shared.exceptions.base import DomainException
 from src.interface_adapters.controllers.payment import PaymentController
 from src.use_cases.payment.create.create_payment_dto import (
     CreatePaymentInputDto,
@@ -22,7 +22,7 @@ router = APIRouter()
 @router.post("/", status_code=201)
 async def checkout(input_data: CreatePaymentInputDto) -> CreatePaymentOutputDto:
     try:
-        return PaymentController().checkout(
+        return PaymentController(PaymentRepository()).checkout(
             input_data, OrderRepository(), ProductRepository(), UserRepository()
         )
     except DomainException as err:
@@ -40,7 +40,7 @@ async def checkout(input_data: CreatePaymentInputDto) -> CreatePaymentOutputDto:
 )
 async def get_payment_status(order_uuid: str):
     try:
-        return PaymentController().get_payment_status(order_uuid, PaymentRepository())
+        return PaymentController(PaymentRepository()).get_payment_status(order_uuid)
     except DomainException as err:
         raise HTTPException(
             status_code=status_code.HTTP_400_BAD_REQUEST,
@@ -52,8 +52,8 @@ async def get_payment_status(order_uuid: str):
 @router.post("/webhook/", status_code=201, response_model=UpdatePaymentOutputDto | None)
 async def webhook(input_data: UpdatePaymentInputDto):
     try:
-        return PaymentController().webhook(
-            input_data, PaymentRepository(), OrderRepository()
+        return PaymentController(PaymentRepository()).webhook(
+            input_data, OrderRepository()
         )
     except DomainException as err:
         raise HTTPException(

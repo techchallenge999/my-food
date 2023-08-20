@@ -1,5 +1,6 @@
 from src.domain.aggregates.user.entities.user import User
 from src.domain.aggregates.user.value_objects.cpf import Cpf
+from src.domain.aggregates.user.value_objects.email import Email
 from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
@@ -19,7 +20,7 @@ class CreateUserUseCase:
 
         new_user = User(
             cpf=Cpf(cpf),
-            email=input_data.email,
+            email=Email(input_data.email),
             name=input_data.name,
             password=input_data.password,
             repository=self._repository,
@@ -52,7 +53,7 @@ class CreateAdminUserUseCase:
 
         new_user = User(
             cpf=Cpf(cpf),
-            email=input_data.email,
+            email=Email(input_data.email),
             name=input_data.name,
             password=input_data.password,
             repository=self._repository,

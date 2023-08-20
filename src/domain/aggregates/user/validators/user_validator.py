@@ -1,4 +1,3 @@
-import re
 from uuid import UUID
 
 from src.domain.aggregates.user.interfaces.entities import (
@@ -12,7 +11,6 @@ from src.domain.shared.exceptions.base import (
     UnavailableUUIDException,
 )
 from src.domain.shared.exceptions.user import (
-    InvalidEmailException,
     InvalidPasswordException,
     UnavailableCPFException,
 )
@@ -26,7 +24,6 @@ class UserValidator(ValidatorInterface):
 
     def validate(self):
         self._raise_if_unavailable_cpf()
-        self._raise_if_invalid_email()
         self._raise_if_unavailable_email()
         self._raise_if_invalid_password()
         self._raise_if_invalid_uuid()
@@ -34,10 +31,6 @@ class UserValidator(ValidatorInterface):
     def _raise_if_unavailable_cpf(self) -> None:
         if self._is_unavailable_cpf():
             raise UnavailableCPFException()
-
-    def _raise_if_invalid_email(self) -> None:
-        if self._is_invalid_email():
-            raise InvalidEmailException()
 
     def _raise_if_unavailable_email(self) -> None:
         if self._is_unavailable_email():
@@ -54,12 +47,6 @@ class UserValidator(ValidatorInterface):
     def _is_unavailable_cpf(self) -> bool:
         existent_user = self._repository.find_by_cpf(self._user.cpf)
         return existent_user is not None and existent_user.uuid != self._user.uuid
-
-    def _is_invalid_email(self) -> bool:
-        if not isinstance(self._user.email, str):
-            return True
-        email_pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
-        return re.match(email_pattern, self._user.email) is None
 
     def _is_unavailable_email(self) -> bool:
         existent_user = self._repository.find_by_email(self._user.email)

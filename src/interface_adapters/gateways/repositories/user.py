@@ -2,7 +2,7 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from typing import List, Optional
 
-from src.domain.aggregates.user.interfaces.user_entity import (
+from src.domain.aggregates.user.interfaces.entities import (
     UserInterface,
 )
 from src.domain.shared.interfaces.repository import RepositoryInterface

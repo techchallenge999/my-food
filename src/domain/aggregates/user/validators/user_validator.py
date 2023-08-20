@@ -1,7 +1,7 @@
 import re
 from uuid import UUID
 
-from src.domain.aggregates.user.interfaces.user_entity import (
+from src.domain.aggregates.user.interfaces.entities import (
     UserInterface,
 )
 from src.interface_adapters.gateways.repositories.user import (
@@ -12,7 +12,6 @@ from src.domain.shared.exceptions.base import (
     UnavailableUUIDException,
 )
 from src.domain.shared.exceptions.user import (
-    InvalidCPFException,
     InvalidEmailException,
     InvalidPasswordException,
     UnavailableCPFException,
@@ -26,16 +25,11 @@ class UserValidator(ValidatorInterface):
         self._repository = repository
 
     def validate(self):
-        self._raise_if_invalid_cpf()
         self._raise_if_unavailable_cpf()
         self._raise_if_invalid_email()
         self._raise_if_unavailable_email()
         self._raise_if_invalid_password()
         self._raise_if_invalid_uuid()
-
-    def _raise_if_invalid_cpf(self) -> None:
-        if self._is_invalid_cpf():
-            raise InvalidCPFException()
 
     def _raise_if_unavailable_cpf(self) -> None:
         if self._is_unavailable_cpf():
@@ -56,37 +50,6 @@ class UserValidator(ValidatorInterface):
     def _raise_if_invalid_uuid(self) -> None:
         if self._is_invalid_uuid():
             raise InvalidUUIDException()
-
-    def _is_invalid_cpf(self) -> bool:
-        if (
-            not isinstance(self._user.cpf, str)
-            or len(self._user.cpf) != 11
-            or self._user.cpf == self._user.cpf[0] * 11
-        ):
-            return True
-
-        def is_equal_to_verifying_digit(cpf_digit: int, remainder: int) -> bool:
-            return cpf_digit == 0 if remainder < 2 else cpf_digit == 11 - remainder
-
-        cpf_int_digits = [(int(digit)) for digit in self._user.cpf]
-        first_remainder = (
-            sum(
-                cpf_digit * weight
-                for cpf_digit, weight in zip(cpf_int_digits, range(10, 1, -1))
-            )
-            % 11
-        )
-        second_remainder = (
-            sum(
-                cpf_digit * weight
-                for cpf_digit, weight in zip(cpf_int_digits, range(11, 1, -1))
-            )
-            % 11
-        )
-        return not (
-            is_equal_to_verifying_digit(cpf_int_digits[9], first_remainder)
-            and is_equal_to_verifying_digit(cpf_int_digits[10], second_remainder)
-        )
 
     def _is_unavailable_cpf(self) -> bool:
         existent_user = self._repository.find_by_cpf(self._user.cpf)

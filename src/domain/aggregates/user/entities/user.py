@@ -1,21 +1,16 @@
 from uuid import UUID, uuid4
 
-from src.domain.aggregates.user.interfaces.user_entity import (
-    UserInterface,
-)
-from src.interface_adapters.gateways.repositories.user import (
-    UserRepositoryInterface,
-)
-from src.domain.aggregates.user.validators.user_validator import (
-    UserValidator,
-)
+from src.domain.aggregates.user.interfaces.entities import UserInterface
+from src.domain.aggregates.user.interfaces.value_objects import CpfInterface
+from src.domain.aggregates.user.validators.user_validator import UserValidator
 from src.domain.shared.interfaces.validator import ValidatorInterface
+from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 
 
 class User(UserInterface):
     def __init__(
         self,
-        cpf: str,
+        cpf: CpfInterface,
         email: str,
         name: str,
         password: str,
@@ -34,11 +29,11 @@ class User(UserInterface):
 
     @property
     def cpf(self) -> str:
-        return self._cpf
+        return self._cpf.value
 
     @cpf.setter
-    def cpf(self, value: str):
-        self._cpf = value
+    def cpf(self, cpf: CpfInterface):
+        self._cpf = cpf
 
     @property
     def email(self) -> str:

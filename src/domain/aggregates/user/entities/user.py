@@ -4,6 +4,7 @@ from src.domain.aggregates.user.interfaces.entities import UserInterface
 from src.domain.aggregates.user.interfaces.value_objects import (
     CpfInterface,
     EmailInterface,
+    PasswordInterface,
 )
 from src.domain.aggregates.user.validators.user_validator import UserValidator
 from src.domain.shared.interfaces.validator import ValidatorInterface
@@ -16,7 +17,7 @@ class User(UserInterface):
         cpf: CpfInterface,
         email: EmailInterface,
         name: str,
-        password: str,
+        password: PasswordInterface,
         repository: UserRepositoryInterface,
         is_admin: bool = False,
         uuid: UUID = uuid4(),
@@ -56,11 +57,11 @@ class User(UserInterface):
 
     @property
     def password(self) -> str:
-        return self._password
+        return self._password.value
 
     @password.setter
-    def password(self, value: str):
-        self._password = value
+    def password(self, password: PasswordInterface):
+        self._password = password
 
     @property
     def uuid(self) -> str:

@@ -1,11 +1,11 @@
 from uuid import UUID
+
 from src.domain.aggregates.user.entities.user import User
 from src.domain.aggregates.user.value_objects.cpf import Cpf
 from src.domain.aggregates.user.value_objects.email import Email
-from src.interface_adapters.gateways.repositories.user import (
-    UserRepositoryInterface,
-)
+from src.domain.aggregates.user.value_objects.password import Password
 from src.domain.shared.exceptions.user import Unauthorized, UserNotFoundException
+from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 from src.use_cases.user.update.update_user_dto import (
     UpdateUserInputDto,
     UpdateUserOutputDto,
@@ -33,7 +33,7 @@ class UpdateUserUseCase:
             cpf=Cpf(cpf),
             email=Email(input_data.email),
             name=input_data.name,
-            password=user.password,
+            password=Password(user.password),
             repository=self._repository,
             is_admin=user.is_admin,
             uuid=UUID(input_data.uuid),

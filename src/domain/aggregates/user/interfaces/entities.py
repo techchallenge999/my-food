@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
+
 from src.domain.aggregates.user.interfaces.value_objects import (
     CpfInterface,
     EmailInterface,
+    PasswordInterface,
 )
 from src.domain.shared.interfaces.validator import ValidatorInterface
 
@@ -11,7 +13,7 @@ class UserInterface(ABC):
     _cpf: CpfInterface
     _email: EmailInterface
     _name: str
-    _password: str
+    _password: PasswordInterface
     _is_admin: bool
     _uuid: UUID
     _validator: ValidatorInterface
@@ -53,7 +55,7 @@ class UserInterface(ABC):
 
     @password.setter
     @abstractmethod
-    def password(self, value: str):
+    def password(self, password: PasswordInterface):
         pass
 
     @property

@@ -25,13 +25,13 @@ from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 router = APIRouter()
 
 
-@router.post("/", status_code=201)
+@router.post("/", status_code=201, response_model=CreateOrderOutputDto)
 async def create_order(
     input_data: CreateOrderInputDto,
     current_user: Annotated[
         FindUserOutputDto | EmptyUser, Depends(get_current_user_optional)
     ],
-) -> CreateOrderOutputDto:
+):
     try:
         return OrderController(OrderRepository()).create_order(
             input_data,
@@ -48,8 +48,8 @@ async def create_order(
         )
 
 
-@router.get("/", status_code=200)
-async def list_all_but_withdrawn_orders() -> Optional[List[ListOrderOutputDto]]:
+@router.get("/", status_code=200, response_model=Optional[List[ListOrderOutputDto]])
+async def list_all_but_withdrawn_orders():
     try:
         return OrderController(OrderRepository()).list_all_but_withdrawn()
     except DomainException as err:
@@ -60,10 +60,10 @@ async def list_all_but_withdrawn_orders() -> Optional[List[ListOrderOutputDto]]:
         )
 
 
-@router.put("/", status_code=200)
+@router.put("/", status_code=200, response_model=Optional[UpdateOrderOutputDto])
 async def update_order(
     input_data: UpdateOrderInputDto,
-) -> Optional[UpdateOrderOutputDto]:
+):
     try:
         return OrderController(OrderRepository()).update_order(
             input_data,
@@ -102,11 +102,13 @@ async def delete_order(order_uuid: str):
         )
 
 
-@router.put("/{order_uuid}/update-status/", status_code=200)
+@router.put(
+    "/{order_uuid}/update-status/", status_code=200, response_model=UpdateOrderOutputDto
+)
 async def update_order_status(
     order_uuid: str,
     input_data: UpdateStatusOrderInputDto,
-) -> UpdateOrderOutputDto:
+):
     try:
         return OrderController(OrderRepository()).update_order_status(
             order_uuid,

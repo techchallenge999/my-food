@@ -19,8 +19,8 @@ from src.use_cases.user.create.create_user_dto import (
 router = APIRouter()
 
 
-@router.post("/sign-up", status_code=201)
-async def sign_up(input_data: CreateUserInputDto) -> CreateUserOutputDto:
+@router.post("/sign-up", status_code=201, response_model=CreateUserOutputDto)
+async def sign_up(input_data: CreateUserInputDto):
     return AuthController(UserRepository()).sign_up(input_data)
 
 

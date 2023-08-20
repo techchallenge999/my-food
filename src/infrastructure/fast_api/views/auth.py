@@ -25,9 +25,7 @@ async def sign_up(input_data: CreateUserInputDto) -> CreateUserOutputDto:
 
 
 @router.post("/token", response_model=TokenModel)
-async def sign_in(
-    form_data: Annotated[OAuth2PasswordRequestFormStrict, Depends()]
-) -> dict:
+async def sign_in(form_data: Annotated[OAuth2PasswordRequestFormStrict, Depends()]):
     user = AuthController(UserRepository()).find_user_by_cpf(form_data.username)
 
     if not (user is not None and verify_password(form_data.password, user.password)):

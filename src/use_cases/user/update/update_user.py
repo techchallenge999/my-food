@@ -1,4 +1,3 @@
-from typing import Optional
 from uuid import UUID
 from src.domain.aggregates.user.entities.user import User
 from src.interface_adapters.gateways.repositories.user import (
@@ -17,7 +16,7 @@ class UpdateUserUseCase:
 
     def execute(
         self, input_data: UpdateUserInputDto, actor_uuid: str
-    ) -> Optional[UpdateUserOutputDto]:
+    ) -> UpdateUserOutputDto:
         actor = self._repository.find(actor_uuid)
         if actor is None or (input_data.uuid != actor_uuid and not actor.is_admin):
             raise Unauthorized("User not Allowed!")

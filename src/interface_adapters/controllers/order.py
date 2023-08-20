@@ -10,7 +10,7 @@ from src.interface_adapters.gateways.repositories.product import (
 from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
-from src.interface_adapters.gateways.order import CreateOrderParser
+from src.interface_adapters.gateways.order_parser import CreateOrderParser
 from src.use_cases.order.create.create_order import CreateOrderUseCase
 from src.use_cases.order.create.create_order_dto import (
     CreateOrderInputDto,

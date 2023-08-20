@@ -6,7 +6,7 @@ from src.infrastructure.postgresql.repositories.product.product import ProductRe
 from src.infrastructure.postgresql.repositories.user.user import UserRepository
 from src.domain.shared.exceptions.base import DomainException
 from src.interface_adapters.controllers.order import OrderController
-from src.interface_adapters.gateways.order import CreateOrderParser
+from src.interface_adapters.gateways.order_parser import CreateOrderParser
 from src.use_cases.order.create.create_order_dto import (
     CreateOrderInputDto,
     CreateOrderOutputDto,

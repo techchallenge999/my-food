@@ -15,9 +15,9 @@ from src.use_cases.order.delete.delete_order_dto import DeleteOrderOutputDto
 from src.use_cases.order.find.find_order_dto import FindOrderOutputDto
 from src.use_cases.order.list.list_order_dto import ListOrderOutputDto
 from src.use_cases.order.update.update_order_dto import (
-    UpdateOrderInputDto,
+    UpdateOrderItemsInputDto,
     UpdateOrderOutputDto,
-    UpdateStatusOrderInputDto,
+    UpdateOrderStatusInputDto,
 )
 from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 
@@ -49,27 +49,9 @@ async def create_order(
 
 
 @router.get("/", status_code=200, response_model=Optional[List[ListOrderOutputDto]])
-async def list_all_but_withdrawn_orders():
+async def list_orders():
     try:
-        return OrderController(OrderRepository()).list_all_but_withdrawn()
-    except DomainException as err:
-        raise HTTPException(
-            status_code=status_code.HTTP_400_BAD_REQUEST,
-            detail=err.message,
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-
-@router.put("/", status_code=200, response_model=Optional[UpdateOrderOutputDto])
-async def update_order(
-    input_data: UpdateOrderInputDto,
-):
-    try:
-        return OrderController(OrderRepository()).update_order(
-            input_data,
-            ProductRepository(),
-            UserRepository(),
-        )
+        return OrderController(OrderRepository()).list_orders()
     except DomainException as err:
         raise HTTPException(
             status_code=status_code.HTTP_400_BAD_REQUEST,
@@ -90,10 +72,20 @@ async def retireve_order(order_uuid: str):
         )
 
 
-@router.delete("/{order_uuid}/", status_code=200, response_model=DeleteOrderOutputDto)
-async def delete_order(order_uuid: str):
+@router.put(
+    "/{order_uuid}/update-items/", status_code=200, response_model=UpdateOrderOutputDto
+)
+async def update_order_items(
+    order_uuid: str,
+    input_data: UpdateOrderItemsInputDto,
+):
     try:
-        return OrderController(OrderRepository()).delete_order(order_uuid)
+        return OrderController(OrderRepository()).update_order_items(
+            order_uuid,
+            input_data,
+            ProductRepository(),
+            UserRepository(),
+        )
     except DomainException as err:
         raise HTTPException(
             status_code=status_code.HTTP_400_BAD_REQUEST,
@@ -107,7 +99,7 @@ async def delete_order(order_uuid: str):
 )
 async def update_order_status(
     order_uuid: str,
-    input_data: UpdateStatusOrderInputDto,
+    input_data: UpdateOrderStatusInputDto,
 ):
     try:
         return OrderController(OrderRepository()).update_order_status(
@@ -116,6 +108,18 @@ async def update_order_status(
             ProductRepository(),
             UserRepository(),
         )
+    except DomainException as err:
+        raise HTTPException(
+            status_code=status_code.HTTP_400_BAD_REQUEST,
+            detail=err.message,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
+@router.delete("/{order_uuid}/", status_code=200, response_model=DeleteOrderOutputDto)
+async def delete_order(order_uuid: str):
+    try:
+        return OrderController(OrderRepository()).delete_order(order_uuid)
     except DomainException as err:
         raise HTTPException(
             status_code=status_code.HTTP_400_BAD_REQUEST,

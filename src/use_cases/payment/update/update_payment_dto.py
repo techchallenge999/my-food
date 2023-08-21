@@ -7,7 +7,6 @@ from src.domain.aggregates.payment.interfaces.payment_entity import (
 @dataclass
 class UpdatePaymentInputDto:
     status: PaymentStatus
-    uuid: str
 
 
 @dataclass

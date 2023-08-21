@@ -11,8 +11,8 @@ from src.domain.aggregates.order.interfaces.order_entity import (
     OrderInterface,
 )
 from src.interface_adapters.gateways.repositories.order import (
-    OrderItemRepositoryOutputDto,
-    OrderRepositoryOutputDto,
+    OrderItemRepositoryDto,
+    OrderRepositoryDto,
     OrderRepositoryInterface,
 )
 from src.interface_adapters.gateways.repositories.product import (
@@ -41,7 +41,7 @@ class OrderRepository(OrderRepositoryInterface):
             )
             new_order_item.create()
 
-    def find(self, uuid: str) -> Optional[OrderRepositoryOutputDto]:
+    def find(self, uuid: str) -> Optional[OrderRepositoryDto]:
         with get_session() as session:
             stmt = select(OrderModel)
             stmt = stmt.options(
@@ -53,9 +53,9 @@ class OrderRepository(OrderRepositoryInterface):
             order = instance[0] if instance is not None else None
         if order is None:
             raise OrderNotFoundException()
-        return OrderRepositoryOutputDto(
+        return OrderRepositoryDto(
             items=[
-                OrderItemRepositoryOutputDto(
+                OrderItemRepositoryDto(
                     comment=item.comment,
                     product=ProductRepositoryDto(
                         name=item.product.name,
@@ -105,7 +105,7 @@ class OrderRepository(OrderRepositoryInterface):
         self,
         filters: dict = {},
         exclusive_filters: dict = {},
-    ) -> List[Optional[OrderRepositoryOutputDto]]:
+    ) -> List[Optional[OrderRepositoryDto]]:
         with get_session() as session:
             stmt = select(OrderModel)
             stmt = stmt.options(
@@ -118,12 +118,11 @@ class OrderRepository(OrderRepositoryInterface):
                 if not hasattr(OrderModel, column):
                     return []
                 stmt = stmt.filter(getattr(OrderModel, column) == filters.get(column))
-            for column in exclusive_filters.keys():
+            for column, values in exclusive_filters.items():
                 if not hasattr(OrderModel, column):
                     return []
-                stmt = stmt.filter(
-                    getattr(OrderModel, column) != exclusive_filters.get(column)
-                )
+                for value in values:
+                    stmt = stmt.filter(getattr(OrderModel, column) != value)
 
             stmt = stmt.order_by(OrderModel.created_at)
             stmt = stmt.order_by(
@@ -143,9 +142,9 @@ class OrderRepository(OrderRepositoryInterface):
             return []
 
         return [
-            OrderRepositoryOutputDto(
+            OrderRepositoryDto(
                 items=[
-                    OrderItemRepositoryOutputDto(
+                    OrderItemRepositoryDto(
                         comment=item.comment,
                         product=ProductRepositoryDto(
                             name=item.product.name,
@@ -170,7 +169,7 @@ class OrderRepository(OrderRepositoryInterface):
             for order in orders
         ]
 
-    def delete(self, uuid: str) -> Optional[OrderRepositoryOutputDto]:
+    def delete(self, uuid: str) -> Optional[OrderRepositoryDto]:
         order = OrderModel.retrieve(uuid)
         if order is None:
             raise OrderNotFoundException()

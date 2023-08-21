@@ -14,15 +14,15 @@ from src.domain.shared.interfaces.repository import RepositoryInterface
 
 
 @dataclass
-class OrderItemRepositoryOutputDto:
+class OrderItemRepositoryDto:
     comment: str
     product: ProductRepositoryDto
     quantity: int
 
 
 @dataclass
-class OrderRepositoryOutputDto:
-    items: list[OrderItemRepositoryOutputDto]
+class OrderRepositoryDto:
+    items: list[OrderItemRepositoryDto]
     status: OrderStatus
     total_amount: str
     user_uuid: str | None
@@ -37,13 +37,13 @@ class OrderRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def find(self, uuid: str) -> Optional[OrderRepositoryOutputDto]:
+    def find(self, uuid: str) -> Optional[OrderRepositoryDto]:
         pass
 
     @abstractmethod
     def list(
         self, filters: dict | None = None, exclusive_filters: dict | None = None
-    ) -> Optional[List[OrderRepositoryOutputDto]]:
+    ) -> Optional[List[OrderRepositoryDto]]:
         pass
 
     @abstractmethod

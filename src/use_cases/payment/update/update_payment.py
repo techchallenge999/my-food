@@ -1,4 +1,3 @@
-from typing import Optional
 from uuid import UUID
 
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
@@ -23,16 +22,15 @@ class UpdatePaymentUseCase:
         self._order_repository = order_repository
 
     def execute(
-        self, input_data: UpdatePaymentInputDto
-    ) -> Optional[UpdatePaymentOutputDto]:
-        payment = self._payment_repository.find(input_data.uuid)
+        self, payment_uuid: str, input_data: UpdatePaymentInputDto
+    ) -> UpdatePaymentOutputDto:
+        payment = self._payment_repository.find(payment_uuid)
 
         if payment is None:
             raise PaymentNotFoundException()
 
         updated_payment = Payment(
             order_uuid=UUID(payment.order_uuid),
-            payment_repository=self._payment_repository,
             order_repository=self._order_repository,
             status=input_data.status,
             uuid=UUID(payment.uuid),

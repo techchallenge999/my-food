@@ -20,15 +20,13 @@ class UpdateOrderItemOutputDto:
 
 
 @dataclass
-class UpdateStatusOrderInputDto:
+class UpdateOrderStatusInputDto:
     status: OrderStatus
 
 
 @dataclass
-class UpdateOrderInputDto:
+class UpdateOrderItemsInputDto:
     items: list[UpdateOrderItemInputDto]
-    status: OrderStatus
-    uuid: str
 
 
 @dataclass

@@ -17,7 +17,9 @@ class OrderModel(Base, CRUDMixin, TimestampMixin):
     items = relationship(
         "OrderItemModel", lazy="subquery", cascade="all, delete-orphan"
     )
-    status = Column(Enum(OrderStatus), default=OrderStatus.RECEIVED, nullable=False)
+    status = Column(
+        Enum(OrderStatus), default=OrderStatus.PENDING_PAYMENT, nullable=False
+    )
     total_amount = Column(String, nullable=False)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)
     user_uuid = Column(UUID(as_uuid=True), ForeignKey("user.uuid"), nullable=True)

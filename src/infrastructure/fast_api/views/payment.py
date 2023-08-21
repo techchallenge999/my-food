@@ -4,8 +4,6 @@ from fastapi import APIRouter, HTTPException, status as status_code
 from src.domain.shared.exceptions.base import DomainException
 from src.infrastructure.postgresql.repositories.order.order import OrderRepository
 from src.infrastructure.postgresql.repositories.payment.payment import PaymentRepository
-from src.infrastructure.postgresql.repositories.product.product import ProductRepository
-from src.infrastructure.postgresql.repositories.user.user import UserRepository
 from src.interface_adapters.controllers.payment import PaymentController
 from src.use_cases.payment.create.create_payment_dto import (
     CreatePaymentInputDto,
@@ -25,7 +23,7 @@ router = APIRouter()
 async def checkout(input_data: CreatePaymentInputDto):
     try:
         return PaymentController(PaymentRepository()).checkout(
-            input_data, OrderRepository(), ProductRepository(), UserRepository()
+            input_data, OrderRepository()
         )
     except DomainException as err:
         raise HTTPException(

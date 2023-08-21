@@ -1,15 +1,8 @@
 from typing import Optional
-from src.interface_adapters.gateways.repositories.order import (
-    OrderRepositoryInterface,
-)
+
+from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryInterface,
-)
-from src.interface_adapters.gateways.repositories.product import (
-    ProductRepositoryInterface,
-)
-from src.interface_adapters.gateways.repositories.user import (
-    UserRepositoryInterface,
 )
 from src.use_cases.payment.create.create_payment import CreatePaymentUseCase
 from src.use_cases.payment.create.create_payment_dto import (
@@ -36,12 +29,8 @@ class PaymentController:
         self,
         input_data: CreatePaymentInputDto,
         order_repository: OrderRepositoryInterface,
-        product_repository: ProductRepositoryInterface,
-        user_repository: UserRepositoryInterface,
     ) -> CreatePaymentOutputDto:
-        create_use_case = CreatePaymentUseCase(
-            order_repository, product_repository, user_repository
-        )
+        create_use_case = CreatePaymentUseCase(self.repository, order_repository)
         payment = create_use_case.execute(input_data)
         return payment
 

@@ -6,6 +6,8 @@ from src.domain.shared.interfaces.validator import ValidatorInterface
 
 
 class OrderStatus(Enum):
+    PENDING_PAYMENT = "pagamento pendente"
+    CANCELED = "cancelado"
     RECEIVED = "recebido"
     PREPARING = "preparando"
     READY = "pronto"

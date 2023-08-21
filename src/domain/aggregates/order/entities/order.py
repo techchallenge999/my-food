@@ -29,7 +29,7 @@ class Order(OrderInterface):
         order_repository: OrderRepositoryInterface,
         product_repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
-        status: OrderStatus = OrderStatus.RECEIVED,
+        status: OrderStatus = OrderStatus.PENDING_PAYMENT,
         user_uuid: UUID | None = None,
         uuid: UUID = uuid4(),
         created_at: datetime = datetime.now(),

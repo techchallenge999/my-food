@@ -2,10 +2,8 @@ from dataclasses import asdict
 from uuid import UUID
 
 from src.domain.aggregates.order.entities.order import Order
-from src.domain.aggregates.order.interfaces.order_entity import (
-    OrderItemInterface,
-    OrderStatus,
-)
+from src.domain.aggregates.order.interfaces.entities import OrderItemInterface
+from src.domain.aggregates.order.interfaces.value_objects import OrderStatus
 from src.domain.aggregates.order.value_objects.order_item import OrderItem
 from src.domain.shared.exceptions.order import OrderNotFoundException
 from src.interface_adapters.gateways.repositories.order import (

@@ -1,32 +1,20 @@
 from uuid import UUID
 
-from src.domain.aggregates.order.entities.order import OrderStatus
-from src.domain.aggregates.order.interfaces.order_entity import (
-    OrderInterface,
-)
-from src.interface_adapters.gateways.repositories.order import (
-    OrderRepositoryInterface,
-)
-from src.interface_adapters.gateways.repositories.product import (
-    ProductRepositoryInterface,
-)
-from src.interface_adapters.gateways.repositories.user import (
-    UserRepositoryInterface,
-)
-from src.domain.shared.exceptions.base import (
-    InvalidUUIDException,
-)
-from src.domain.shared.exceptions.order import (
-    InvalidOrderStatusException,
-)
+from src.domain.aggregates.order.interfaces.entities import OrderInterface
+from src.domain.aggregates.order.interfaces.value_objects import OrderStatus
+from src.domain.shared.exceptions.base import InvalidUUIDException
+from src.domain.shared.exceptions.order import InvalidOrderStatusException
 from src.domain.shared.exceptions.product import (
     InvalidProductQuantityException,
     UnavailableProductException,
 )
-from src.domain.shared.exceptions.user import (
-    UserNotFoundException,
-)
+from src.domain.shared.exceptions.user import UserNotFoundException
 from src.domain.shared.interfaces.validator import ValidatorInterface
+from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
+from src.interface_adapters.gateways.repositories.product import (
+    ProductRepositoryInterface,
+)
+from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 
 
 class OrderValidator(ValidatorInterface):

@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlalchemy import case, select
 from sqlalchemy.orm import subqueryload
 
-from src.domain.aggregates.order.interfaces.order_entity import OrderStatus
+from src.domain.aggregates.order.interfaces.value_objects import OrderStatus
 from src.domain.shared.exceptions.order import OrderNotFoundException
 from src.infrastructure.postgresql.database import get_session
 from src.infrastructure.postgresql.models.order import OrderItemModel, OrderModel

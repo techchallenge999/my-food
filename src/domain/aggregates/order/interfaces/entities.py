@@ -1,26 +1,9 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from enum import Enum
 from uuid import UUID
 
-from src.domain.shared.exceptions.order import OrderStatusProgressionNotAllowedException
+from src.domain.aggregates.order.interfaces.value_objects import OrderStatus
 from src.domain.shared.interfaces.validator import ValidatorInterface
-
-
-class OrderStatus(Enum):
-    CANCELED = "cancelado"
-    PENDING_PAYMENT = "pagamento pendente"
-    RECEIVED = "recebido"
-    PREPARING = "preparando"
-    READY = "pronto"
-    WITHDRAWN = "retirado"
-
-    def next(self):
-        members = list(self.__class__)
-        current_index = members.index(self)
-        if members[current_index] in {members[0], members[-1]}:
-            raise OrderStatusProgressionNotAllowedException()
-        return members[current_index + 1]
 
 
 class OrderItemInterface(ABC):
@@ -51,7 +34,7 @@ class OrderInterface(ABC):
     _user_uuid: UUID | None
     _uuid: UUID
     _created_at: datetime
-    _updated_at: datetime
+    _updated_at: datetime | None
     _validator: ValidatorInterface
 
     @property
@@ -71,7 +54,7 @@ class OrderInterface(ABC):
 
     @property
     @abstractmethod
-    def user_uuid(self) -> str:
+    def user_uuid(self) -> str | None:
         pass
 
     @property

@@ -1,5 +1,6 @@
 from uuid import UUID
-from src.domain.aggregates.order.interfaces.order_entity import OrderItemInterface
+
+from src.domain.aggregates.order.interfaces.entities import OrderItemInterface
 
 
 class OrderItem(OrderItemInterface):
@@ -14,13 +15,13 @@ class OrderItem(OrderItemInterface):
         self._quantity = quantity
 
     @property
-    def comment(self) -> str:
+    def comment(self):
         return self._comment
 
     @property
-    def product_uuid(self) -> str:
+    def product_uuid(self):
         return str(self._product_uuid)
 
     @property
-    def quantity(self) -> int:
+    def quantity(self):
         return self._quantity

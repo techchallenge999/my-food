@@ -1,4 +1,3 @@
-from typing import List, Optional
 from src.domain.aggregates.product.interfaces.product_entity import ProductCategory
 from src.infrastructure.fast_api.utils.auth import EmptyUser
 from src.interface_adapters.gateways.repositories.product import (
@@ -54,9 +53,7 @@ class ProductController:
         self.user_repository = user_repository
         self.current_user = current_user
 
-    def list_products(
-        self, category: str | None = None
-    ) -> Optional[List[ListProductOutputDto]]:
+    def list_products(self, category: str | None = None) -> list[ListProductOutputDto]:
         filters = {}
         if category is not None:
             filters["category"] = ProductCategory(category).name
@@ -67,7 +64,7 @@ class ProductController:
 
         return list_use_case.execute(self.current_user.uuid, filters)
 
-    def retrieve_product(self, product_uuid: str) -> Optional[FindProductOutputDto]:
+    def retrieve_product(self, product_uuid: str) -> FindProductOutputDto | None:
         find_use_case = FindProductUseCase(
             repository=self.repository, user_repository=self.user_repository
         )
@@ -144,7 +141,7 @@ class ProductController:
     def delete_product(
         self,
         product_uuid: str,
-    ) -> Optional[DeleteProductOutputDto]:
+    ) -> DeleteProductOutputDto | None:
         delete_use_case = DeleteProductUseCase(
             repository=self.repository, user_repository=self.user_repository
         )

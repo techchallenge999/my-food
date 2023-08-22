@@ -1,11 +1,10 @@
-from typing import List, Optional
 from src.domain.aggregates.payment.interfaces.payment_entity import PaymentInterface
+from src.domain.shared.exceptions.payment import PaymentNotFoundException
+from src.infrastructure.postgresql.models.payment.payment import PaymentModel
 from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryDto,
     PaymentRepositoryInterface,
 )
-from src.domain.shared.exceptions.payment import PaymentNotFoundException
-from src.infrastructure.postgresql.models.payment.payment import PaymentModel
 
 
 class PaymentRepository(PaymentRepositoryInterface):
@@ -17,7 +16,7 @@ class PaymentRepository(PaymentRepositoryInterface):
         )
         new_payment.create()
 
-    def find(self, uuid: str) -> Optional[PaymentRepositoryDto]:
+    def find(self, uuid: str) -> PaymentRepositoryDto:
         payment = PaymentModel.retrieve(uuid)
         if payment is None:
             raise PaymentNotFoundException()
@@ -27,7 +26,7 @@ class PaymentRepository(PaymentRepositoryInterface):
             uuid=str(payment.uuid),
         )
 
-    def find_by_order(self, order_uuid: str) -> Optional[PaymentRepositoryDto]:
+    def find_by_order(self, order_uuid: str) -> PaymentRepositoryDto | None:
         payment = PaymentModel.retrieve_by_column("order_uuid", order_uuid)
         if payment is None:
             raise PaymentNotFoundException()
@@ -37,7 +36,7 @@ class PaymentRepository(PaymentRepositoryInterface):
             uuid=str(payment.uuid),
         )
 
-    def list(self) -> Optional[List[PaymentRepositoryDto]]:
+    def list(self) -> list[PaymentRepositoryDto]:
         payments = PaymentModel.list()
 
         if payments is None:

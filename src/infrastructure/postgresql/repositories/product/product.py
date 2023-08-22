@@ -1,15 +1,9 @@
-from typing import List, Optional
-
+from src.domain.aggregates.product.interfaces.product_entity import ProductInterface
+from src.domain.shared.exceptions.product import ProductNotFoundException
 from src.infrastructure.postgresql.models.product.product import ProductModel
-from src.domain.aggregates.product.interfaces.product_entity import (
-    ProductInterface,
-)
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryDto,
     ProductRepositoryInterface,
-)
-from src.domain.shared.exceptions.product import (
-    ProductNotFoundException,
 )
 
 
@@ -26,7 +20,7 @@ class ProductRepository(ProductRepositoryInterface):
         )
         new_product.create()
 
-    def find(self, uuid: str) -> Optional[ProductRepositoryDto]:
+    def find(self, uuid: str) -> ProductRepositoryDto | None:
         product = ProductModel.retrieve(uuid)
         if product is None:
             raise ProductNotFoundException()
@@ -56,7 +50,7 @@ class ProductRepository(ProductRepositoryInterface):
                 }
             )
 
-    def list(self, filters: dict) -> List[ProductRepositoryDto]:
+    def list(self, filters: dict) -> list[ProductRepositoryDto]:
         products = ProductModel.list_filtering_by_column(filters)
 
         if products is None:
@@ -75,7 +69,7 @@ class ProductRepository(ProductRepositoryInterface):
             for product in products
         ]
 
-    def delete(self, uuid: str) -> Optional[ProductRepositoryDto]:
+    def delete(self, uuid: str) -> ProductRepositoryDto | None:
         product = ProductModel.retrieve(uuid)
         if product is None:
             raise ProductNotFoundException()

@@ -1,4 +1,3 @@
-from typing import Optional
 from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
@@ -22,7 +21,7 @@ class AuthController:
         new_user = CreateUserUseCase(self.repository).execute(input_data)
         return new_user
 
-    def find_user_by_cpf(self, cpf: str) -> Optional[FindUserByCpfOutputDto]:
+    def find_user_by_cpf(self, cpf: str) -> FindUserByCpfOutputDto:
         user = FindUserByCpfUseCase(self.repository).execute(
             FindUserByCpfInputDto(cpf=cpf), actor_cpf=cpf
         )

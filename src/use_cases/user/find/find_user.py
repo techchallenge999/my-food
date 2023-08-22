@@ -1,8 +1,5 @@
-from typing import Optional
-from src.interface_adapters.gateways.repositories.user import (
-    UserRepositoryInterface,
-)
 from src.domain.shared.exceptions.user import Unauthorized
+from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 from src.use_cases.user.find.find_user_dto import (
     FindUserByCpfInputDto,
     FindUserByCpfOutputDto,
@@ -17,7 +14,7 @@ class FindUserUseCase:
 
     def execute(
         self, input_data: FindUserInputDto, actor_uuid: str
-    ) -> Optional[FindUserOutputDto]:
+    ) -> FindUserOutputDto | None:
         actor = self._repository.find(actor_uuid)
         if actor is None or (input_data.uuid != actor_uuid and not actor.is_admin):
             raise Unauthorized("User not Allowed!")
@@ -42,7 +39,7 @@ class FindUserByCpfUseCase:
 
     def execute(
         self, input_data: FindUserByCpfInputDto, actor_cpf: str
-    ) -> Optional[FindUserByCpfOutputDto]:
+    ) -> FindUserByCpfOutputDto | None:
         cleaned_actor_cpf = "".join(filter(str.isdigit, actor_cpf))
         cleaned_input_data_cpf = "".join(filter(str.isdigit, input_data.cpf))
 

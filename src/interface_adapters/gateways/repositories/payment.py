@@ -1,6 +1,5 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import List, Optional
 
 from src.domain.aggregates.payment.interfaces.payment_entity import (
     PaymentInterface,
@@ -22,15 +21,15 @@ class PaymentRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def find(self, uuid: str) -> Optional[PaymentRepositoryDto]:
+    def find(self, uuid: str) -> PaymentRepositoryDto:
         pass
 
     @abstractmethod
-    def find_by_order(self, order_uuid: str) -> Optional[PaymentRepositoryDto]:
+    def find_by_order(self, order_uuid: str) -> PaymentRepositoryDto:
         pass
 
     @abstractmethod
-    def list(self) -> Optional[List[PaymentRepositoryDto]]:
+    def list(self) -> list[PaymentRepositoryDto]:
         pass
 
     @abstractmethod

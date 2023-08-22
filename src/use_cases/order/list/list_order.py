@@ -1,7 +1,6 @@
 from dataclasses import asdict
-from typing import List, Union
-from src.domain.aggregates.order.interfaces.order_entity import OrderStatus
 
+from src.domain.aggregates.order.interfaces.order_entity import OrderStatus
 from src.interface_adapters.gateways.repositories.order import (
     OrderRepositoryInterface,
 )
@@ -15,7 +14,7 @@ class ListOrderUseCase:
     def __init__(self, repository: OrderRepositoryInterface):
         self._repository = repository
 
-    def execute(self) -> Union[List[ListOrderOutputDto], List]:
+    def execute(self) -> list[ListOrderOutputDto]:
         exclusive_filters = {
             "status": [
                 OrderStatus.PENDING_PAYMENT,

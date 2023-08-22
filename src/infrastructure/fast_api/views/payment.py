@@ -1,4 +1,3 @@
-from typing import Optional
 from fastapi import APIRouter, HTTPException, status as status_code
 
 from src.domain.shared.exceptions.base import DomainException
@@ -38,7 +37,7 @@ async def checkout(input_data: CreatePaymentInputDto):
 @router.get(
     "/payment_status/{order_uuid}/",
     status_code=200,
-    response_model=Optional[FindPaymentOutputDto],
+    response_model=FindPaymentOutputDto | None,
 )
 async def get_payment_status(order_uuid: str):
     try:
@@ -54,7 +53,7 @@ async def get_payment_status(order_uuid: str):
 @router.post(
     "/webhook/{payment_uuid}",
     status_code=201,
-    response_model=Optional[UpdatePaymentOutputDto],
+    response_model=UpdatePaymentOutputDto | None,
 )
 async def webhook(payment_uuid: str, input_data: UpdatePaymentInputDto):
     try:

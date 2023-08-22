@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Annotated, Optional
+from typing import Annotated
 from dataclasses import dataclass
 from decouple import config
 from fastapi import Depends, HTTPException, status
@@ -25,7 +25,7 @@ class EmptyUser:
 
 async def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
-    user: Optional[FindUserByCpfOutputDto],
+    user: FindUserByCpfOutputDto | None,
 ):
     try:
         payload = decode_access_token(token)
@@ -41,7 +41,7 @@ async def get_current_user(
 
 async def get_current_user_optional(
     token: Annotated[str | None, Depends(oauth2_scheme_optional)],
-    user: Optional[FindUserByCpfOutputDto],
+    user: FindUserByCpfOutputDto | None,
 ):
     try:
         if token is None:

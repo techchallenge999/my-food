@@ -1,4 +1,5 @@
-from typing import Annotated, List, Optional
+from typing import Annotated
+
 from fastapi import APIRouter, HTTPException, status as status_code, Depends
 
 from src.infrastructure.fast_api.utils.auth import EmptyUser, get_current_user_optional
@@ -49,7 +50,7 @@ async def create_order(
         )
 
 
-@router.get("/", status_code=200, response_model=Optional[List[ListOrderOutputDto]])
+@router.get("/", status_code=200, response_model=list[ListOrderOutputDto])
 async def list_orders():
     try:
         return OrderController(OrderRepository()).list_orders()

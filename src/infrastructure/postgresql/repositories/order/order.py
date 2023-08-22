@@ -1,15 +1,15 @@
-from typing import List, Optional
 from uuid import UUID
 
 from sqlalchemy import case, select
 from sqlalchemy.orm import subqueryload
 
-from src.infrastructure.postgresql.database import get_session
-from src.infrastructure.postgresql.models.order.order import OrderItemModel, OrderModel
 from src.domain.aggregates.order.interfaces.order_entity import (
     OrderStatus,
     OrderInterface,
 )
+from src.domain.shared.exceptions.order import OrderNotFoundException
+from src.infrastructure.postgresql.database import get_session
+from src.infrastructure.postgresql.models.order.order import OrderItemModel, OrderModel
 from src.interface_adapters.gateways.repositories.order import (
     OrderItemRepositoryDto,
     OrderRepositoryDto,
@@ -17,9 +17,6 @@ from src.interface_adapters.gateways.repositories.order import (
 )
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryDto,
-)
-from src.domain.shared.exceptions.order import (
-    OrderNotFoundException,
 )
 
 
@@ -41,7 +38,7 @@ class OrderRepository(OrderRepositoryInterface):
             )
             new_order_item.create()
 
-    def find(self, uuid: str) -> Optional[OrderRepositoryDto]:
+    def find(self, uuid: str) -> OrderRepositoryDto | None:
         with get_session() as session:
             stmt = select(OrderModel)
             stmt = stmt.options(
@@ -105,7 +102,7 @@ class OrderRepository(OrderRepositoryInterface):
         self,
         filters: dict = {},
         exclusive_filters: dict = {},
-    ) -> List[Optional[OrderRepositoryDto]]:
+    ) -> list[OrderRepositoryDto]:
         with get_session() as session:
             stmt = select(OrderModel)
             stmt = stmt.options(
@@ -169,7 +166,7 @@ class OrderRepository(OrderRepositoryInterface):
             for order in orders
         ]
 
-    def delete(self, uuid: str) -> Optional[OrderRepositoryDto]:
+    def delete(self, uuid: str) -> OrderRepositoryDto | None:
         order = OrderModel.retrieve(uuid)
         if order is None:
             raise OrderNotFoundException()

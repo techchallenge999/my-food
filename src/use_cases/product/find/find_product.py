@@ -1,4 +1,3 @@
-from typing import Optional
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
@@ -22,7 +21,7 @@ class FindProductUseCase:
 
     def execute(
         self, input_data: FindProductInputDto, actor_uuid: str | None
-    ) -> Optional[FindProductOutputDto]:
+    ) -> FindProductOutputDto | None:
         actor = self._user_repository.find(actor_uuid)
 
         product = self._repository.find(uuid=input_data.uuid)

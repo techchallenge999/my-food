@@ -1,4 +1,5 @@
-from typing import Annotated, Optional
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from src.domain.shared.exceptions.base import DomainException
@@ -63,7 +64,7 @@ async def list_users(
         )
 
 
-@router.get("/{user_uuid}/", response_model=Optional[FindUserOutputDto])
+@router.get("/{user_uuid}/", response_model=FindUserOutputDto | None)
 async def retrieve_user(
     user_uuid: str,
     current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],

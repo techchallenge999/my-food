@@ -1,19 +1,10 @@
-from typing import List, Optional
-from src.domain.aggregates.product.interfaces.product_entity import (
-    ProductCategory,
-)
+from src.domain.aggregates.product.interfaces.product_entity import ProductCategory
+from src.domain.shared.exceptions.product import InvalidProductCategoryException
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
-from src.interface_adapters.gateways.repositories.user import (
-    UserRepositoryInterface,
-)
-from src.domain.shared.exceptions.product import (
-    InvalidProductCategoryException,
-)
-from src.use_cases.product.list.list_product_dto import (
-    ListProductOutputDto,
-)
+from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
+from src.use_cases.product.list.list_product_dto import ListProductOutputDto
 
 
 class ListProductUseCase:
@@ -27,7 +18,7 @@ class ListProductUseCase:
 
     def execute(
         self, actor_uuid: str | None, filters: dict = {}
-    ) -> Optional[List[ListProductOutputDto]]:
+    ) -> list[ListProductOutputDto]:
         actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:
             filters["is_active"] = True
@@ -40,7 +31,7 @@ class ListProductUseCase:
         product_list = self._repository.list(filters)
 
         if product_list is None:
-            return None
+            return []
 
         return [
             ListProductOutputDto(

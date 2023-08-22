@@ -1,5 +1,3 @@
-from typing import List, Union
-
 from src.infrastructure.fast_api.utils.auth import EmptyUser
 from src.interface_adapters.gateways.order_parser import CreateOrderParser
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
@@ -56,7 +54,7 @@ class OrderController:
         )
         return new_user
 
-    def list_orders(self) -> Union[List[ListOrderOutputDto], List]:
+    def list_orders(self) -> list[ListOrderOutputDto]:
         return ListOrderUseCase(self.repository).execute()
 
     def retireve_order(self, order_uuid: str) -> FindOrderOutputDto:

@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 from src.use_cases.user.create.create_user import CreateAdminUserUseCase
 from src.use_cases.user.create.create_user_dto import (
@@ -30,15 +28,13 @@ class UserController:
         )
         return updated_user
 
-    def list_users(
-        self, current_user: FindUserOutputDto
-    ) -> Optional[List[ListUserOutputDto]]:
+    def list_users(self, current_user: FindUserOutputDto) -> list[ListUserOutputDto]:
         list_use_case = ListUserUseCase(self.repository)
         return list_use_case.execute(current_user.uuid)
 
     def retrieve_user(
         self, user_uuid: str, current_user: FindUserOutputDto
-    ) -> Optional[FindUserOutputDto]:
+    ) -> FindUserOutputDto | None:
         find_use_case = FindUserUseCase(self.repository)
         user = find_use_case.execute(
             FindUserInputDto(uuid=user_uuid), current_user.uuid

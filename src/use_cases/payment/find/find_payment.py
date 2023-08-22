@@ -1,9 +1,7 @@
-from typing import Optional
-
+from src.domain.shared.exceptions.payment import PaymentNotFoundException
 from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryInterface,
 )
-from src.domain.shared.exceptions.payment import PaymentNotFoundException
 from src.use_cases.payment.find.find_payment_dto import (
     FindPaymentByOrderInputDto,
     FindPaymentInputDto,
@@ -15,9 +13,7 @@ class FindPaymentUseCase:
     def __init__(self, repository: PaymentRepositoryInterface):
         self._repository = repository
 
-    def execute(
-        self, input_data: FindPaymentInputDto
-    ) -> Optional[FindPaymentOutputDto]:
+    def execute(self, input_data: FindPaymentInputDto) -> FindPaymentOutputDto:
         payment = self._repository.find(uuid=input_data.uuid)
 
         if payment is None:
@@ -34,9 +30,7 @@ class FindPaymentByOrderUseCase:
     def __init__(self, repository: PaymentRepositoryInterface):
         self._repository = repository
 
-    def execute(
-        self, input_data: FindPaymentByOrderInputDto
-    ) -> Optional[FindPaymentOutputDto]:
+    def execute(self, input_data: FindPaymentByOrderInputDto) -> FindPaymentOutputDto:
         payment = self._repository.find_by_order(order_uuid=input_data.order_uuid)
 
         if payment is None:

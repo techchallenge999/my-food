@@ -1,5 +1,3 @@
-from typing import Optional
-
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryInterface,
@@ -39,7 +37,7 @@ class PaymentController:
         payment = create_use_case.execute(input_data)
         return payment
 
-    def get_payment_status(self, order_uuid: str) -> Optional[FindPaymentOutputDto]:
+    def get_payment_status(self, order_uuid: str) -> FindPaymentOutputDto | None:
         find_use_case = FindPaymentByOrderUseCase(self.repository)
         payment = find_use_case.execute(FindPaymentByOrderInputDto(order_uuid))
         return payment
@@ -51,7 +49,7 @@ class PaymentController:
         order_repository: OrderRepositoryInterface,
         product_repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
-    ) -> Optional[UpdatePaymentOutputDto]:
+    ) -> UpdatePaymentOutputDto:
         update_use_case = UpdatePaymentUseCase(
             self.repository,
             order_repository,

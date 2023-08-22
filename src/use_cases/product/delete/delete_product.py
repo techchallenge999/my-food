@@ -1,4 +1,3 @@
-from typing import Optional
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
@@ -22,7 +21,7 @@ class DeleteProductUseCase:
 
     def execute(
         self, input_data: DeleteProductInputDto, actor_uuid: str | None
-    ) -> Optional[DeleteProductOutputDto]:
+    ) -> DeleteProductOutputDto | None:
         actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:
             return None

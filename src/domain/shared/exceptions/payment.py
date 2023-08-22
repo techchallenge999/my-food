@@ -9,8 +9,3 @@ class InvalidPaymentStatusException(DomainException):
 class PaymentNotFoundException(DomainException):
     def __init__(self, message="Payment not found."):
         super().__init__(message)
-
-
-class NoPaymentFoundException(DomainException):
-    def __init__(self, message="No payment found."):
-        super().__init__(message)

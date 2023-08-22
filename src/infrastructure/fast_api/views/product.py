@@ -1,4 +1,4 @@
-from typing import Annotated, List
+from typing import Annotated
 from fastapi import (
     APIRouter,
     Depends,
@@ -48,7 +48,7 @@ from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 router = APIRouter()
 
 
-@router.get("/", response_model=List[ListProductOutputDto])
+@router.get("/", response_model=list[ListProductOutputDto])
 async def list_products(
     current_user: Annotated[
         FindUserOutputDto | EmptyUser, Depends(get_current_user_optional)

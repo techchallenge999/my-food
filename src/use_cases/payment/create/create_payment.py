@@ -39,7 +39,6 @@ class CreatePaymentUseCase:
             self._order_repository,
         )
 
-        self._payment_repository.create(entity=new_payment)
         api_url = os.getenv("API_URL", "http://localhost:8000")
         payment_gateway_data = self.payment_gateway.create(
             PaymentGatewayInputDto(
@@ -49,9 +48,13 @@ class CreatePaymentUseCase:
             )
         )
 
-        return CreatePaymentOutputDto(
+        new_payment_dto = CreatePaymentOutputDto(
             order_uuid=new_payment.order_uuid,
             status=new_payment.status,
             uuid=new_payment.uuid,
             qr_data=payment_gateway_data.qr_data,
         )
+
+        self._payment_repository.create(new_payment_dto)
+
+        return new_payment_dto

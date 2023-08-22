@@ -1,26 +1,27 @@
-from src.domain.aggregates.product.interfaces.product_entity import ProductInterface
 from src.domain.shared.exceptions.product import ProductNotFoundException
 from src.infrastructure.postgresql.models.product import ProductModel
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryDto,
     ProductRepositoryInterface,
 )
+from src.use_cases.product.create.create_product_dto import CreateProductOutputDto
+from src.use_cases.product.update.update_product_dto import UpdateProductOutputDto
 
 
 class ProductRepository(ProductRepositoryInterface):
-    def create(self, entity: ProductInterface) -> None:
+    def create(self, new_product_dto: CreateProductOutputDto) -> None:
         new_product = ProductModel(
-            name=entity.name,
-            category=entity.category,
-            price=entity.price,
-            description=entity.description,
-            image=entity.image,
-            is_active=entity.is_active,
-            uuid=entity.uuid,
+            name=new_product_dto.name,
+            category=new_product_dto.category,
+            price=new_product_dto.price,
+            description=new_product_dto.description,
+            image=new_product_dto.image,
+            is_active=new_product_dto.is_active,
+            uuid=new_product_dto.uuid,
         )
         new_product.create()
 
-    def find(self, uuid: str) -> ProductRepositoryDto | None:
+    def find(self, uuid: str) -> ProductRepositoryDto:
         product = ProductModel.retrieve(uuid)
         if product is None:
             raise ProductNotFoundException()
@@ -33,22 +34,6 @@ class ProductRepository(ProductRepositoryInterface):
             is_active=product.is_active,
             uuid=str(product.uuid),
         )
-
-    def update(self, entity: ProductInterface) -> None:
-        product = ProductModel.retrieve(entity.uuid)
-        if product:
-            ProductModel.update(
-                {
-                    "name": entity.name,
-                    "category": entity.category,
-                    "price": entity.price,
-                    "description": entity.description,
-                    "image": entity.image,
-                    "uuid": entity.uuid,
-                    "is_active": entity.is_active,
-                    "id": product.id,
-                }
-            )
 
     def list(self, filters: dict) -> list[ProductRepositoryDto]:
         products = ProductModel.list_filtering_by_column(filters)
@@ -68,6 +53,22 @@ class ProductRepository(ProductRepositoryInterface):
             )
             for product in products
         ]
+
+    def update(self, updated_product_dto: UpdateProductOutputDto) -> None:
+        product = ProductModel.retrieve(updated_product_dto.uuid)
+        if product:
+            ProductModel.update(
+                {
+                    "name": updated_product_dto.name,
+                    "category": updated_product_dto.category,
+                    "price": updated_product_dto.price,
+                    "description": updated_product_dto.description,
+                    "image": updated_product_dto.image,
+                    "uuid": updated_product_dto.uuid,
+                    "is_active": updated_product_dto.is_active,
+                    "id": product.id,
+                }
+            )
 
     def delete(self, uuid: str) -> ProductRepositoryDto | None:
         product = ProductModel.retrieve(uuid)

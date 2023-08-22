@@ -1,11 +1,10 @@
 from abc import abstractmethod
 from dataclasses import dataclass
 
-from src.domain.aggregates.product.interfaces.product_entity import (
-    ProductInterface,
-    ProductCategory,
-)
+from src.domain.aggregates.product.interfaces.product_entity import ProductCategory
 from src.domain.shared.interfaces.repository import RepositoryInterface
+from src.use_cases.product.create.create_product_dto import CreateProductOutputDto
+from src.use_cases.product.update.update_product_dto import UpdateProductOutputDto
 
 
 @dataclass
@@ -21,7 +20,7 @@ class ProductRepositoryDto:
 
 class ProductRepositoryInterface(RepositoryInterface):
     @abstractmethod
-    def create(self, entity: ProductInterface) -> None:
+    def create(self, new_product_dto: CreateProductOutputDto) -> None:
         pass
 
     @abstractmethod
@@ -33,7 +32,7 @@ class ProductRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def update(self, entity: ProductInterface) -> None:
+    def update(self, updated_product_dto: UpdateProductOutputDto) -> None:
         pass
 
     @abstractmethod

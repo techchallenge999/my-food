@@ -39,12 +39,14 @@ class UpdateUserUseCase:
             uuid=UUID(input_data.uuid),
         )
 
-        self._repository.update(updated_user)
-
-        return UpdateUserOutputDto(
+        updated_user_dto = UpdateUserOutputDto(
             cpf=updated_user.cpf,
             email=updated_user.email,
             name=updated_user.name,
             is_admin=updated_user.is_admin,
             uuid=updated_user.uuid,
         )
+
+        self._repository.update(updated_user_dto, updated_user.password)
+
+        return updated_user_dto

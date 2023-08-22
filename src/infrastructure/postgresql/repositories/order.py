@@ -3,10 +3,7 @@ from uuid import UUID
 from sqlalchemy import case, select
 from sqlalchemy.orm import subqueryload
 
-from src.domain.aggregates.order.interfaces.order_entity import (
-    OrderStatus,
-    OrderInterface,
-)
+from src.domain.aggregates.order.interfaces.order_entity import OrderStatus
 from src.domain.shared.exceptions.order import OrderNotFoundException
 from src.infrastructure.postgresql.database import get_session
 from src.infrastructure.postgresql.models.order import OrderItemModel, OrderModel
@@ -15,25 +12,25 @@ from src.interface_adapters.gateways.repositories.order import (
     OrderRepositoryDto,
     OrderRepositoryInterface,
 )
-from src.interface_adapters.gateways.repositories.product import (
-    ProductRepositoryDto,
-)
+from src.interface_adapters.gateways.repositories.product import ProductRepositoryDto
+from src.use_cases.order.create.create_order_dto import CreateOrderOutputDto
+from src.use_cases.order.update.update_order_dto import UpdateOrderOutputDto
 
 
 class OrderRepository(OrderRepositoryInterface):
-    def create(self, entity: OrderInterface) -> None:
+    def create(self, new_order_dto: CreateOrderOutputDto) -> None:
         new_order = OrderModel(
             status=OrderStatus.RECEIVED,
-            total_amount=entity.total_amount,
-            uuid=entity.uuid,
-            user_uuid=entity.user_uuid,
+            total_amount=new_order_dto.total_amount,
+            uuid=new_order_dto.uuid,
+            user_uuid=new_order_dto.user_uuid,
         )
         new_order.create()
-        for item in entity.items:
+        for item in new_order_dto.items:
             new_order_item = OrderItemModel(
                 comment=item.comment,
-                order_uuid=entity.uuid,
-                product_uuid=item.product_uuid,
+                order_uuid=new_order_dto.uuid,
+                product_uuid=item.product.uuid,
                 quantity=item.quantity,
             )
             new_order_item.create()
@@ -74,29 +71,6 @@ class OrderRepository(OrderRepositoryInterface):
             created_at=order.created_at,
             updated_at=order.updated_at,
         )
-
-    def update(self, entity: OrderInterface) -> None:
-        order = OrderModel.retrieve(entity.uuid)
-        if order:
-            for item in order.items:
-                item.self_destroy()
-            for item in entity.items:
-                OrderItemModel(
-                    comment=item.comment,
-                    order_uuid=order.uuid,
-                    product_uuid=item.product_uuid,
-                    quantity=item.quantity,
-                ).create()
-
-            OrderModel.update(
-                {
-                    "items": entity.items,
-                    "status": entity.status,
-                    "total_amount": entity.total_amount,
-                    "uuid": entity.uuid,
-                    "id": order.id,
-                }
-            )
 
     def list(
         self,
@@ -165,6 +139,29 @@ class OrderRepository(OrderRepositoryInterface):
             )
             for order in orders
         ]
+
+    def update(self, updated_order_dto: UpdateOrderOutputDto) -> None:
+        order = OrderModel.retrieve(updated_order_dto.uuid)
+        if order:
+            for item in order.items:
+                item.self_destroy()
+            for item in updated_order_dto.items:
+                OrderItemModel(
+                    comment=item.comment,
+                    order_uuid=order.uuid,
+                    product_uuid=item.product.uuid,
+                    quantity=item.quantity,
+                ).create()
+
+            OrderModel.update(
+                {
+                    "items": updated_order_dto.items,
+                    "status": updated_order_dto.status,
+                    "total_amount": updated_order_dto.total_amount,
+                    "uuid": updated_order_dto.uuid,
+                    "id": order.id,
+                }
+            )
 
     def delete(self, uuid: str) -> OrderRepositoryDto | None:
         order = OrderModel.retrieve(uuid)

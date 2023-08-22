@@ -52,10 +52,7 @@ class BaseUpdateOrderUseCase:
             else None,
             uuid=UUID(order.uuid),
         )
-
-        self._order_repository.update(entity=updated_order)
-
-        return UpdateOrderOutputDto(
+        updated_order_dto = UpdateOrderOutputDto(
             items=[
                 UpdateOrderItemOutputDto(
                     comment=item.comment,
@@ -71,6 +68,8 @@ class BaseUpdateOrderUseCase:
             user_uuid=updated_order.user_uuid,
             uuid=updated_order.uuid,
         )
+        self._order_repository.update(updated_order_dto)
+        return updated_order_dto
 
     def find_order(self, order_uuid: str) -> OrderRepositoryDto:
         order = self._order_repository.find(order_uuid)

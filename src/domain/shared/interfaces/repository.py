@@ -1,19 +1,19 @@
 from abc import ABC, abstractmethod
-from typing import TypeVar
-
-
-GenericEntity = TypeVar('GenericEntity')
 
 
 class RepositoryInterface(ABC):
     @abstractmethod
-    def create(self, entity: GenericEntity) -> None:
+    def create(self, entity_dto: ABC) -> None:
         pass
 
     @abstractmethod
-    def find(self, uuid: str) -> GenericEntity:
+    def list(self, uuid: str) -> ABC:
         pass
 
     @abstractmethod
-    def update(self, entity: GenericEntity) -> None:
+    def find(self, uuid: str) -> ABC:
+        pass
+
+    @abstractmethod
+    def update(self, entity_dto: ABC) -> None:
         pass

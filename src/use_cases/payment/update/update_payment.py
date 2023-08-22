@@ -43,15 +43,18 @@ class UpdatePaymentUseCase:
             uuid=UUID(payment.uuid),
         )
 
-        self._payment_repository.update(entity=updated_payment)
-
-        self.update_order_status(updated_payment.order_uuid, updated_payment.status)
-
-        return UpdatePaymentOutputDto(
+        updated_payment_dto = UpdatePaymentOutputDto(
             order_uuid=updated_payment.order_uuid,
             status=updated_payment.status,
             uuid=updated_payment.uuid,
         )
+
+        self._payment_repository.update(updated_payment_dto)
+        self.update_order_status(
+            updated_payment_dto.order_uuid, updated_payment_dto.status
+        )
+
+        return updated_payment_dto
 
     def update_order_status(
         self, order_uuid: str, new_payment_status: PaymentStatus

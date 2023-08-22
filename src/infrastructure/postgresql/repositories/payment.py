@@ -1,18 +1,19 @@
-from src.domain.aggregates.payment.interfaces.payment_entity import PaymentInterface
 from src.domain.shared.exceptions.payment import PaymentNotFoundException
 from src.infrastructure.postgresql.models.payment import PaymentModel
 from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryDto,
     PaymentRepositoryInterface,
 )
+from src.use_cases.payment.create.create_payment_dto import CreatePaymentOutputDto
+from src.use_cases.payment.update.update_payment_dto import UpdatePaymentOutputDto
 
 
 class PaymentRepository(PaymentRepositoryInterface):
-    def create(self, entity: PaymentInterface) -> None:
+    def create(self, new_payment_dto: CreatePaymentOutputDto) -> None:
         new_payment = PaymentModel(
-            order_uuid=entity.order_uuid,
-            status=entity.status,
-            uuid=entity.uuid,
+            order_uuid=new_payment_dto.order_uuid,
+            status=new_payment_dto.status,
+            uuid=new_payment_dto.uuid,
         )
         new_payment.create()
 
@@ -51,7 +52,7 @@ class PaymentRepository(PaymentRepositoryInterface):
             for payment in payments
         ]
 
-    def update(self, entity: PaymentInterface) -> None:
-        payment = PaymentModel.retrieve(entity.uuid)
+    def update(self, updated_order_dto: UpdatePaymentOutputDto) -> None:
+        payment = PaymentModel.retrieve(updated_order_dto.uuid)
         if payment:
-            PaymentModel.update({"status": entity.status})
+            PaymentModel.update({"status": updated_order_dto.status})

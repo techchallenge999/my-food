@@ -1,10 +1,9 @@
 from abc import abstractmethod
 from dataclasses import dataclass
 
-from src.domain.aggregates.user.interfaces.entities import (
-    UserInterface,
-)
 from src.domain.shared.interfaces.repository import RepositoryInterface
+from src.use_cases.user.create.create_user_dto import CreateUserOutputDto
+from src.use_cases.user.update.update_user_dto import UpdateUserOutputDto
 
 
 @dataclass
@@ -19,7 +18,7 @@ class UserRepositoryDto:
 
 class UserRepositoryInterface(RepositoryInterface):
     @abstractmethod
-    def create(self, entity: UserInterface) -> None:
+    def create(self, new_user_dto: CreateUserOutputDto, password: str) -> None:
         pass
 
     @abstractmethod
@@ -31,7 +30,7 @@ class UserRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def update(self, entity: UserInterface) -> None:
+    def update(self, updated_user_dto: UpdateUserOutputDto, password: str) -> None:
         pass
 
     @abstractmethod

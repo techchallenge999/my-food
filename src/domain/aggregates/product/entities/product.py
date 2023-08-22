@@ -52,12 +52,12 @@ class Product(ProductInterface):
         self._category = value
 
     @property
-    def price(self) -> str:
-        return str(self._price)
+    def price(self) -> float:
+        return self._price
 
     @price.setter
-    def price(self, value: str):
-        self._price = float(value)
+    def price(self, value: float):
+        self._price = value
 
     @property
     def description(self) -> str:

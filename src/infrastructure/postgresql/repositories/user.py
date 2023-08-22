@@ -1,25 +1,52 @@
-from src.domain.aggregates.user.interfaces.entities import UserInterface
 from src.domain.shared.exceptions.user import UserNotFoundException
 from src.infrastructure.postgresql.models.user import UserModel
 from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryDto,
     UserRepositoryInterface,
 )
+from src.use_cases.user.create.create_user_dto import CreateUserOutputDto
+from src.use_cases.user.update.update_user_dto import UpdateUserOutputDto
 
 
 class UserRepository(UserRepositoryInterface):
-    def create(self, entity: UserInterface) -> None:
+    def create(self, new_user_dto: CreateUserOutputDto, password: str) -> None:
         new_user = UserModel(
-            cpf=entity.cpf,
-            email=entity.email,
-            name=entity.name,
-            password=entity.password,
-            uuid=entity.uuid,
+            cpf=new_user_dto.cpf,
+            email=new_user_dto.email,
+            name=new_user_dto.name,
+            password=password,
+            uuid=new_user_dto.uuid,
         )
         new_user.create()
 
     def find(self, uuid: str | None) -> UserRepositoryDto:
         user = UserModel.retrieve(uuid)
+        if user is None:
+            raise UserNotFoundException()
+        return UserRepositoryDto(
+            cpf=user.cpf,
+            email=user.email,
+            name=user.name,
+            password=user.password,
+            is_admin=user.is_admin,
+            uuid=str(user.uuid),
+        )
+
+    def find_by_cpf(self, cpf: str) -> UserRepositoryDto:
+        user = UserModel.retrieve_by_column("cpf", cpf)
+        if user is None:
+            raise UserNotFoundException()
+        return UserRepositoryDto(
+            cpf=user.cpf,
+            email=user.email,
+            name=user.name,
+            password=user.password,
+            is_admin=user.is_admin,
+            uuid=str(user.uuid),
+        )
+
+    def find_by_email(self, email: str) -> UserRepositoryDto:
+        user = UserModel.retrieve_by_column("email", email)
         if user is None:
             raise UserNotFoundException()
         return UserRepositoryDto(
@@ -49,42 +76,16 @@ class UserRepository(UserRepositoryInterface):
             for user in users
         ]
 
-    def update(self, entity: UserInterface) -> None:
-        user = UserModel.retrieve(entity.uuid)
+    def update(self, updated_user_dto: UpdateUserOutputDto, password: str) -> None:
+        user = UserModel.retrieve(updated_user_dto.uuid)
         if user:
             UserModel.update(
                 {
-                    "cpf": entity.cpf,
-                    "email": entity.email,
-                    "name": entity.name,
-                    "password": entity.password,
-                    "uuid": entity.uuid,
+                    "cpf": updated_user_dto.cpf,
+                    "email": updated_user_dto.email,
+                    "name": updated_user_dto.name,
+                    "password": password,
+                    "uuid": updated_user_dto.uuid,
                     "id": user.id,
                 }
             )
-
-    def find_by_cpf(self, cpf: str) -> UserRepositoryDto:
-        user = UserModel.retrieve_by_column("cpf", cpf)
-        if user is None:
-            raise UserNotFoundException()
-        return UserRepositoryDto(
-            cpf=user.cpf,
-            email=user.email,
-            name=user.name,
-            password=user.password,
-            is_admin=user.is_admin,
-            uuid=str(user.uuid),
-        )
-
-    def find_by_email(self, email: str) -> UserRepositoryDto:
-        user = UserModel.retrieve_by_column("email", email)
-        if user is None:
-            raise UserNotFoundException()
-        return UserRepositoryDto(
-            cpf=user.cpf,
-            email=user.email,
-            name=user.name,
-            password=user.password,
-            is_admin=user.is_admin,
-            uuid=str(user.uuid),
-        )

@@ -48,9 +48,7 @@ class UpdateProductUseCase:
             repository=self._repository,
         )
 
-        self._repository.update(entity=updated_product)
-
-        return UpdateProductOutputDto(
+        updated_product_dto = UpdateProductOutputDto(
             name=updated_product.name,
             category=updated_product.category,
             price=updated_product.price,
@@ -59,3 +57,7 @@ class UpdateProductUseCase:
             is_active=product.is_active,
             uuid=updated_product.uuid,
         )
+
+        self._repository.update(updated_product_dto)
+
+        return updated_product_dto

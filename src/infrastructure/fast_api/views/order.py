@@ -2,11 +2,11 @@ from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, status as status_code, Depends
 
+from src.domain.shared.exceptions.base import DomainException
 from src.infrastructure.fast_api.utils.auth import EmptyUser, get_current_user_optional
 from src.infrastructure.postgresql.repositories.order.order import OrderRepository
 from src.infrastructure.postgresql.repositories.product.product import ProductRepository
 from src.infrastructure.postgresql.repositories.user.user import UserRepository
-from src.domain.shared.exceptions.base import DomainException
 from src.interface_adapters.controllers.order import OrderController
 from src.interface_adapters.gateways.order_parser import CreateOrderParser
 from src.use_cases.order.create.create_order_dto import (

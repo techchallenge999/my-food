@@ -1,19 +1,10 @@
-from typing import List, Optional
-from src.domain.aggregates.product.interfaces.product_entity import (
-    ProductCategory,
-)
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.domain.aggregates.product.interfaces.product_entity import ProductCategory
+from src.domain.shared.exceptions.product import InvalidProductCategoryException
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
-from src.domain.aggregates.user.interfaces.user_repository import (
-    UserRepositoryInterface,
-)
-from src.domain.shared.exceptions.product import (
-    InvalidProductCategoryException,
-)
-from src.use_cases.product.list.list_product_dto import (
-    ListProductOutputDto,
-)
+from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
+from src.use_cases.product.list.list_product_dto import ListProductOutputDto
 
 
 class ListProductUseCase:
@@ -26,8 +17,8 @@ class ListProductUseCase:
         self._user_repository = user_repository
 
     def execute(
-        self, actor_uuid: str, filters: dict = {}
-    ) -> Optional[List[ListProductOutputDto]]:
+        self, actor_uuid: str | None, filters: dict = {}
+    ) -> list[ListProductOutputDto]:
         actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:
             filters["is_active"] = True
@@ -37,10 +28,10 @@ class ListProductUseCase:
             except ValueError as err:
                 raise InvalidProductCategoryException(err.args[0])
 
-        products_list = self._repository.list(filters)
+        product_list = self._repository.list(filters)
 
-        if products_list is None:
-            return None
+        if product_list is None:
+            return []
 
         return [
             ListProductOutputDto(
@@ -52,5 +43,5 @@ class ListProductUseCase:
                 is_active=product.is_active,
                 uuid=product.uuid,
             )
-            for product in products_list
+            for product in product_list
         ]

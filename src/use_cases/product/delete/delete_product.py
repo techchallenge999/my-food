@@ -1,8 +1,7 @@
-from typing import Optional
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
-from src.domain.aggregates.user.interfaces.user_repository import (
+from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
 from src.use_cases.product.delete.delete_product_dto import (
@@ -21,8 +20,8 @@ class DeleteProductUseCase:
         self._user_repository = user_repository
 
     def execute(
-        self, input_data: DeleteProductInputDto, actor_uuid: str
-    ) -> Optional[DeleteProductOutputDto]:
+        self, input_data: DeleteProductInputDto, actor_uuid: str | None
+    ) -> DeleteProductOutputDto | None:
         actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:
             return None

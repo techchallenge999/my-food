@@ -1,8 +1,7 @@
-from typing import Optional
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
-from src.domain.aggregates.user.interfaces.user_repository import (
+from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
 from src.use_cases.product.find.find_product_dto import (
@@ -21,8 +20,8 @@ class FindProductUseCase:
         self._user_repository = user_repository
 
     def execute(
-        self, input_data: FindProductInputDto, actor_uuid: str
-    ) -> Optional[FindProductOutputDto]:
+        self, input_data: FindProductInputDto, actor_uuid: str | None
+    ) -> FindProductOutputDto | None:
         actor = self._user_repository.find(actor_uuid)
 
         product = self._repository.find(uuid=input_data.uuid)

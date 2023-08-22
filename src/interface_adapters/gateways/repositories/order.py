@@ -1,28 +1,25 @@
 from abc import abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List, Optional
 
 from src.domain.aggregates.order.interfaces.order_entity import (
     OrderInterface,
     OrderStatus,
 )
-from src.domain.aggregates.product.interfaces.product_repository import (
-    ProductRepositoryDto,
-)
 from src.domain.shared.interfaces.repository import RepositoryInterface
+from src.interface_adapters.gateways.repositories.product import ProductRepositoryDto
 
 
 @dataclass
-class OrderItemRepositoryOutputDto:
+class OrderItemRepositoryDto:
     comment: str
     product: ProductRepositoryDto
     quantity: int
 
 
 @dataclass
-class OrderRepositoryOutputDto:
-    items: list[OrderItemRepositoryOutputDto]
+class OrderRepositoryDto:
+    items: list[OrderItemRepositoryDto]
     status: OrderStatus
     total_amount: str
     user_uuid: str | None
@@ -37,11 +34,13 @@ class OrderRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def find(self, uuid: str) -> Optional[OrderRepositoryOutputDto]:
+    def find(self, uuid: str) -> OrderRepositoryDto | None:
         pass
 
     @abstractmethod
-    def list(self, filters: dict) -> Optional[List[OrderRepositoryOutputDto]]:
+    def list(
+        self, filters: dict | None = None, exclusive_filters: dict | None = None
+    ) -> list[OrderRepositoryDto]:
         pass
 
     @abstractmethod

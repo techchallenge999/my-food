@@ -1,9 +1,9 @@
 from uuid import UUID
 from src.domain.aggregates.product.entities.product import Product
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
-from src.domain.aggregates.user.interfaces.user_repository import (
+from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
 from src.domain.shared.exceptions.product import (
@@ -28,7 +28,7 @@ class ActivateProductUseCase:
         self._user_repository = user_repository
 
     def execute(
-        self, input_data: ActivateProductInputDto, actor_uuid: str
+        self, input_data: ActivateProductInputDto, actor_uuid: str | None
     ) -> ActivateProductOutputDto:
         actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:
@@ -75,7 +75,7 @@ class DeactivateProductUseCase:
         self._user_repository = user_repository
 
     def execute(
-        self, input_data: DeactivateProductInputDto, actor_uuid: str
+        self, input_data: DeactivateProductInputDto, actor_uuid: str | None
     ) -> DeactivateProductOutputDto:
         actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:

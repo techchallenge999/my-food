@@ -1,24 +1,23 @@
 from uuid import UUID, uuid4
 
-from src.domain.aggregates.user.interfaces.user_entity import (
-    UserInterface,
+from src.domain.aggregates.user.interfaces.entities import UserInterface
+from src.domain.aggregates.user.interfaces.value_objects import (
+    CpfInterface,
+    EmailInterface,
+    PasswordInterface,
 )
-from src.domain.aggregates.user.interfaces.user_repository import (
-    UserRepositoryInterface,
-)
-from src.domain.aggregates.user.validators.user_validator import (
-    UserValidator,
-)
+from src.domain.aggregates.user.validators.user_validator import UserValidator
 from src.domain.shared.interfaces.validator import ValidatorInterface
+from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 
 
 class User(UserInterface):
     def __init__(
         self,
-        cpf: str,
-        email: str,
+        cpf: CpfInterface,
+        email: EmailInterface,
         name: str,
-        password: str,
+        password: PasswordInterface,
         repository: UserRepositoryInterface,
         is_admin: bool = False,
         uuid: UUID = uuid4(),
@@ -34,19 +33,19 @@ class User(UserInterface):
 
     @property
     def cpf(self) -> str:
-        return self._cpf
+        return self._cpf.value
 
     @cpf.setter
-    def cpf(self, value: str):
-        self._cpf = value
+    def cpf(self, cpf: CpfInterface):
+        self._cpf = cpf
 
     @property
     def email(self) -> str:
-        return self._email
+        return self._email.value
 
     @email.setter
-    def email(self, value: str):
-        self._email = value
+    def email(self, email: EmailInterface):
+        self._email = email
 
     @property
     def name(self) -> str:
@@ -58,11 +57,11 @@ class User(UserInterface):
 
     @property
     def password(self) -> str:
-        return self._password
+        return self._password.value
 
     @password.setter
-    def password(self, value: str):
-        self._password = value
+    def password(self, password: PasswordInterface):
+        self._password = password
 
     @property
     def uuid(self) -> str:

@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 from uuid import UUID, uuid4
 
@@ -6,16 +7,16 @@ from src.domain.aggregates.order.interfaces.order_entity import (
     OrderItemInterface,
     OrderStatus,
 )
-from src.domain.aggregates.order.interfaces.order_repository import (
+from src.interface_adapters.gateways.repositories.order import (
     OrderRepositoryInterface,
 )
 from src.domain.aggregates.order.validators.order_validator import (
     OrderValidator,
 )
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
-from src.domain.aggregates.user.interfaces.user_repository import (
+from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryInterface,
 )
 from src.domain.shared.interfaces.validator import ValidatorInterface
@@ -28,15 +29,19 @@ class Order(OrderInterface):
         order_repository: OrderRepositoryInterface,
         product_repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
-        status: OrderStatus = OrderStatus.RECEIVED,
+        status: OrderStatus = OrderStatus.PENDING_PAYMENT,
         user_uuid: UUID | None = None,
         uuid: UUID = uuid4(),
+        created_at: datetime = datetime.now(),
+        updated_at: datetime | None = None,
     ):
         self._items = items
         self._status = status
         self._total_amount = self._get_total_amount(product_repository)
         self._user_uuid = user_uuid
         self._uuid = uuid
+        self.created_at = created_at
+        self.updated_at = updated_at
         self._validator = OrderValidator(
             self, order_repository, product_repository, user_repository
         )

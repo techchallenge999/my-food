@@ -14,3 +14,8 @@ class FindPaymentOutputDto:
     order_uuid: str
     status: PaymentStatus
     uuid: str
+
+
+@dataclass
+class FindPaymentByOrderInputDto:
+    order_uuid: str

@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, Enum, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from src.infrastructure.postgresql.database import Base
@@ -17,11 +17,15 @@ class OrderModel(Base, CRUDMixin, TimestampMixin):
     items = relationship(
         "OrderItemModel", lazy="subquery", cascade="all, delete-orphan"
     )
-    status = Column(Enum(OrderStatus), default=OrderStatus.RECEIVED, nullable=False)
+    status = Column(
+        Enum(OrderStatus), default=OrderStatus.PENDING_PAYMENT, nullable=False
+    )
     total_amount = Column(String, nullable=False)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)
     user_uuid = Column(UUID(as_uuid=True), ForeignKey("user.uuid"), nullable=True)
     id = Column(Integer, primary_key=True)
+    created_at = Column(DateTime, nullable=False)
+    updated_at = Column(DateTime, nullable=True)
 
 
 class OrderItemModel(Base, CRUDMixin):

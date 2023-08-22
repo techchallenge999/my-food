@@ -1,14 +1,13 @@
 from datetime import datetime, timedelta
 from typing import Annotated
+from dataclasses import dataclass
 from decouple import config
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
-from src.infrastructure.FastAPI.utils.schemas import EmptyUser
+
 from src.infrastructure.postgresql.models.user.user import pwd_context
-from src.infrastructure.postgresql.repositories.user.user import UserRepository
-from src.use_cases.user.find.find_user_dto import FindUserByCpfInputDto
-from src.use_cases.user.find import find_user
+from src.use_cases.user.find.find_user_dto import FindUserByCpfOutputDto
 
 
 ALGORITHM = "HS256"
@@ -19,7 +18,15 @@ oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="token", auto_error=False
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+@dataclass
+class EmptyUser:
+    uuid: str | None = None
+
+
+async def get_current_user(
+    token: Annotated[str, Depends(oauth2_scheme)],
+    user: FindUserByCpfOutputDto | None,
+):
     try:
         payload = decode_access_token(token)
         username: str = payload["sub"]
@@ -27,14 +34,14 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
             raise_credentials_exception("Could not validate credentials")
     except JWTError:
         raise_credentials_exception("Could not validate credentials")
-    user = await get_user_by_cpf(username)
     if user is None:
         raise_credentials_exception("Could not validate credentials")
     return user
 
 
 async def get_current_user_optional(
-    token: Annotated[str | None, Depends(oauth2_scheme_optional)]
+    token: Annotated[str | None, Depends(oauth2_scheme_optional)],
+    user: FindUserByCpfOutputDto | None,
 ):
     try:
         if token is None:
@@ -45,18 +52,8 @@ async def get_current_user_optional(
             return EmptyUser()
     except JWTError:
         return EmptyUser()
-    user = await get_user_by_cpf(username)
     if user is None:
         raise_credentials_exception("Could not validate credentials")
-    return user
-
-
-async def get_user_by_cpf(cpf: str):
-    repository = UserRepository()
-    find_user_by_cpf_use_case = find_user.FindUserByCpfUseCase(repository)
-    user = find_user_by_cpf_use_case.execute(
-        FindUserByCpfInputDto(cpf=cpf), actor_cpf=cpf
-    )
     return user
 
 

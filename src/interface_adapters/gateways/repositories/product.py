@@ -1,6 +1,5 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import List, Optional
 
 from src.domain.aggregates.product.interfaces.product_entity import (
     ProductInterface,
@@ -26,11 +25,11 @@ class ProductRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def find(self, uuid: str) -> Optional[ProductRepositoryDto]:
+    def find(self, uuid: str) -> ProductRepositoryDto | None:
         pass
 
     @abstractmethod
-    def list(self) -> Optional[List[ProductRepositoryDto]]:
+    def list(self, filters: dict) -> list[ProductRepositoryDto]:
         pass
 
     @abstractmethod

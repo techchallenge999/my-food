@@ -4,7 +4,7 @@ from src.domain.aggregates.product.interfaces.product_entity import (
     ProductInterface,
     ProductCategory,
 )
-from src.domain.aggregates.product.interfaces.product_repository import (
+from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
 from src.domain.aggregates.product.validators.product_validator import (
@@ -23,14 +23,14 @@ class Product(ProductInterface):
         image: bytes,
         repository: ProductRepositoryInterface,
         is_active: bool = False,
-        uuid: UUID = None,
+        uuid: UUID = uuid4(),
     ):
         self._name = name
         self._category = category
         self._price = price
         self._description = description
         self._image = image
-        self._uuid = uuid or uuid4()
+        self._uuid = uuid
         self._is_active = is_active
         self._validator = ProductValidator(self, repository)
         self.validator.validate()
@@ -53,11 +53,11 @@ class Product(ProductInterface):
 
     @property
     def price(self) -> str:
-        return self._price
+        return str(self._price)
 
     @price.setter
     def price(self, value: str):
-        self._price = value
+        self._price = float(value)
 
     @property
     def description(self) -> str:

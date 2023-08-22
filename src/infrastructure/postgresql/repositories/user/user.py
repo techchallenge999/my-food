@@ -1,15 +1,9 @@
-from typing import List, Optional
-
+from src.domain.aggregates.user.interfaces.entities import UserInterface
+from src.domain.shared.exceptions.user import UserNotFoundException
 from src.infrastructure.postgresql.models.user.user import UserModel
-from src.domain.aggregates.user.interfaces.user_entity import (
-    UserInterface,
-)
-from src.domain.aggregates.user.interfaces.user_repository import (
+from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryDto,
     UserRepositoryInterface,
-)
-from src.domain.shared.exceptions.user import (
-    UserNotFoundException,
 )
 
 
@@ -24,7 +18,7 @@ class UserRepository(UserRepositoryInterface):
         )
         new_user.create()
 
-    def find(self, uuid: str | None) -> Optional[UserRepositoryDto]:
+    def find(self, uuid: str | None) -> UserRepositoryDto:
         user = UserModel.retrieve(uuid)
         if user is None:
             raise UserNotFoundException()
@@ -37,7 +31,7 @@ class UserRepository(UserRepositoryInterface):
             uuid=str(user.uuid),
         )
 
-    def list(self) -> Optional[List[UserRepositoryDto]]:
+    def list(self) -> list[UserRepositoryDto]:
         users = UserModel.list()
 
         if users is None:
@@ -69,7 +63,7 @@ class UserRepository(UserRepositoryInterface):
                 }
             )
 
-    def find_by_cpf(self, cpf: str) -> Optional[UserRepositoryDto]:
+    def find_by_cpf(self, cpf: str) -> UserRepositoryDto:
         user = UserModel.retrieve_by_column("cpf", cpf)
         if user is None:
             raise UserNotFoundException()
@@ -82,7 +76,7 @@ class UserRepository(UserRepositoryInterface):
             uuid=str(user.uuid),
         )
 
-    def find_by_email(self, email: str) -> Optional[UserRepositoryDto]:
+    def find_by_email(self, email: str) -> UserRepositoryDto:
         user = UserModel.retrieve_by_column("email", email)
         if user is None:
             raise UserNotFoundException()

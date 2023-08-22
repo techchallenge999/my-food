@@ -1,8 +1,9 @@
 from src.domain.aggregates.user.entities.user import User
-from src.domain.aggregates.user.interfaces.user_repository import (
-    UserRepositoryInterface,
-)
+from src.domain.aggregates.user.value_objects.cpf import Cpf
+from src.domain.aggregates.user.value_objects.email import Email
+from src.domain.aggregates.user.value_objects.password import Password
 from src.domain.shared.exceptions.user import Unauthorized
+from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 from src.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,
     CreateUserOutputDto,
@@ -17,10 +18,10 @@ class CreateUserUseCase:
         cpf = "".join(filter(str.isdigit, input_data.cpf))
 
         new_user = User(
-            cpf=cpf,
-            email=input_data.email,
+            cpf=Cpf(cpf),
+            email=Email(input_data.email),
             name=input_data.name,
-            password=input_data.password,
+            password=Password(input_data.password),
             repository=self._repository,
         )
 
@@ -50,10 +51,10 @@ class CreateAdminUserUseCase:
         cpf = "".join(filter(str.isdigit, input_data.cpf))
 
         new_user = User(
-            cpf=cpf,
-            email=input_data.email,
+            cpf=Cpf(cpf),
+            email=Email(input_data.email),
             name=input_data.name,
-            password=input_data.password,
+            password=Password(input_data.password),
             repository=self._repository,
             is_admin=True,
         )

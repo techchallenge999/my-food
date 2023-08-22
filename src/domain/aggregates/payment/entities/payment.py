@@ -1,26 +1,18 @@
 from uuid import UUID, uuid4
 
-from src.domain.aggregates.order.interfaces.order_repository import (
-    OrderRepositoryInterface,
-)
 from src.domain.aggregates.payment.interfaces.payment_entity import (
     PaymentInterface,
     PaymentStatus,
 )
-from src.domain.aggregates.payment.interfaces.payment_repository import (
-    PaymentRepositoryInterface,
-)
-from src.domain.aggregates.payment.validators.payment_validator import (
-    PaymentValidator,
-)
+from src.domain.aggregates.payment.validators.payment_validator import PaymentValidator
 from src.domain.shared.interfaces.validator import ValidatorInterface
+from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 
 
 class Payment(PaymentInterface):
     def __init__(
         self,
         order_uuid: UUID,
-        payment_repository: PaymentRepositoryInterface,
         order_repository: OrderRepositoryInterface,
         status: PaymentStatus = PaymentStatus.PENDING,
         uuid: UUID = uuid4(),
@@ -28,7 +20,7 @@ class Payment(PaymentInterface):
         self._order_uuid = order_uuid
         self._status = status
         self._uuid = uuid
-        self._validator = PaymentValidator(self, payment_repository, order_repository)
+        self._validator = PaymentValidator(self, order_repository)
         self.validator.validate()
 
     @property

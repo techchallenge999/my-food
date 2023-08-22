@@ -20,11 +20,6 @@ class UpdateOrderItemOutputDto:
 
 
 @dataclass
-class UpdateOrderStatusInputDto:
-    status: OrderStatus
-
-
-@dataclass
 class UpdateOrderItemsInputDto:
     items: list[UpdateOrderItemInputDto]
 

@@ -29,7 +29,6 @@ from src.use_cases.order.update.update_order import (
 from src.use_cases.order.update.update_order_dto import (
     UpdateOrderItemsInputDto,
     UpdateOrderOutputDto,
-    UpdateOrderStatusInputDto,
 )
 from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 
@@ -75,17 +74,28 @@ class OrderController:
         order = update_use_case.execute(order_uuid, input_data)
         return order
 
-    def update_order_status(
+    def progress_order_status(
         self,
         order_uuid: str,
-        input_data: UpdateOrderStatusInputDto,
         product_repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
     ) -> UpdateOrderOutputDto:
         update_use_case = UpdateOrderStatusUseCase(
             self.repository, product_repository, user_repository
         )
-        order = update_use_case.execute(order_uuid, input_data)
+        order = update_use_case.progress(order_uuid)
+        return order
+
+    def cancel_order(
+        self,
+        order_uuid: str,
+        product_repository: ProductRepositoryInterface,
+        user_repository: UserRepositoryInterface,
+    ) -> UpdateOrderOutputDto:
+        update_use_case = UpdateOrderStatusUseCase(
+            self.repository, product_repository, user_repository
+        )
+        order = update_use_case.cancel(order_uuid)
         return order
 
     def delete_order(self, order_uuid: str) -> DeleteOrderOutputDto:

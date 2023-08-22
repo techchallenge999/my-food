@@ -1,18 +1,16 @@
 from uuid import UUID
-from src.domain.aggregates.order.interfaces.order_entity import OrderStatus
-from src.domain.aggregates.payment.interfaces.payment_entity import PaymentStatus
 
-from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
+from src.domain.aggregates.payment.interfaces.payment_entity import PaymentStatus
 from src.domain.aggregates.payment.entities.payment import Payment
-from src.interface_adapters.gateways.repositories.payment import (
-    PaymentRepositoryInterface,
-)
 from src.domain.shared.exceptions.payment import (
     InvalidPaymentStatusException,
     PaymentNotFoundException,
 )
+from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
+from src.interface_adapters.gateways.repositories.payment import (
+    PaymentRepositoryInterface,
+)
 from src.use_cases.order.update.update_order import UpdateOrderStatusUseCase
-from src.use_cases.order.update.update_order_dto import UpdateOrderStatusInputDto
 from src.use_cases.payment.update.update_payment_dto import (
     UpdatePaymentInputDto,
     UpdatePaymentOutputDto,
@@ -60,11 +58,8 @@ class UpdatePaymentUseCase:
     ) -> None:
         match new_payment_status:
             case PaymentStatus.PAID:
-                new_order_status = OrderStatus.RECEIVED
+                self._update_order_status_use_case.progress(order_uuid)
             case PaymentStatus.REFUSED:
-                new_order_status = OrderStatus.CANCELED
+                self._update_order_status_use_case.cancel(order_uuid)
             case _:
                 raise InvalidPaymentStatusException()
-        self._update_order_status_use_case.execute(
-            order_uuid, UpdateOrderStatusInputDto(status=new_order_status)
-        )

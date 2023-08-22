@@ -20,7 +20,6 @@ from src.use_cases.order.update.update_order_dto import (
     UpdateOrderItemsInputDto,
     UpdateOrderItemOutputDto,
     UpdateOrderOutputDto,
-    UpdateOrderStatusInputDto,
 )
 from src.use_cases.product.find.find_product_dto import FindProductOutputDto
 
@@ -114,9 +113,7 @@ class UpdateOrderStatusUseCase(BaseUpdateOrderUseCase):
     ):
         super().__init__(order_repository, product_repository, user_repository)
 
-    def execute(
-        self, order_uuid: str, input_data: UpdateOrderStatusInputDto
-    ) -> UpdateOrderOutputDto:
+    def progress(self, order_uuid: str) -> UpdateOrderOutputDto:
         order = self.find_order(order_uuid)
         items = [
             OrderItem(
@@ -126,5 +123,18 @@ class UpdateOrderStatusUseCase(BaseUpdateOrderUseCase):
             )
             for item in order.items
         ]
-        status = input_data.status
+        status = order.status.next()
+        return super().base_execute(order, items, status)
+
+    def cancel(self, order_uuid: str) -> UpdateOrderOutputDto:
+        order = self.find_order(order_uuid)
+        items = [
+            OrderItem(
+                comment=item.comment,
+                product_uuid=UUID(item.product.uuid),
+                quantity=item.quantity,
+            )
+            for item in order.items
+        ]
+        status = OrderStatus.CANCELED
         return super().base_execute(order, items, status)

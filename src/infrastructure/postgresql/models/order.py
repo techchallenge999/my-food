@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 from src.infrastructure.postgresql.database import Base
 from src.infrastructure.postgresql.repositories.mixins.crud import CRUDMixin
 from src.infrastructure.postgresql.repositories.mixins.timestamp import TimestampMixin
-from src.infrastructure.postgresql.repositories.product.product import ProductModel
+from src.infrastructure.postgresql.repositories.product import ProductModel
 from src.domain.aggregates.order.interfaces.order_entity import (
     OrderStatus,
 )

@@ -2,10 +2,10 @@ from fastapi import APIRouter, HTTPException, status as status_code
 
 from src.domain.shared.exceptions.base import DomainException
 from src.infrastructure.checkout.mock_checkout import PaymentGateway
-from src.infrastructure.postgresql.repositories.order.order import OrderRepository
-from src.infrastructure.postgresql.repositories.payment.payment import PaymentRepository
-from src.infrastructure.postgresql.repositories.product.product import ProductRepository
-from src.infrastructure.postgresql.repositories.user.user import UserRepository
+from src.infrastructure.postgresql.repositories.order import OrderRepository
+from src.infrastructure.postgresql.repositories.payment import PaymentRepository
+from src.infrastructure.postgresql.repositories.product import ProductRepository
+from src.infrastructure.postgresql.repositories.user import UserRepository
 from src.interface_adapters.controllers.payment import PaymentController
 from src.use_cases.payment.create.create_payment_dto import (
     CreatePaymentInputDto,

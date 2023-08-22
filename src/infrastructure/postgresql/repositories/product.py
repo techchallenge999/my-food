@@ -1,6 +1,6 @@
 from src.domain.aggregates.product.interfaces.product_entity import ProductInterface
 from src.domain.shared.exceptions.product import ProductNotFoundException
-from src.infrastructure.postgresql.models.product.product import ProductModel
+from src.infrastructure.postgresql.models.product import ProductModel
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryDto,
     ProductRepositoryInterface,

@@ -1,6 +1,6 @@
 from src.domain.aggregates.user.interfaces.entities import UserInterface
 from src.domain.shared.exceptions.user import UserNotFoundException
-from src.infrastructure.postgresql.models.user.user import UserModel
+from src.infrastructure.postgresql.models.user import UserModel
 from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryDto,
     UserRepositoryInterface,

@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, Enum, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from src.domain.aggregates.payment.interfaces.payment_entity import PaymentStatus
 from src.infrastructure.postgresql.database import Base
-from src.infrastructure.postgresql.models.order.order import OrderModel
+from src.infrastructure.postgresql.models.order import OrderModel
 from src.infrastructure.postgresql.repositories.mixins.crud import CRUDMixin
 
 

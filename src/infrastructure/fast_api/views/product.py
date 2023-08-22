@@ -8,7 +8,7 @@ from fastapi import (
     Form,
     UploadFile,
 )
-from src.infrastructure.postgresql.repositories.user.user import UserRepository
+from src.infrastructure.postgresql.repositories.user import UserRepository
 from src.domain.aggregates.product.interfaces.product_entity import (
     ProductCategory,
 )
@@ -35,7 +35,7 @@ from src.infrastructure.fast_api.utils.auth import (
     get_current_user,
     get_current_user_optional,
 )
-from src.infrastructure.postgresql.repositories.product.product import ProductRepository
+from src.infrastructure.postgresql.repositories.product import ProductRepository
 from src.use_cases.product.list.list_product_dto import (
     ListProductOutputDto,
 )

@@ -1,6 +1,6 @@
 from src.domain.aggregates.payment.interfaces.payment_entity import PaymentInterface
 from src.domain.shared.exceptions.payment import PaymentNotFoundException
-from src.infrastructure.postgresql.models.payment.payment import PaymentModel
+from src.infrastructure.postgresql.models.payment import PaymentModel
 from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryDto,
     PaymentRepositoryInterface,

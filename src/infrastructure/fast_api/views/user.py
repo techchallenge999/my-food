@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from src.domain.shared.exceptions.base import DomainException
 from src.domain.shared.exceptions.user import Unauthorized
 from src.infrastructure.fast_api.utils.auth import get_current_user
-from src.infrastructure.postgresql.repositories.user.user import UserRepository
+from src.infrastructure.postgresql.repositories.user import UserRepository
 from src.interface_adapters.controllers.user import UserController
 from src.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,

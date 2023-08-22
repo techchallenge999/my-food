@@ -9,7 +9,7 @@ from src.domain.aggregates.order.interfaces.order_entity import (
 )
 from src.domain.shared.exceptions.order import OrderNotFoundException
 from src.infrastructure.postgresql.database import get_session
-from src.infrastructure.postgresql.models.order.order import OrderItemModel, OrderModel
+from src.infrastructure.postgresql.models.order import OrderItemModel, OrderModel
 from src.interface_adapters.gateways.repositories.order import (
     OrderItemRepositoryDto,
     OrderRepositoryDto,

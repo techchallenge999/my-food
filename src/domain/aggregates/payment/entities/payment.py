@@ -6,7 +6,6 @@ from src.domain.aggregates.payment.interfaces.payment_entity import (
 )
 from src.domain.aggregates.payment.validators.payment_validator import PaymentValidator
 from src.domain.shared.exceptions.order import OrderNotFoundException
-from src.domain.shared.interfaces.validator import ValidatorInterface
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 
 
@@ -26,19 +25,19 @@ class Payment(PaymentInterface):
         self.validator.validate()
 
     @property
-    def order_uuid(self) -> str:
+    def order_uuid(self):
         return str(self._order_uuid)
 
     @property
-    def status(self) -> PaymentStatus:
+    def status(self):
         return self._status
 
     @property
-    def uuid(self) -> str:
+    def uuid(self):
         return str(self._uuid)
 
     @property
-    def validator(self) -> ValidatorInterface:
+    def validator(self):
         return self._validator
 
     @property

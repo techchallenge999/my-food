@@ -87,11 +87,11 @@ class ProductInterface(ABC):
         pass
 
     @abstractmethod
-    def activate(self):
+    def activate(self) -> None:
         pass
 
     @abstractmethod
-    def deactivate(self):
+    def deactivate(self) -> None:
         pass
 
     @property

@@ -13,12 +13,10 @@ from src.interface_adapters.gateways.repositories.order import (
     OrderRepositoryInterface,
 )
 from src.interface_adapters.gateways.repositories.product import ProductRepositoryDto
-from src.use_cases.order.create.create_order_dto import CreateOrderOutputDto
-from src.use_cases.order.update.update_order_dto import UpdateOrderOutputDto
 
 
 class OrderRepository(OrderRepositoryInterface):
-    def create(self, new_order_dto: CreateOrderOutputDto) -> None:
+    def create(self, new_order_dto):
         new_order = OrderModel(
             status=OrderStatus.RECEIVED,
             total_amount=new_order_dto.total_amount,
@@ -35,7 +33,7 @@ class OrderRepository(OrderRepositoryInterface):
             )
             new_order_item.create()
 
-    def find(self, uuid: str) -> OrderRepositoryDto | None:
+    def find(self, uuid):
         with get_session() as session:
             stmt = select(OrderModel)
             stmt = stmt.options(
@@ -72,11 +70,7 @@ class OrderRepository(OrderRepositoryInterface):
             updated_at=order.updated_at,
         )
 
-    def list(
-        self,
-        filters: dict = {},
-        exclusive_filters: dict = {},
-    ) -> list[OrderRepositoryDto]:
+    def list(self, filters={}, exclusive_filters={}):
         with get_session() as session:
             stmt = select(OrderModel)
             stmt = stmt.options(
@@ -98,11 +92,9 @@ class OrderRepository(OrderRepositoryInterface):
             stmt = stmt.order_by(OrderModel.created_at)
             stmt = stmt.order_by(
                 case(
-                    {
-                        OrderModel.status == OrderStatus.READY: 0,
-                        OrderModel.status == OrderStatus.PREPARING: 1,
-                        OrderModel.status == OrderStatus.RECEIVED: 2,
-                    },
+                    (OrderModel.status == OrderStatus.READY, 0),
+                    (OrderModel.status == OrderStatus.PREPARING, 1),
+                    (OrderModel.status == OrderStatus.RECEIVED, 2),
                     else_=3,
                 )
             )
@@ -140,30 +132,33 @@ class OrderRepository(OrderRepositoryInterface):
             for order in orders
         ]
 
-    def update(self, updated_order_dto: UpdateOrderOutputDto) -> None:
+    def update(self, updated_order_dto):
         order = OrderModel.retrieve(updated_order_dto.uuid)
-        if order:
-            for item in order.items:
-                item.self_destroy()
-            for item in updated_order_dto.items:
-                OrderItemModel(
-                    comment=item.comment,
-                    order_uuid=order.uuid,
-                    product_uuid=item.product.uuid,
-                    quantity=item.quantity,
-                ).create()
 
-            OrderModel.update(
-                {
-                    "items": updated_order_dto.items,
-                    "status": updated_order_dto.status,
-                    "total_amount": updated_order_dto.total_amount,
-                    "uuid": updated_order_dto.uuid,
-                    "id": order.id,
-                }
-            )
+        if order is None:
+            raise OrderNotFoundException()
 
-    def delete(self, uuid: str) -> OrderRepositoryDto | None:
+        for item in order.items:
+            item.self_destroy()
+        for item in updated_order_dto.items:
+            OrderItemModel(
+                comment=item.comment,
+                order_uuid=order.uuid,
+                product_uuid=item.product.uuid,
+                quantity=item.quantity,
+            ).create()
+
+        OrderModel.update(
+            {
+                "items": updated_order_dto.items,
+                "status": updated_order_dto.status,
+                "total_amount": updated_order_dto.total_amount,
+                "uuid": updated_order_dto.uuid,
+                "id": order.id,
+            }
+        )
+
+    def delete(self, uuid):
         order = OrderModel.retrieve(uuid)
         if order is None:
             raise OrderNotFoundException()

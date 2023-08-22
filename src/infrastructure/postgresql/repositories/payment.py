@@ -4,12 +4,10 @@ from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryDto,
     PaymentRepositoryInterface,
 )
-from src.use_cases.payment.create.create_payment_dto import CreatePaymentOutputDto
-from src.use_cases.payment.update.update_payment_dto import UpdatePaymentOutputDto
 
 
 class PaymentRepository(PaymentRepositoryInterface):
-    def create(self, new_payment_dto: CreatePaymentOutputDto) -> None:
+    def create(self, new_payment_dto):
         new_payment = PaymentModel(
             order_uuid=new_payment_dto.order_uuid,
             status=new_payment_dto.status,
@@ -17,7 +15,7 @@ class PaymentRepository(PaymentRepositoryInterface):
         )
         new_payment.create()
 
-    def find(self, uuid: str) -> PaymentRepositoryDto:
+    def find(self, uuid):
         payment = PaymentModel.retrieve(uuid)
         if payment is None:
             raise PaymentNotFoundException()
@@ -27,7 +25,7 @@ class PaymentRepository(PaymentRepositoryInterface):
             uuid=str(payment.uuid),
         )
 
-    def find_by_order(self, order_uuid: str) -> PaymentRepositoryDto | None:
+    def find_by_order(self, order_uuid):
         payment = PaymentModel.retrieve_by_column("order_uuid", order_uuid)
         if payment is None:
             raise PaymentNotFoundException()
@@ -37,7 +35,7 @@ class PaymentRepository(PaymentRepositoryInterface):
             uuid=str(payment.uuid),
         )
 
-    def list(self) -> list[PaymentRepositoryDto]:
+    def list(self):
         payments = PaymentModel.list()
 
         if payments is None:
@@ -52,7 +50,8 @@ class PaymentRepository(PaymentRepositoryInterface):
             for payment in payments
         ]
 
-    def update(self, updated_order_dto: UpdatePaymentOutputDto) -> None:
+    def update(self, updated_order_dto):
         payment = PaymentModel.retrieve(updated_order_dto.uuid)
-        if payment:
-            PaymentModel.update({"status": updated_order_dto.status})
+        if payment is None:
+            raise PaymentNotFoundException()
+        PaymentModel.update({"status": updated_order_dto.status})

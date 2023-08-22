@@ -22,7 +22,15 @@ class UserRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def find(self, uuid: str | None) -> UserRepositoryDto | None:
+    def find(self, uuid: str | None) -> UserRepositoryDto:
+        pass
+
+    @abstractmethod
+    def find_by_cpf(self, cpf: str) -> UserRepositoryDto:
+        pass
+
+    @abstractmethod
+    def find_by_email(self, email: str) -> UserRepositoryDto:
         pass
 
     @abstractmethod
@@ -31,12 +39,4 @@ class UserRepositoryInterface(RepositoryInterface):
 
     @abstractmethod
     def update(self, updated_user_dto: UpdateUserOutputDto, password: str) -> None:
-        pass
-
-    @abstractmethod
-    def find_by_cpf(self, cpf: str) -> UserRepositoryDto | None:
-        pass
-
-    @abstractmethod
-    def find_by_email(self, email: str) -> UserRepositoryDto | None:
         pass

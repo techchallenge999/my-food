@@ -4,12 +4,10 @@ from src.interface_adapters.gateways.repositories.user import (
     UserRepositoryDto,
     UserRepositoryInterface,
 )
-from src.use_cases.user.create.create_user_dto import CreateUserOutputDto
-from src.use_cases.user.update.update_user_dto import UpdateUserOutputDto
 
 
 class UserRepository(UserRepositoryInterface):
-    def create(self, new_user_dto: CreateUserOutputDto, password: str) -> None:
+    def create(self, new_user_dto, password):
         new_user = UserModel(
             cpf=new_user_dto.cpf,
             email=new_user_dto.email,
@@ -19,7 +17,7 @@ class UserRepository(UserRepositoryInterface):
         )
         new_user.create()
 
-    def find(self, uuid: str | None) -> UserRepositoryDto:
+    def find(self, uuid):
         user = UserModel.retrieve(uuid)
         if user is None:
             raise UserNotFoundException()
@@ -32,7 +30,7 @@ class UserRepository(UserRepositoryInterface):
             uuid=str(user.uuid),
         )
 
-    def find_by_cpf(self, cpf: str) -> UserRepositoryDto:
+    def find_by_cpf(self, cpf):
         user = UserModel.retrieve_by_column("cpf", cpf)
         if user is None:
             raise UserNotFoundException()
@@ -45,7 +43,7 @@ class UserRepository(UserRepositoryInterface):
             uuid=str(user.uuid),
         )
 
-    def find_by_email(self, email: str) -> UserRepositoryDto:
+    def find_by_email(self, email):
         user = UserModel.retrieve_by_column("email", email)
         if user is None:
             raise UserNotFoundException()
@@ -58,7 +56,7 @@ class UserRepository(UserRepositoryInterface):
             uuid=str(user.uuid),
         )
 
-    def list(self) -> list[UserRepositoryDto]:
+    def list(self):
         users = UserModel.list()
 
         if users is None:
@@ -76,16 +74,17 @@ class UserRepository(UserRepositoryInterface):
             for user in users
         ]
 
-    def update(self, updated_user_dto: UpdateUserOutputDto, password: str) -> None:
+    def update(self, updated_user_dto, password):
         user = UserModel.retrieve(updated_user_dto.uuid)
-        if user:
-            UserModel.update(
-                {
-                    "cpf": updated_user_dto.cpf,
-                    "email": updated_user_dto.email,
-                    "name": updated_user_dto.name,
-                    "password": password,
-                    "uuid": updated_user_dto.uuid,
-                    "id": user.id,
-                }
-            )
+        if user is None:
+            raise UserNotFoundException()
+        UserModel.update(
+            {
+                "cpf": updated_user_dto.cpf,
+                "email": updated_user_dto.email,
+                "name": updated_user_dto.name,
+                "password": password,
+                "uuid": updated_user_dto.uuid,
+                "id": user.id,
+            }
+        )

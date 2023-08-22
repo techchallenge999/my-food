@@ -4,13 +4,10 @@ from src.domain.aggregates.product.interfaces.product_entity import (
     ProductInterface,
     ProductCategory,
 )
+from src.domain.aggregates.product.validators.product_validator import ProductValidator
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
-from src.domain.aggregates.product.validators.product_validator import (
-    ProductValidator,
-)
-from src.domain.shared.interfaces.validator import ValidatorInterface
 
 
 class Product(ProductInterface):
@@ -36,51 +33,55 @@ class Product(ProductInterface):
         self.validator.validate()
 
     @property
-    def name(self) -> str:
+    def name(self):
         return self._name
 
     @name.setter
-    def name(self, value: str):
+    def name(self, value):
         self._name = value
 
     @property
-    def category(self) -> ProductCategory:
+    def category(self):
         return self._category
 
     @category.setter
-    def category(self, value: ProductCategory):
+    def category(self, value):
         self._category = value
 
     @property
-    def price(self) -> float:
+    def price(self):
         return self._price
 
     @price.setter
-    def price(self, value: float):
+    def price(self, value):
         self._price = value
 
     @property
-    def description(self) -> str:
+    def description(self):
         return self._description
 
     @description.setter
-    def description(self, value: str):
+    def description(self, value):
         self._description = value
 
     @property
-    def image(self) -> bytes:
+    def image(self):
         return self._image
 
     @image.setter
-    def image(self, value: bytes):
+    def image(self, value):
         self._image = value
 
     @property
-    def is_active(self) -> bool:
+    def uuid(self):
+        return str(self._uuid)
+
+    @property
+    def is_active(self):
         return self._is_active
 
     @is_active.setter
-    def is_active(self, value: bool):
+    def is_active(self, value):
         self._is_active = value
 
     def activate(self):
@@ -90,9 +91,5 @@ class Product(ProductInterface):
         self.is_active = False
 
     @property
-    def uuid(self) -> str:
-        return str(self._uuid)
-
-    @property
-    def validator(self) -> ValidatorInterface:
+    def validator(self):
         return self._validator

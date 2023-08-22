@@ -1,13 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import TypeVar
-
-
-GenericEntity = TypeVar('GenericEntity')
 
 
 class ValidatorInterface(ABC):
     @abstractmethod
-    def __init__(self, entity: GenericEntity):
+    def __init__(self, domain_object: ABC):
         pass
 
     @abstractmethod

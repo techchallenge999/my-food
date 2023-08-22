@@ -37,9 +37,9 @@ class ListProductUseCase:
             except ValueError as err:
                 raise InvalidProductCategoryException(err.args[0])
 
-        products_list = self._repository.list(filters)
+        product_list = self._repository.list(filters)
 
-        if products_list is None:
+        if product_list is None:
             return None
 
         return [
@@ -52,5 +52,5 @@ class ListProductUseCase:
                 is_active=product.is_active,
                 uuid=product.uuid,
             )
-            for product in products_list
+            for product in product_list
         ]

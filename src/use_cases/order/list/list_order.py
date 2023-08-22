@@ -23,9 +23,9 @@ class ListOrderUseCase:
                 OrderStatus.WITHDRAWN,
             ]
         }
-        orders_list = self._repository.list(exclusive_filters=exclusive_filters)
+        order_list = self._repository.list(exclusive_filters=exclusive_filters)
 
-        if orders_list is None:
+        if order_list is None:
             return []
 
         return [
@@ -38,5 +38,5 @@ class ListOrderUseCase:
                 created_at=order.created_at,
                 updated_at=order.updated_at,
             )
-            for order in orders_list
+            for order in order_list
         ]

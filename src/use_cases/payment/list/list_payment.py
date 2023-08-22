@@ -12,9 +12,9 @@ class ListPaymentUseCase:
         self._repository = repository
 
     def execute(self) -> Optional[List[ListPaymentOutputDto]]:
-        payments_list = self._repository.list()
+        payment_list = self._repository.list()
 
-        if payments_list is None:
+        if payment_list is None:
             raise NoPaymentFoundException()
 
         return [
@@ -23,5 +23,5 @@ class ListPaymentUseCase:
                 status=payment.status,
                 uuid=payment.uuid,
             )
-            for payment in payments_list
+            for payment in payment_list
         ]

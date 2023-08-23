@@ -1,3 +1,8 @@
+from src.domain.shared.exceptions.product import (
+    ProductNotFoundException,
+    UnavailableProductException,
+)
+from src.domain.shared.exceptions.user import UnauthorizedException
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
@@ -23,14 +28,15 @@ class FindProductUseCase:
         self, input_data: FindProductInputDto, actor_uuid: str | None
     ) -> FindProductOutputDto | None:
         actor = self._user_repository.find(actor_uuid)
+        if actor is None or not actor.is_admin:
+            raise UnauthorizedException()
 
         product = self._repository.find(uuid=input_data.uuid)
 
         if product is None:
-            return None
-
-        if (actor is None or not actor.is_admin) and not product.is_active:
-            return None
+            raise ProductNotFoundException()
+        if not product.is_active:
+            raise UnavailableProductException()
 
         return FindProductOutputDto(
             name=product.name,

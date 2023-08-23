@@ -18,7 +18,7 @@ class PaymentRepository(PaymentRepositoryInterface):
     def find(self, uuid):
         payment = PaymentModel.retrieve(uuid)
         if payment is None:
-            raise PaymentNotFoundException()
+            return None
         return PaymentRepositoryDto(
             order_uuid=str(payment.order_uuid),
             status=payment.status,

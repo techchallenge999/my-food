@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlalchemy import case, select
 from sqlalchemy.orm import subqueryload
 
-from src.domain.aggregates.order.interfaces.value_objects import OrderStatus
+from src.domain.aggregates.order.value_objects.order_status import OrderStatus
 from src.domain.shared.exceptions.order import OrderNotFoundException
 from src.infrastructure.postgresql.database import get_session
 from src.infrastructure.postgresql.models.order import OrderItemModel, OrderModel
@@ -44,7 +44,7 @@ class OrderRepository(OrderRepositoryInterface):
             instance = session.execute(stmt.filter_by(uuid=UUID(uuid))).first()
             order = instance[0] if instance is not None else None
         if order is None:
-            raise OrderNotFoundException()
+            return None
         return OrderRepositoryDto(
             items=[
                 OrderItemRepositoryDto(

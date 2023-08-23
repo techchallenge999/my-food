@@ -24,7 +24,7 @@ class ProductRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def find(self, uuid: str) -> ProductRepositoryDto:
+    def find(self, uuid: str) -> ProductRepositoryDto | None:
         pass
 
     @abstractmethod

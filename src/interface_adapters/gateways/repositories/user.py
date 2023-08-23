@@ -22,15 +22,15 @@ class UserRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def find(self, uuid: str | None) -> UserRepositoryDto:
+    def find(self, uuid: str | None) -> UserRepositoryDto | None:
         pass
 
     @abstractmethod
-    def find_by_cpf(self, cpf: str) -> UserRepositoryDto:
+    def find_by_cpf(self, cpf: str) -> UserRepositoryDto | None:
         pass
 
     @abstractmethod
-    def find_by_email(self, email: str) -> UserRepositoryDto:
+    def find_by_email(self, email: str) -> UserRepositoryDto | None:
         pass
 
     @abstractmethod

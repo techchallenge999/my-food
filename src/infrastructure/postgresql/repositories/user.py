@@ -20,7 +20,7 @@ class UserRepository(UserRepositoryInterface):
     def find(self, uuid):
         user = UserModel.retrieve(uuid)
         if user is None:
-            raise UserNotFoundException()
+            return None
         return UserRepositoryDto(
             cpf=user.cpf,
             email=user.email,
@@ -33,7 +33,7 @@ class UserRepository(UserRepositoryInterface):
     def find_by_cpf(self, cpf):
         user = UserModel.retrieve_by_column("cpf", cpf)
         if user is None:
-            raise UserNotFoundException()
+            return None
         return UserRepositoryDto(
             cpf=user.cpf,
             email=user.email,
@@ -46,7 +46,7 @@ class UserRepository(UserRepositoryInterface):
     def find_by_email(self, email):
         user = UserModel.retrieve_by_column("email", email)
         if user is None:
-            raise UserNotFoundException()
+            return None
         return UserRepositoryDto(
             cpf=user.cpf,
             email=user.email,

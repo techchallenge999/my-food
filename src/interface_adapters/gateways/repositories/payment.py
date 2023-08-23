@@ -20,7 +20,7 @@ class PaymentRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def find(self, uuid: str) -> PaymentRepositoryDto:
+    def find(self, uuid: str) -> PaymentRepositoryDto | None:
         pass
 
     @abstractmethod

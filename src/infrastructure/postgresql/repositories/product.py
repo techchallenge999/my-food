@@ -22,7 +22,7 @@ class ProductRepository(ProductRepositoryInterface):
     def find(self, uuid):
         product = ProductModel.retrieve(uuid)
         if product is None:
-            raise ProductNotFoundException()
+            return None
         return ProductRepositoryDto(
             name=product.name,
             category=product.category,

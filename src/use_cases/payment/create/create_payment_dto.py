@@ -14,3 +14,4 @@ class CreatePaymentOutputDto:
     order_uuid: str
     status: PaymentStatus
     uuid: str
+    qr_data: str

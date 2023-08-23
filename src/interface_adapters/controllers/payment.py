@@ -1,3 +1,4 @@
+from src.interface_adapters.gateways.payment_gateways import PaymentGatewayInterface
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryInterface,
@@ -25,15 +26,22 @@ from src.use_cases.payment.update.update_payment_dto import (
 
 
 class PaymentController:
-    def __init__(self, repository: PaymentRepositoryInterface):
+    def __init__(
+        self,
+        repository: PaymentRepositoryInterface,
+        payment_gateway: PaymentGatewayInterface,
+    ):
         self.repository = repository
+        self.payment_gateway = payment_gateway
 
     def checkout(
         self,
         input_data: CreatePaymentInputDto,
         order_repository: OrderRepositoryInterface,
     ) -> CreatePaymentOutputDto:
-        create_use_case = CreatePaymentUseCase(self.repository, order_repository)
+        create_use_case = CreatePaymentUseCase(
+            self.repository, order_repository, self.payment_gateway
+        )
         payment = create_use_case.execute(input_data)
         return payment
 

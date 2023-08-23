@@ -1,7 +1,12 @@
+import os
 from uuid import UUID
 
 from src.domain.aggregates.payment.entities.payment import Payment
 from src.domain.shared.exceptions.order import OrderNotFoundException
+from src.interface_adapters.gateways.payment_gateways import (
+    PaymentGatewayInputDto,
+    PaymentGatewayInterface,
+)
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryInterface,
@@ -17,9 +22,11 @@ class CreatePaymentUseCase:
         self,
         payment_repository: PaymentRepositoryInterface,
         order_repository: OrderRepositoryInterface,
+        payment_gateway: PaymentGatewayInterface,
     ):
         self._payment_repository = payment_repository
         self._order_repository = order_repository
+        self.payment_gateway = payment_gateway
 
     def execute(self, input_data: CreatePaymentInputDto) -> CreatePaymentOutputDto:
         order = self._order_repository.find(input_data.order_uuid)
@@ -33,9 +40,18 @@ class CreatePaymentUseCase:
         )
 
         self._payment_repository.create(entity=new_payment)
+        api_url = os.getenv("API_URL", "http://localhost:8000")
+        payment_gateway_data = self.payment_gateway.create(
+            PaymentGatewayInputDto(
+                uuid=new_payment.uuid,
+                notification_url=f"{api_url}/webhook/{new_payment.uuid}",
+                total_amount=new_payment.total,
+            )
+        )
 
         return CreatePaymentOutputDto(
             order_uuid=new_payment.order_uuid,
             status=new_payment.status,
             uuid=new_payment.uuid,
+            qr_data=payment_gateway_data.qr_data,
         )

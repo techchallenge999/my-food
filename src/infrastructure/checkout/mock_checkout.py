@@ -1,15 +1,12 @@
-from uuid import uuid4
-
-from src.domain.aggregates.payment.interfaces.payment_entity import PaymentStatus
-from src.use_cases.payment.create.create_payment_dto import (
-    CreatePaymentInputDto,
-    CreatePaymentOutputDto,
+from src.interface_adapters.gateways.payment_gateways import (
+    PaymentGatewayInterface,
+    PaymentGatewayInputDto,
+    PaymentGatewayOutputDto,
 )
 
 
-class MockCheckout:
-    @staticmethod
-    def send_payment(pagamento: CreatePaymentInputDto) -> CreatePaymentOutputDto:
-        return CreatePaymentOutputDto(
-            order_uuid=pagamento.order_uuid, status=PaymentStatus("pago"), uuid=uuid4()
+class PaymentGateway(PaymentGatewayInterface):
+    def create(self, pagamento: PaymentGatewayInputDto) -> PaymentGatewayOutputDto:
+        return PaymentGatewayOutputDto(
+            order_uuid=pagamento.uuid, qr_data="mocked-qr-data"
         )

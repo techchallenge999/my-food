@@ -36,3 +36,8 @@ class PaymentInterface(ABC):
     @abstractmethod
     def validator(self) -> ValidatorInterface:
         pass
+
+    @property
+    @abstractmethod
+    def total(self) -> str:
+        pass

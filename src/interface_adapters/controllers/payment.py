@@ -39,7 +39,9 @@ class PaymentController:
         input_data: CreatePaymentInputDto,
         order_repository: OrderRepositoryInterface,
     ) -> CreatePaymentOutputDto:
-        create_use_case = CreatePaymentUseCase(self.repository, order_repository)
+        create_use_case = CreatePaymentUseCase(
+            self.repository, order_repository, self.payment_gateway
+        )
         payment = create_use_case.execute(input_data)
         return payment
 

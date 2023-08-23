@@ -6,7 +6,7 @@ from dataclasses import dataclass
 class PaymentGatewayInputDto:
     uuid: str
     notification_url: str
-    total_amount: float
+    total_amount: str
 
 
 @dataclass

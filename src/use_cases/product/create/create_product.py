@@ -1,5 +1,5 @@
 from src.domain.aggregates.product.entities.product import Product
-from src.domain.shared.exceptions.user import Unauthorized
+from src.domain.shared.exceptions.user import UnauthorizedException
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
@@ -26,7 +26,7 @@ class CreateProductUseCase:
     ) -> CreateProductOutputDto:
         actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:
-            raise Unauthorized("User not Allowed!")
+            raise UnauthorizedException("User not Allowed!")
 
         new_product = Product(
             name=input_data.name,

@@ -5,8 +5,8 @@ from src.domain.aggregates.order.interfaces.entities import (
     OrderInterface,
     OrderItemInterface,
 )
-from src.domain.aggregates.order.interfaces.value_objects import OrderStatus
 from src.domain.aggregates.order.validators.order_validator import OrderValidator
+from src.domain.aggregates.order.value_objects.order_status import OrderStatus
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,

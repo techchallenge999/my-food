@@ -2,7 +2,7 @@ from src.domain.aggregates.user.entities.user import User
 from src.domain.aggregates.user.value_objects.cpf import Cpf
 from src.domain.aggregates.user.value_objects.email import Email
 from src.domain.aggregates.user.value_objects.password import Password
-from src.domain.shared.exceptions.user import Unauthorized
+from src.domain.shared.exceptions.user import UnauthorizedException
 from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 from src.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,
@@ -48,7 +48,7 @@ class CreateAdminUserUseCase:
         user = self._repository.find(creator_uuid)
 
         if user is None or not user.is_admin:
-            raise Unauthorized("User not Allowed!")
+            raise UnauthorizedException("User not Allowed!")
 
         cpf = "".join(filter(str.isdigit, input_data.cpf))
 

@@ -22,10 +22,7 @@ from src.use_cases.order.find.find_order_dto import (
 )
 from src.use_cases.order.list.list_order import ListOrderUseCase
 from src.use_cases.order.list.list_order_dto import ListOrderOutputDto
-from src.use_cases.order.update.update_order import (
-    UpdateOrderItemsUseCase,
-    UpdateOrderStatusUseCase,
-)
+from src.use_cases.order.update.update_order import UpdateOrderUseCase
 from src.use_cases.order.update.update_order_dto import (
     UpdateOrderItemsInputDto,
     UpdateOrderOutputDto,
@@ -49,7 +46,7 @@ class OrderController:
             self.repository, product_repository, user_repository
         )
         new_user = create_use_case.execute(
-            create_order_parser.get_dto(input_data, current_user)
+            create_order_parser.get_order_input_dto(input_data, current_user)
         )
         return new_user
 
@@ -68,10 +65,13 @@ class OrderController:
         product_repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
     ) -> UpdateOrderOutputDto:
-        update_use_case = UpdateOrderItemsUseCase(
-            self.repository, product_repository, user_repository
+        update_use_case = UpdateOrderUseCase(
+            self.repository,
+            product_repository,
+            user_repository,
+            FindOrderUseCase(self.repository),
         )
-        order = update_use_case.execute(order_uuid, input_data)
+        order = update_use_case.update_order_items(order_uuid, input_data)
         return order
 
     def progress_order_status(
@@ -80,10 +80,13 @@ class OrderController:
         product_repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
     ) -> UpdateOrderOutputDto:
-        update_use_case = UpdateOrderStatusUseCase(
-            self.repository, product_repository, user_repository
+        update_use_case = UpdateOrderUseCase(
+            self.repository,
+            product_repository,
+            user_repository,
+            FindOrderUseCase(self.repository),
         )
-        order = update_use_case.progress(order_uuid)
+        order = update_use_case.progress_status(order_uuid)
         return order
 
     def cancel_order(
@@ -92,8 +95,11 @@ class OrderController:
         product_repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
     ) -> UpdateOrderOutputDto:
-        update_use_case = UpdateOrderStatusUseCase(
-            self.repository, product_repository, user_repository
+        update_use_case = UpdateOrderUseCase(
+            self.repository,
+            product_repository,
+            user_repository,
+            FindOrderUseCase(self.repository),
         )
         order = update_use_case.cancel(order_uuid)
         return order

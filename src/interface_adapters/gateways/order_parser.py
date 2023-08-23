@@ -4,7 +4,7 @@ from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 
 
 class CreateOrderParser:
-    def get_dto(
+    def get_order_input_dto(
         self,
         input_data: CreateOrderInputDto,
         current_user: FindUserOutputDto | EmptyUser,

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from src.domain.aggregates.order.entities.order import OrderStatus
+from src.domain.aggregates.order.value_objects.order_status import OrderStatus
 from src.use_cases.product.find.find_product_dto import FindProductOutputDto
 
 

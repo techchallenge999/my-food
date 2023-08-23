@@ -1,12 +1,11 @@
-from src.interface_adapters.gateways.payment_gateways import (
+from src.interface_adapters.gateways.payment_gateway import (
     PaymentGatewayInterface,
-    PaymentGatewayInputDto,
     PaymentGatewayOutputDto,
 )
 
 
 class PaymentGateway(PaymentGatewayInterface):
-    def create(self, pagamento: PaymentGatewayInputDto) -> PaymentGatewayOutputDto:
+    def create(self, payment_gateway_input_dto):
         return PaymentGatewayOutputDto(
-            order_uuid=pagamento.uuid, qr_data="mocked-qr-data"
+            uuid=payment_gateway_input_dto.uuid, qr_data="mocked-qr-data"
         )

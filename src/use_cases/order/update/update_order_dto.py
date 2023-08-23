@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.domain.aggregates.order.entities.order import OrderStatus
+from src.domain.aggregates.order.value_objects.order_status import OrderStatus
 
 
 @dataclass

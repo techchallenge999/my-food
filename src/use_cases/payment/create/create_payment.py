@@ -1,9 +1,9 @@
-import os
 from uuid import UUID
+import os
 
 from src.domain.aggregates.payment.entities.payment import Payment
 from src.domain.shared.exceptions.order import OrderNotFoundException
-from src.interface_adapters.gateways.payment_gateways import (
+from src.interface_adapters.gateways.payment_gateway import (
     PaymentGatewayInputDto,
     PaymentGatewayInterface,
 )

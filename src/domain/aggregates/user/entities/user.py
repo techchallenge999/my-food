@@ -1,12 +1,12 @@
 from uuid import UUID, uuid4
 
-from src.domain.aggregates.user.interfaces.entities import UserInterface
+from src.domain.aggregates.user.interfaces.user import UserInterface
 from src.domain.aggregates.user.interfaces.value_objects import (
     CpfInterface,
     EmailInterface,
     PasswordInterface,
 )
-from src.domain.aggregates.user.validators.user_validator import UserValidator
+from src.domain.aggregates.user.validators.user import UserValidator
 from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 
 

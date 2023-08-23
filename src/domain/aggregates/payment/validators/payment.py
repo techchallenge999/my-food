@@ -1,8 +1,8 @@
 from uuid import UUID
 
-from src.domain.aggregates.order.interfaces.value_objects import OrderStatus
+from src.domain.aggregates.order.value_objects.order_status import OrderStatus
 from src.domain.aggregates.payment.entities.payment import PaymentStatus
-from src.domain.aggregates.payment.interfaces.payment_entity import PaymentInterface
+from src.domain.aggregates.payment.interfaces.payment import PaymentInterface
 from src.domain.shared.interfaces.validator import ValidatorInterface
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 

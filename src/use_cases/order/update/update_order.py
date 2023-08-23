@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from src.domain.aggregates.order.entities.order import Order
-from src.domain.aggregates.order.interfaces.entities import OrderInterface
+from src.domain.aggregates.order.interfaces.order import OrderInterface
 from src.domain.aggregates.order.value_objects.order_item import OrderItem
 from src.domain.aggregates.order.value_objects.order_status import OrderStatus
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface

@@ -1,11 +1,11 @@
 from decimal import Decimal
 from uuid import UUID, uuid4
 
-from src.domain.aggregates.order.interfaces.entities import (
+from src.domain.aggregates.order.interfaces.order import (
     OrderInterface,
     OrderItemInterface,
 )
-from src.domain.aggregates.order.validators.order_validator import OrderValidator
+from src.domain.aggregates.order.validators.order import OrderValidator
 from src.domain.aggregates.order.value_objects.order_status import OrderStatus
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.interface_adapters.gateways.repositories.product import (

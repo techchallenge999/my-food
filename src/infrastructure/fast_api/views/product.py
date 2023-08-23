@@ -10,7 +10,7 @@ from fastapi import (
     UploadFile,
 )
 
-from src.domain.aggregates.product.interfaces.product_entity import ProductCategory
+from src.domain.aggregates.product.interfaces.product import ProductCategory
 from src.domain.shared.exceptions.base import DomainException
 from src.domain.shared.exceptions.user import UnauthorizedException
 from src.infrastructure.postgresql.repositories.user import UserRepository

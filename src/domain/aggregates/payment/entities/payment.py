@@ -1,10 +1,10 @@
 from uuid import UUID, uuid4
 
-from src.domain.aggregates.payment.interfaces.payment_entity import (
+from src.domain.aggregates.payment.interfaces.payment import (
     PaymentInterface,
     PaymentStatus,
 )
-from src.domain.aggregates.payment.validators.payment_validator import PaymentValidator
+from src.domain.aggregates.payment.validators.payment import PaymentValidator
 from src.domain.shared.exceptions.order import OrderNotFoundException
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 

@@ -1,10 +1,10 @@
 from uuid import UUID, uuid4
 
-from src.domain.aggregates.product.interfaces.product_entity import (
+from src.domain.aggregates.product.interfaces.product import (
     ProductInterface,
     ProductCategory,
 )
-from src.domain.aggregates.product.validators.product_validator import ProductValidator
+from src.domain.aggregates.product.validators.product import ProductValidator
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )

@@ -1,4 +1,4 @@
-from src.domain.aggregates.product.interfaces.product_entity import ProductCategory
+from src.domain.aggregates.product.interfaces.product import ProductCategory
 from src.infrastructure.fast_api.utils.auth import EmptyUser
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,

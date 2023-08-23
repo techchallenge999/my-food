@@ -4,7 +4,7 @@ from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
-from src.domain.aggregates.order.interfaces.value_objects import OrderStatus
+from src.domain.aggregates.order.value_objects.order_status import OrderStatus
 from src.infrastructure.postgresql.database import Base
 from src.infrastructure.postgresql.models.timestamp import BaseTimestamp
 from src.infrastructure.postgresql.repositories.mixins import CRUDMixin

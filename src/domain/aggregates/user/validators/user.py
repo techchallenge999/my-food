@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.domain.aggregates.user.interfaces.entities import UserInterface
+from src.domain.aggregates.user.interfaces.user import UserInterface
 from src.domain.shared.exceptions.base import (
     InvalidUUIDException,
     UnavailableUUIDException,

@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from src.domain.aggregates.order.interfaces.entities import OrderItemInterface
-from src.domain.aggregates.order.validators.order_item_validator import (
+from src.domain.aggregates.order.interfaces.order import OrderItemInterface
+from src.domain.aggregates.order.validators.order_item import (
     OrderItemValidator,
 )
 

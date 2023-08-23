@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from dataclasses import dataclass
 
-from src.domain.aggregates.payment.interfaces.payment_entity import PaymentStatus
+from src.domain.aggregates.payment.interfaces.payment import PaymentStatus
 from src.domain.shared.interfaces.repository import RepositoryInterface
 from src.use_cases.payment.create.create_payment_dto import CreatePaymentOutputDto
 from src.use_cases.payment.update.update_payment_dto import UpdatePaymentOutputDto

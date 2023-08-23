@@ -1,5 +1,5 @@
 from src.domain.aggregates.user.interfaces.value_objects import CpfInterface
-from src.domain.aggregates.user.validators.cpf_validator import CpfValidator
+from src.domain.aggregates.user.validators.cpf import CpfValidator
 
 
 class Cpf(CpfInterface):

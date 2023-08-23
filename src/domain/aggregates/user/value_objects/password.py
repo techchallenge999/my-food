@@ -1,5 +1,5 @@
 from src.domain.aggregates.user.interfaces.value_objects import PasswordInterface
-from src.domain.aggregates.user.validators.password_validator import PasswordValidator
+from src.domain.aggregates.user.validators.password import PasswordValidator
 
 
 class Password(PasswordInterface):

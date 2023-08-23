@@ -2,7 +2,7 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
 
-from src.domain.aggregates.order.interfaces.value_objects import OrderStatus
+from src.domain.aggregates.order.interfaces.order_item import OrderStatus
 from src.domain.shared.interfaces.repository import RepositoryInterface
 from src.interface_adapters.gateways.repositories.product import ProductRepositoryDto
 from src.use_cases.order.create.create_order_dto import CreateOrderOutputDto
@@ -37,7 +37,9 @@ class OrderRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def list(self, filters: dict, exclusive_filters: dict) -> list[OrderRepositoryDto]:
+    def list(
+        self, filters: dict = {}, exclusive_filters: dict = {}
+    ) -> list[OrderRepositoryDto]:
         pass
 
     @abstractmethod

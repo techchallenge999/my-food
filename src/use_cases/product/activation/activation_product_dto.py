@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.domain.aggregates.product.interfaces.product_entity import (
+from src.domain.aggregates.product.interfaces.product import (
     ProductCategory,
 )
 

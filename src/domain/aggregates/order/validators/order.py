@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.domain.aggregates.order.interfaces.entities import OrderInterface
+from src.domain.aggregates.order.interfaces.order import OrderInterface
 from src.domain.aggregates.order.value_objects.order_status import OrderStatus
 from src.domain.shared.exceptions.base import InvalidUUIDException
 from src.domain.shared.exceptions.order import InvalidOrderStatusException

@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from dataclasses import dataclass
 
-from src.domain.aggregates.product.interfaces.product_entity import ProductCategory
+from src.domain.aggregates.product.interfaces.product import ProductCategory
 from src.domain.shared.interfaces.repository import RepositoryInterface
 from src.use_cases.product.create.create_product_dto import CreateProductOutputDto
 from src.use_cases.product.update.update_product_dto import UpdateProductOutputDto

@@ -1,5 +1,5 @@
 from src.domain.aggregates.user.interfaces.value_objects import EmailInterface
-from src.domain.aggregates.user.validators.email_validator import EmailValidator
+from src.domain.aggregates.user.validators.email import EmailValidator
 
 
 class Email(EmailInterface):

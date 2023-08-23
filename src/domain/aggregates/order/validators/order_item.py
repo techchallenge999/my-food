@@ -1,4 +1,4 @@
-from src.domain.aggregates.order.interfaces.value_objects import OrderItemInterface
+from src.domain.aggregates.order.interfaces.order_item import OrderItemInterface
 from src.domain.shared.exceptions.product import InvalidProductQuantityException
 from src.domain.shared.interfaces.validator import ValidatorInterface
 

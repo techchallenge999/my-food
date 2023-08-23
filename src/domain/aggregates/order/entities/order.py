@@ -1,4 +1,3 @@
-from datetime import datetime
 from decimal import Decimal
 from uuid import UUID, uuid4
 
@@ -25,16 +24,12 @@ class Order(OrderInterface):
         status: OrderStatus = OrderStatus.PENDING_PAYMENT,
         user_uuid: UUID | None = None,
         uuid: UUID = uuid4(),
-        created_at: datetime = datetime.now(),
-        updated_at: datetime | None = None,
     ):
         self._items = items
         self._status = status
         self._total_amount = self._get_total_amount(product_repository)
         self._user_uuid = user_uuid
         self._uuid = uuid
-        self.created_at = created_at
-        self.updated_at = updated_at
         self._validator = OrderValidator(
             self, order_repository, product_repository, user_repository
         )

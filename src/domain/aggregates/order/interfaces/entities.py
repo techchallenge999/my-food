@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from datetime import datetime
 from uuid import UUID
 
 from src.domain.aggregates.order.interfaces.value_objects import OrderStatus
@@ -33,8 +32,6 @@ class OrderInterface(ABC):
     _total_amount: str
     _user_uuid: UUID | None
     _uuid: UUID
-    _created_at: datetime
-    _updated_at: datetime | None
     _validator: ValidatorInterface
 
     @property

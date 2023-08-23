@@ -1,12 +1,12 @@
 import uuid
+
 from sqlalchemy import Column, Integer, String, Enum, Float, Boolean
 from sqlalchemy.dialects.postgresql import UUID, BYTEA
 from sqlalchemy.orm import relationship
+
+from src.domain.aggregates.product.interfaces.product_entity import ProductCategory
 from src.infrastructure.postgresql.database import Base
-from src.infrastructure.postgresql.repositories.mixins.crud import CRUDMixin
-from src.domain.aggregates.product.interfaces.product_entity import (
-    ProductCategory,
-)
+from src.infrastructure.postgresql.repositories.mixins import CRUDMixin
 
 
 class ProductModel(Base, CRUDMixin):

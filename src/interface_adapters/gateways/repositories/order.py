@@ -29,7 +29,7 @@ class OrderRepositoryDto:
 
 class OrderRepositoryInterface(RepositoryInterface):
     @abstractmethod
-    def create(self, new_order_dto: CreateOrderOutputDto) -> None:
+    def create(self, create_order_dto: CreateOrderOutputDto) -> None:
         pass
 
     @abstractmethod
@@ -41,7 +41,7 @@ class OrderRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def update(self, updated_order_dto: UpdateOrderOutputDto) -> None:
+    def update(self, update_order_dto: UpdateOrderOutputDto) -> None:
         pass
 
     @abstractmethod

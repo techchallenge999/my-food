@@ -45,7 +45,7 @@ class CreateOrderUseCase:
             else None,
         )
 
-        new_order_dto = CreateOrderOutputDto(
+        create_order_dto = CreateOrderOutputDto(
             items=[
                 CreateOrderItemOutputDto(
                     comment=new_item.comment,
@@ -62,6 +62,6 @@ class CreateOrderUseCase:
             uuid=new_order.uuid,
         )
 
-        self._order_repository.create(new_order_dto)
+        self._order_repository.create(create_order_dto)
 
-        return new_order_dto
+        return create_order_dto

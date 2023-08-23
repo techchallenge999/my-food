@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from src.domain.aggregates.order.entities.order import OrderStatus
-from src.use_cases.product.find.find_product_dto import FindProductOutputDto
 
 
 @dataclass
@@ -14,7 +13,7 @@ class UpdateOrderItemInputDto:
 @dataclass
 class UpdateOrderItemOutputDto:
     comment: str
-    product: FindProductOutputDto
+    product_uuid: str
     quantity: int
 
 

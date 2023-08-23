@@ -1,137 +1,124 @@
-from dataclasses import asdict
 from uuid import UUID
 
 from src.domain.aggregates.order.entities.order import Order
-from src.domain.aggregates.order.interfaces.entities import OrderItemInterface
-from src.domain.aggregates.order.interfaces.value_objects import OrderStatus
+from src.domain.aggregates.order.interfaces.entities import OrderInterface
 from src.domain.aggregates.order.value_objects.order_item import OrderItem
-from src.domain.shared.exceptions.order import OrderNotFoundException
-from src.interface_adapters.gateways.repositories.order import (
-    OrderRepositoryDto,
-    OrderRepositoryInterface,
-)
+from src.domain.aggregates.order.value_objects.order_status import OrderStatus
+from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
 from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
+from src.use_cases.order.find.find_order import FindOrderUseCase
+from src.use_cases.order.find.find_order_dto import (
+    FindOrderInputDto,
+    FindOrderOutputDto,
+)
 from src.use_cases.order.update.update_order_dto import (
     UpdateOrderItemsInputDto,
     UpdateOrderItemOutputDto,
     UpdateOrderOutputDto,
 )
-from src.use_cases.product.find.find_product_dto import FindProductOutputDto
 
 
-class BaseUpdateOrderUseCase:
+class UpdateOrderUseCase:
     def __init__(
         self,
         order_repository: OrderRepositoryInterface,
         product_repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
+        find_order_use_case: FindOrderUseCase,
     ):
         self._order_repository = order_repository
         self._product_repository = product_repository
         self._user_repository = user_repository
+        self._find_order_use_case = find_order_use_case
 
-    def base_execute(
-        self,
-        order: OrderRepositoryDto,
-        items: list[OrderItemInterface],
-        status: OrderStatus,
+    def update_order_items(
+        self, order_uuid: str, new_order_items: UpdateOrderItemsInputDto
     ) -> UpdateOrderOutputDto:
-        updated_order = Order(
-            items=items,
+        find_order_dto = self._find_order_use_case.execute(
+            FindOrderInputDto(order_uuid)
+        )
+        order = Order(
+            items=[
+                OrderItem(
+                    comment=item.comment,
+                    product_uuid=UUID(item.product_uuid),
+                    quantity=item.quantity,
+                )
+                for item in new_order_items.items
+            ],
             order_repository=self._order_repository,
             product_repository=self._product_repository,
             user_repository=self._user_repository,
-            status=status,
-            user_uuid=UUID(order.user_uuid)
-            if isinstance(order.user_uuid, str)
-            else None,
-            uuid=UUID(order.uuid),
+            status=find_order_dto.status,
+            user_uuid=self._get_user_uuid(find_order_dto),
+            uuid=UUID(find_order_dto.uuid),
         )
-        updated_order_dto = UpdateOrderOutputDto(
+        return self._execute(order)
+
+    def progress_status(self, order_uuid: str) -> UpdateOrderOutputDto:
+        find_order_dto = self._find_order_use_case.execute(
+            FindOrderInputDto(order_uuid)
+        )
+        order = Order(
+            items=[
+                OrderItem(
+                    comment=item.comment,
+                    product_uuid=UUID(item.product.uuid),
+                    quantity=item.quantity,
+                )
+                for item in find_order_dto.items
+            ],
+            order_repository=self._order_repository,
+            product_repository=self._product_repository,
+            user_repository=self._user_repository,
+            status=find_order_dto.status.next(),
+            user_uuid=self._get_user_uuid(find_order_dto),
+            uuid=UUID(find_order_dto.uuid),
+        )
+        return self._execute(order)
+
+    def cancel(self, order_uuid: str) -> UpdateOrderOutputDto:
+        find_order_dto = self._find_order_use_case.execute(
+            FindOrderInputDto(order_uuid)
+        )
+        order = Order(
+            items=[
+                OrderItem(
+                    comment=item.comment,
+                    product_uuid=UUID(item.product.uuid),
+                    quantity=item.quantity,
+                )
+                for item in find_order_dto.items
+            ],
+            order_repository=self._order_repository,
+            product_repository=self._product_repository,
+            user_repository=self._user_repository,
+            status=OrderStatus.CANCELED,
+            user_uuid=self._get_user_uuid(find_order_dto),
+            uuid=UUID(find_order_dto.uuid),
+        )
+        return self._execute(order)
+
+    def _execute(self, order: OrderInterface) -> UpdateOrderOutputDto:
+        update_order_dto = UpdateOrderOutputDto(
             items=[
                 UpdateOrderItemOutputDto(
                     comment=item.comment,
-                    product=FindProductOutputDto(
-                        **asdict(self._product_repository.find(item.product_uuid))
-                    ),
+                    product_uuid=item.product_uuid,
                     quantity=item.quantity,
                 )
-                for item in updated_order.items
+                for item in order.items
             ],
-            status=updated_order.status,
-            total_amount=updated_order.total_amount,
-            user_uuid=updated_order.user_uuid,
-            uuid=updated_order.uuid,
+            status=order.status,
+            total_amount=order.total_amount,
+            user_uuid=order.user_uuid,
+            uuid=order.uuid,
         )
-        self._order_repository.update(updated_order_dto)
-        return updated_order_dto
+        self._order_repository.update(update_order_dto)
+        return update_order_dto
 
-    def find_order(self, order_uuid: str) -> OrderRepositoryDto:
-        order = self._order_repository.find(order_uuid)
-        if order is None:
-            raise OrderNotFoundException()
-        return order
-
-
-class UpdateOrderItemsUseCase(BaseUpdateOrderUseCase):
-    def __init__(
-        self,
-        order_repository: OrderRepositoryInterface,
-        product_repository: ProductRepositoryInterface,
-        user_repository: UserRepositoryInterface,
-    ):
-        super().__init__(order_repository, product_repository, user_repository)
-
-    def execute(
-        self, order_uuid: str, input_data: UpdateOrderItemsInputDto
-    ) -> UpdateOrderOutputDto:
-        order = self.find_order(order_uuid)
-        items = [
-            OrderItem(
-                comment=item.comment,
-                product_uuid=UUID(item.product_uuid),
-                quantity=item.quantity,
-            )
-            for item in input_data.items
-        ]
-        status = order.status
-        return super().base_execute(order, items, status)
-
-
-class UpdateOrderStatusUseCase(BaseUpdateOrderUseCase):
-    def __init__(
-        self,
-        order_repository: OrderRepositoryInterface,
-        product_repository: ProductRepositoryInterface,
-        user_repository: UserRepositoryInterface,
-    ):
-        super().__init__(order_repository, product_repository, user_repository)
-
-    def progress(self, order_uuid: str) -> UpdateOrderOutputDto:
-        order = self.find_order(order_uuid)
-        items = [
-            OrderItem(
-                comment=item.comment,
-                product_uuid=UUID(item.product.uuid),
-                quantity=item.quantity,
-            )
-            for item in order.items
-        ]
-        status = order.status.next()
-        return super().base_execute(order, items, status)
-
-    def cancel(self, order_uuid: str) -> UpdateOrderOutputDto:
-        order = self.find_order(order_uuid)
-        items = [
-            OrderItem(
-                comment=item.comment,
-                product_uuid=UUID(item.product.uuid),
-                quantity=item.quantity,
-            )
-            for item in order.items
-        ]
-        status = OrderStatus.CANCELED
-        return super().base_execute(order, items, status)
+    def _get_user_uuid(self, find_order_dto: FindOrderOutputDto) -> UUID | None:
+        return UUID(find_order_dto.user_uuid) if find_order_dto.user_uuid else None

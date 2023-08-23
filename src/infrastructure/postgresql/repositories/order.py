@@ -16,18 +16,18 @@ from src.interface_adapters.gateways.repositories.product import ProductReposito
 
 
 class OrderRepository(OrderRepositoryInterface):
-    def create(self, new_order_dto):
+    def create(self, create_order_dto):
         new_order = OrderModel(
             status=OrderStatus.RECEIVED,
-            total_amount=new_order_dto.total_amount,
-            uuid=new_order_dto.uuid,
-            user_uuid=new_order_dto.user_uuid,
+            total_amount=create_order_dto.total_amount,
+            uuid=create_order_dto.uuid,
+            user_uuid=create_order_dto.user_uuid,
         )
         new_order.create()
-        for item in new_order_dto.items:
+        for item in create_order_dto.items:
             new_order_item = OrderItemModel(
                 comment=item.comment,
-                order_uuid=new_order_dto.uuid,
+                order_uuid=create_order_dto.uuid,
                 product_uuid=item.product.uuid,
                 quantity=item.quantity,
             )
@@ -132,15 +132,15 @@ class OrderRepository(OrderRepositoryInterface):
             for order in orders
         ]
 
-    def update(self, updated_order_dto):
-        order = OrderModel.retrieve(updated_order_dto.uuid)
+    def update(self, update_order_dto):
+        order = OrderModel.retrieve(update_order_dto.uuid)
 
         if order is None:
             raise OrderNotFoundException()
 
         for item in order.items:
             item.self_destroy()
-        for item in updated_order_dto.items:
+        for item in update_order_dto.items:
             OrderItemModel(
                 comment=item.comment,
                 order_uuid=order.uuid,
@@ -150,10 +150,10 @@ class OrderRepository(OrderRepositoryInterface):
 
         OrderModel.update(
             {
-                "items": updated_order_dto.items,
-                "status": updated_order_dto.status,
-                "total_amount": updated_order_dto.total_amount,
-                "uuid": updated_order_dto.uuid,
+                "items": update_order_dto.items,
+                "status": update_order_dto.status,
+                "total_amount": update_order_dto.total_amount,
+                "uuid": update_order_dto.uuid,
                 "id": order.id,
             }
         )

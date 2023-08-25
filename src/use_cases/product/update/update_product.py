@@ -9,7 +9,7 @@ from src.interface_adapters.gateways.repositories.user import (
 from src.domain.shared.exceptions.product import (
     UnavailableProductException,
 )
-from src.domain.shared.exceptions.user import Unauthorized
+from src.domain.shared.exceptions.user import UnauthorizedException
 from src.use_cases.product.update.update_product_dto import (
     UpdateProductInputDto,
     UpdateProductOutputDto,
@@ -30,7 +30,7 @@ class UpdateProductUseCase:
     ) -> UpdateProductOutputDto:
         actor = self._user_repository.find(actor_uuid)
         if actor is None or not actor.is_admin:
-            raise Unauthorized("User not Allowed!")
+            raise UnauthorizedException("User not Allowed!")
 
         product = self._repository.find(input_data.uuid)
 
@@ -48,9 +48,7 @@ class UpdateProductUseCase:
             repository=self._repository,
         )
 
-        self._repository.update(entity=updated_product)
-
-        return UpdateProductOutputDto(
+        updated_product_dto = UpdateProductOutputDto(
             name=updated_product.name,
             category=updated_product.category,
             price=updated_product.price,
@@ -59,3 +57,7 @@ class UpdateProductUseCase:
             is_active=product.is_active,
             uuid=updated_product.uuid,
         )
+
+        self._repository.update(updated_product_dto)
+
+        return updated_product_dto

@@ -1,17 +1,17 @@
 import uuid
+
 from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
+
+from src.domain.aggregates.order.value_objects.order_status import OrderStatus
 from src.infrastructure.postgresql.database import Base
-from src.infrastructure.postgresql.repositories.mixins.crud import CRUDMixin
-from src.infrastructure.postgresql.repositories.mixins.timestamp import TimestampMixin
-from src.infrastructure.postgresql.repositories.product.product import ProductModel
-from src.domain.aggregates.order.interfaces.order_entity import (
-    OrderStatus,
-)
+from src.infrastructure.postgresql.models.timestamp import BaseTimestamp
+from src.infrastructure.postgresql.repositories.mixins import CRUDMixin
+from src.infrastructure.postgresql.repositories.product import ProductModel
 
 
-class OrderModel(Base, CRUDMixin, TimestampMixin):
+class OrderModel(Base, CRUDMixin, BaseTimestamp):
     __tablename__ = "order"
 
     items = relationship(

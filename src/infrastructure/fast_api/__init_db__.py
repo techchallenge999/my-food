@@ -1,5 +1,5 @@
 from uuid import UUID
-from src.infrastructure.postgresql.models.user.user import UserModel
+from src.infrastructure.postgresql.models.user import UserModel
 
 
 def init_db() -> None:

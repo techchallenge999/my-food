@@ -11,11 +11,6 @@ class CpfInterface(ABC):
     def value(self) -> str:
         pass
 
-    @value.setter
-    @abstractmethod
-    def value(self, value: str):
-        pass
-
     @property
     @abstractmethod
     def validator(self) -> ValidatorInterface:
@@ -30,11 +25,6 @@ class EmailInterface(ABC):
     def value(self) -> str:
         pass
 
-    @value.setter
-    @abstractmethod
-    def value(self, value: str):
-        pass
-
     @property
     @abstractmethod
     def validator(self) -> ValidatorInterface:
@@ -47,11 +37,6 @@ class PasswordInterface(ABC):
     @property
     @abstractmethod
     def value(self) -> str:
-        pass
-
-    @value.setter
-    @abstractmethod
-    def value(self, value: str):
         pass
 
     @property

@@ -8,7 +8,7 @@ from src.infrastructure.fast_api.utils.auth import (
     verify_password,
 )
 from src.infrastructure.fast_api.utils.schemas import TokenModel
-from src.infrastructure.postgresql.repositories.user.user import UserRepository
+from src.infrastructure.postgresql.repositories.user import UserRepository
 from src.interface_adapters.controllers.auth import AuthController
 from src.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,

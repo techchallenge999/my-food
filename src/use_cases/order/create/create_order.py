@@ -2,8 +2,8 @@ from dataclasses import asdict
 from uuid import UUID
 
 from src.domain.aggregates.order.entities.order import Order
-from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.domain.aggregates.order.value_objects.order_item import OrderItem
+from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
@@ -45,9 +45,7 @@ class CreateOrderUseCase:
             else None,
         )
 
-        self._order_repository.create(entity=new_order)
-
-        return CreateOrderOutputDto(
+        create_order_dto = CreateOrderOutputDto(
             items=[
                 CreateOrderItemOutputDto(
                     comment=new_item.comment,
@@ -63,3 +61,7 @@ class CreateOrderUseCase:
             user_uuid=new_order.user_uuid,
             uuid=new_order.uuid,
         )
+
+        self._order_repository.create(create_order_dto)
+
+        return create_order_dto

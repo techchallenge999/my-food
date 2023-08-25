@@ -6,7 +6,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 
-from src.infrastructure.postgresql.models.user.user import pwd_context
+from src.infrastructure.postgresql.models.user import pwd_context
 from src.use_cases.user.find.find_user_dto import FindUserByCpfOutputDto
 
 

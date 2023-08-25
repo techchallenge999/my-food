@@ -1,6 +1,5 @@
 from src.domain.aggregates.user.interfaces.value_objects import CpfInterface
-from src.domain.aggregates.user.validators.cpf_validator import CpfValidator
-from src.domain.shared.interfaces.validator import ValidatorInterface
+from src.domain.aggregates.user.validators.cpf import CpfValidator
 
 
 class Cpf(CpfInterface):
@@ -10,13 +9,13 @@ class Cpf(CpfInterface):
         self.validator.validate()
 
     @property
-    def value(self) -> str:
+    def value(self):
         return self._value
 
     @value.setter
-    def value(self, value: str):
+    def value(self, value):
         self._value = value
 
     @property
-    def validator(self) -> ValidatorInterface:
+    def validator(self):
         return self._validator

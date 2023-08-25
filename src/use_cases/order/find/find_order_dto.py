@@ -1,15 +1,14 @@
 from dataclasses import dataclass
 from datetime import datetime
-from src.domain.aggregates.order.entities.order import OrderStatus
-from src.interface_adapters.gateways.repositories.product import (
-    ProductRepositoryDto,
-)
+
+from src.domain.aggregates.order.value_objects.order_status import OrderStatus
+from src.use_cases.product.find.find_product_dto import FindProductOutputDto
 
 
 @dataclass
 class FindOrderItemOutputDto:
     comment: str
-    product: ProductRepositoryDto
+    product: FindProductOutputDto
     quantity: int
 
 

@@ -1,10 +1,12 @@
 import uuid
+
 from passlib.context import CryptContext
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
+
 from src.infrastructure.postgresql.database import Base
-from src.infrastructure.postgresql.repositories.mixins.crud import CRUDMixin
+from src.infrastructure.postgresql.repositories.mixins import CRUDMixin
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

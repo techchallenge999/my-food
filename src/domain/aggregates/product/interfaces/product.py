@@ -1,14 +1,8 @@
 from abc import ABC, abstractmethod
-from enum import Enum
 from uuid import UUID
+
+from src.domain.aggregates.product.value_objects.product_category import ProductCategory
 from src.domain.shared.interfaces.validator import ValidatorInterface
-
-
-class ProductCategory(Enum):
-    SANDWICH = "lanche"
-    SIDE_DISH = "acompanhamento"
-    BEVERAGE = "bebida"
-    DESSERT = "sobremesa"
 
 
 class ProductInterface(ABC):
@@ -87,11 +81,11 @@ class ProductInterface(ABC):
         pass
 
     @abstractmethod
-    def activate(self):
+    def activate(self) -> None:
         pass
 
     @abstractmethod
-    def deactivate(self):
+    def deactivate(self) -> None:
         pass
 
     @property

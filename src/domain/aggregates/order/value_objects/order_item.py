@@ -1,5 +1,9 @@
 from uuid import UUID
-from src.domain.aggregates.order.interfaces.order_entity import OrderItemInterface
+
+from src.domain.aggregates.order.interfaces.order import OrderItemInterface
+from src.domain.aggregates.order.validators.order_item import (
+    OrderItemValidator,
+)
 
 
 class OrderItem(OrderItemInterface):
@@ -12,15 +16,21 @@ class OrderItem(OrderItemInterface):
         self._comment = comment
         self._product_uuid = product_uuid
         self._quantity = quantity
+        self._validator = OrderItemValidator(self)
+        self.validator.validate()
 
     @property
-    def comment(self) -> str:
+    def comment(self):
         return self._comment
 
     @property
-    def product_uuid(self) -> str:
+    def product_uuid(self):
         return str(self._product_uuid)
 
     @property
-    def quantity(self) -> int:
+    def quantity(self):
         return self._quantity
+
+    @property
+    def validator(self):
+        return self._validator

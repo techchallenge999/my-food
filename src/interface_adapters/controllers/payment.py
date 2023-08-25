@@ -1,4 +1,4 @@
-from src.interface_adapters.gateways.payment_gateways import PaymentGatewayInterface
+from src.interface_adapters.gateways.payment_gateway import PaymentGatewayInterface
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryInterface,
@@ -7,7 +7,8 @@ from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
 from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
-from src.use_cases.order.update.update_order import UpdateOrderStatusUseCase
+from src.use_cases.order.find.find_order import FindOrderUseCase
+from src.use_cases.order.update.update_order import UpdateOrderUseCase
 from src.use_cases.payment.create.create_payment import CreatePaymentUseCase
 from src.use_cases.payment.create.create_payment_dto import (
     CreatePaymentInputDto,
@@ -61,8 +62,11 @@ class PaymentController:
         update_use_case = UpdatePaymentUseCase(
             self.repository,
             order_repository,
-            UpdateOrderStatusUseCase(
-                order_repository, product_repository, user_repository
+            UpdateOrderUseCase(
+                order_repository,
+                product_repository,
+                user_repository,
+                FindOrderUseCase(order_repository),
             ),
         )
         payment = update_use_case.execute(payment_uuid, input_data)

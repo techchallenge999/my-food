@@ -1,7 +1,6 @@
 from dataclasses import dataclass
-from src.domain.aggregates.payment.interfaces.payment_entity import (
-    PaymentStatus,
-)
+
+from src.domain.aggregates.payment.interfaces.payment import PaymentStatus
 
 
 @dataclass

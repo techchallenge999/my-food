@@ -1,6 +1,6 @@
 from dataclasses import asdict
 
-from src.domain.aggregates.order.interfaces.order_entity import OrderStatus
+from src.domain.aggregates.order.value_objects.order_status import OrderStatus
 from src.interface_adapters.gateways.repositories.order import (
     OrderRepositoryInterface,
 )

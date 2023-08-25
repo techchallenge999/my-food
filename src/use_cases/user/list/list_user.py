@@ -1,4 +1,4 @@
-from src.domain.shared.exceptions.user import Unauthorized
+from src.domain.shared.exceptions.user import UnauthorizedException
 from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 from src.use_cases.user.list.list_user_dto import ListUserOutputDto
 
@@ -10,7 +10,7 @@ class ListUserUseCase:
     def execute(self, actor_uuid: str) -> list[ListUserOutputDto]:
         actor = self._repository.find(actor_uuid)
         if actor is None or not actor.is_admin:
-            raise Unauthorized("User not Allowed!")
+            raise UnauthorizedException("User not Allowed!")
 
         users = self._repository.list()
 

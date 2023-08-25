@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from src.infrastructure.fast_api.__init_db__ import init_db
 from src.infrastructure.fast_api.views.auth import router as auth_router
 from src.infrastructure.fast_api.views.user import router as users_router

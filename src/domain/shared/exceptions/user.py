@@ -26,6 +26,6 @@ class UnavailableCPFException(DomainException):
         super().__init__(message)
 
 
-class Unauthorized(DomainException):
-    def __init__(self, message="User unauthorized!"):
+class UnauthorizedException(DomainException):
+    def __init__(self, message="User unauthorized."):
         super().__init__(message)

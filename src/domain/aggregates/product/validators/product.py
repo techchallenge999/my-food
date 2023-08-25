@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.domain.aggregates.product.interfaces.product_entity import (
+from src.domain.aggregates.product.interfaces.product import (
     ProductInterface,
 )
 from src.interface_adapters.gateways.repositories.product import (

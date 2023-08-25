@@ -1,4 +1,7 @@
-from src.domain.shared.exceptions.user import Unauthorized
+from src.domain.shared.exceptions.user import (
+    UnauthorizedException,
+    UserNotFoundException,
+)
 from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 from src.use_cases.user.find.find_user_dto import (
     FindUserByCpfInputDto,
@@ -14,15 +17,15 @@ class FindUserUseCase:
 
     def execute(
         self, input_data: FindUserInputDto, actor_uuid: str
-    ) -> FindUserOutputDto | None:
+    ) -> FindUserOutputDto:
         actor = self._repository.find(actor_uuid)
         if actor is None or (input_data.uuid != actor_uuid and not actor.is_admin):
-            raise Unauthorized("User not Allowed!")
+            raise UnauthorizedException()
 
         user = self._repository.find(uuid=input_data.uuid)
 
         if user is None:
-            return None
+            raise UserNotFoundException()
 
         return FindUserOutputDto(
             cpf=user.cpf,
@@ -39,7 +42,7 @@ class FindUserByCpfUseCase:
 
     def execute(
         self, input_data: FindUserByCpfInputDto, actor_cpf: str
-    ) -> FindUserByCpfOutputDto | None:
+    ) -> FindUserByCpfOutputDto:
         cleaned_actor_cpf = "".join(filter(str.isdigit, actor_cpf))
         cleaned_input_data_cpf = "".join(filter(str.isdigit, input_data.cpf))
 
@@ -47,12 +50,12 @@ class FindUserByCpfUseCase:
         if actor is None or (
             cleaned_input_data_cpf != actor.cpf and not actor.is_admin
         ):
-            raise Unauthorized("User not Allowed!")
+            raise UnauthorizedException()
 
         user = self._repository.find_by_cpf(cpf=cleaned_input_data_cpf)
 
         if user is None:
-            return None
+            raise UserNotFoundException()
 
         return FindUserByCpfOutputDto(
             cpf=user.cpf,

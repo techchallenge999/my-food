@@ -3,9 +3,9 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from src.domain.shared.exceptions.base import DomainException
-from src.domain.shared.exceptions.user import Unauthorized
+from src.domain.shared.exceptions.user import UnauthorizedException
 from src.infrastructure.fast_api.utils.auth import get_current_user
-from src.infrastructure.postgresql.repositories.user.user import UserRepository
+from src.infrastructure.postgresql.repositories.user import UserRepository
 from src.interface_adapters.controllers.user import UserController
 from src.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,
@@ -36,7 +36,7 @@ async def update_users_me(
 ):
     try:
         return UserController(UserRepository()).update_me(input_data, current_user)
-    except Unauthorized as err:
+    except UnauthorizedException as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=err.message,
@@ -50,7 +50,7 @@ async def list_users(
 ):
     try:
         return UserController(UserRepository()).list_users(current_user)
-    except Unauthorized as err:
+    except UnauthorizedException as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=err.message,
@@ -71,7 +71,7 @@ async def retrieve_user(
 ):
     try:
         return UserController(UserRepository()).retrieve_user(user_uuid, current_user)
-    except Unauthorized as err:
+    except UnauthorizedException as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=err.message,
@@ -92,7 +92,7 @@ async def update_user(
 ):
     try:
         return UserController(UserRepository()).update_user(input_data, current_user)
-    except Unauthorized as err:
+    except UnauthorizedException as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=err.message,
@@ -115,7 +115,7 @@ async def create_admin_user(
         return UserController(UserRepository()).create_admin_user(
             input_data, current_user
         )
-    except Unauthorized as err:
+    except UnauthorizedException as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=err.message,

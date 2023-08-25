@@ -1,6 +1,5 @@
-from src.domain.aggregates.payment.interfaces.payment_entity import PaymentInterface
 from src.domain.shared.exceptions.payment import PaymentNotFoundException
-from src.infrastructure.postgresql.models.payment.payment import PaymentModel
+from src.infrastructure.postgresql.models.payment import PaymentModel
 from src.interface_adapters.gateways.repositories.payment import (
     PaymentRepositoryDto,
     PaymentRepositoryInterface,
@@ -8,25 +7,25 @@ from src.interface_adapters.gateways.repositories.payment import (
 
 
 class PaymentRepository(PaymentRepositoryInterface):
-    def create(self, entity: PaymentInterface) -> None:
+    def create(self, new_payment_dto):
         new_payment = PaymentModel(
-            order_uuid=entity.order_uuid,
-            status=entity.status,
-            uuid=entity.uuid,
+            order_uuid=new_payment_dto.order_uuid,
+            status=new_payment_dto.status,
+            uuid=new_payment_dto.uuid,
         )
         new_payment.create()
 
-    def find(self, uuid: str) -> PaymentRepositoryDto:
+    def find(self, uuid):
         payment = PaymentModel.retrieve(uuid)
         if payment is None:
-            raise PaymentNotFoundException()
+            return None
         return PaymentRepositoryDto(
             order_uuid=str(payment.order_uuid),
             status=payment.status,
             uuid=str(payment.uuid),
         )
 
-    def find_by_order(self, order_uuid: str) -> PaymentRepositoryDto | None:
+    def find_by_order(self, order_uuid):
         payment = PaymentModel.retrieve_by_column("order_uuid", order_uuid)
         if payment is None:
             raise PaymentNotFoundException()
@@ -36,7 +35,7 @@ class PaymentRepository(PaymentRepositoryInterface):
             uuid=str(payment.uuid),
         )
 
-    def list(self) -> list[PaymentRepositoryDto]:
+    def list(self):
         payments = PaymentModel.list()
 
         if payments is None:
@@ -51,7 +50,8 @@ class PaymentRepository(PaymentRepositoryInterface):
             for payment in payments
         ]
 
-    def update(self, entity: PaymentInterface) -> None:
-        payment = PaymentModel.retrieve(entity.uuid)
-        if payment:
-            PaymentModel.update({"status": entity.status})
+    def update(self, update_order_dto):
+        payment = PaymentModel.retrieve(update_order_dto.uuid)
+        if payment is None:
+            raise PaymentNotFoundException()
+        PaymentModel.update({"status": update_order_dto.status})

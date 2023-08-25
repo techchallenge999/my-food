@@ -1,11 +1,10 @@
 from abc import abstractmethod
 from dataclasses import dataclass
 
-from src.domain.aggregates.payment.interfaces.payment_entity import (
-    PaymentInterface,
-    PaymentStatus,
-)
+from src.domain.aggregates.payment.interfaces.payment import PaymentStatus
 from src.domain.shared.interfaces.repository import RepositoryInterface
+from src.use_cases.payment.create.create_payment_dto import CreatePaymentOutputDto
+from src.use_cases.payment.update.update_payment_dto import UpdatePaymentOutputDto
 
 
 @dataclass
@@ -17,11 +16,11 @@ class PaymentRepositoryDto:
 
 class PaymentRepositoryInterface(RepositoryInterface):
     @abstractmethod
-    def create(self, entity: PaymentInterface) -> None:
+    def create(self, new_payment_dto: CreatePaymentOutputDto) -> None:
         pass
 
     @abstractmethod
-    def find(self, uuid: str) -> PaymentRepositoryDto:
+    def find(self, uuid: str) -> PaymentRepositoryDto | None:
         pass
 
     @abstractmethod
@@ -33,5 +32,5 @@ class PaymentRepositoryInterface(RepositoryInterface):
         pass
 
     @abstractmethod
-    def update(self, entity: PaymentInterface) -> None:
+    def update(self, updated_payment_dto: UpdatePaymentOutputDto) -> None:
         pass

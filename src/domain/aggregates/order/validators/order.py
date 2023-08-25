@@ -1,50 +1,34 @@
 from uuid import UUID
 
-from src.domain.aggregates.order.entities.order import OrderStatus
-from src.domain.aggregates.order.interfaces.order_entity import (
-    OrderInterface,
-)
-from src.interface_adapters.gateways.repositories.order import (
-    OrderRepositoryInterface,
-)
+from src.domain.aggregates.order.interfaces.order import OrderInterface
+from src.domain.aggregates.order.value_objects.order_status import OrderStatus
+from src.domain.shared.exceptions.base import InvalidUUIDException
+from src.domain.shared.exceptions.order import InvalidOrderStatusException
+from src.domain.shared.exceptions.product import UnavailableProductException
+from src.domain.shared.exceptions.user import UserNotFoundException
+from src.domain.shared.interfaces.validator import ValidatorInterface
+from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
-from src.interface_adapters.gateways.repositories.user import (
-    UserRepositoryInterface,
-)
-from src.domain.shared.exceptions.base import (
-    InvalidUUIDException,
-)
-from src.domain.shared.exceptions.order import (
-    InvalidOrderStatusException,
-)
-from src.domain.shared.exceptions.product import (
-    InvalidProductQuantityException,
-    UnavailableProductException,
-)
-from src.domain.shared.exceptions.user import (
-    UserNotFoundException,
-)
-from src.domain.shared.interfaces.validator import ValidatorInterface
+from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 
 
 class OrderValidator(ValidatorInterface):
     def __init__(
         self,
-        entity: OrderInterface,
+        domain_object: OrderInterface,
         order_repository: OrderRepositoryInterface,
         product_repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
     ):
-        self._order = entity
+        self._order = domain_object
         self._order_repository = order_repository
         self._product_repository = product_repository
         self._user_repository = user_repository
 
     def validate(self):
         self._raise_if_has_unavailable_product()
-        self._raise_if_has_invalid_quantity()
         self._raise_if_invalid_order_status()
         self._raise_if_invalid_uuid()
         self._raise_if_nonexistent_user()
@@ -52,10 +36,6 @@ class OrderValidator(ValidatorInterface):
     def _raise_if_has_unavailable_product(self) -> None:
         if self._has_unavailable_product():
             raise UnavailableProductException()
-
-    def _raise_if_has_invalid_quantity(self) -> None:
-        if self._has_invalid_product_quantity():
-            raise InvalidProductQuantityException()
 
     def _raise_if_invalid_order_status(self) -> None:
         if self._is_invalid_order_status():
@@ -78,12 +58,6 @@ class OrderValidator(ValidatorInterface):
     def _has_unavailable_product(self) -> bool:
         for item in self._order.items:
             if self._product_repository.find(item.product_uuid) is None:
-                return True
-        return False
-
-    def _has_invalid_product_quantity(self) -> bool:
-        for item in self._order.items:
-            if item.quantity <= 0:
                 return True
         return False
 

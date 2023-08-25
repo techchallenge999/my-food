@@ -1,4 +1,5 @@
 from typing import Annotated
+
 from fastapi import (
     APIRouter,
     Depends,
@@ -8,12 +9,12 @@ from fastapi import (
     Form,
     UploadFile,
 )
-from src.infrastructure.postgresql.repositories.user.user import UserRepository
-from src.domain.aggregates.product.interfaces.product_entity import (
-    ProductCategory,
-)
+
+from src.domain.aggregates.product.interfaces.product import ProductCategory
 from src.domain.shared.exceptions.base import DomainException
-from src.domain.shared.exceptions.user import Unauthorized
+from src.domain.shared.exceptions.user import UnauthorizedException
+from src.infrastructure.postgresql.repositories.user import UserRepository
+from src.infrastructure.postgresql.repositories.product import ProductRepository
 from src.interface_adapters.controllers.product import ProductController
 from src.use_cases.product.activation.activation_product_dto import (
     ActivateProductInputDto,
@@ -21,27 +22,16 @@ from src.use_cases.product.activation.activation_product_dto import (
     DeactivateProductInputDto,
     DeactivateProductOutputDto,
 )
-from src.use_cases.product.create.create_product_dto import (
-    CreateProductOutputDto,
-)
-from src.use_cases.product.delete.delete_product_dto import (
-    DeleteProductOutputDto,
-)
-from src.use_cases.product.find.find_product_dto import (
-    FindProductOutputDto,
-)
+from src.use_cases.product.create.create_product_dto import CreateProductOutputDto
+from src.use_cases.product.delete.delete_product_dto import DeleteProductOutputDto
+from src.use_cases.product.find.find_product_dto import FindProductOutputDto
 from src.infrastructure.fast_api.utils.auth import (
     EmptyUser,
     get_current_user,
     get_current_user_optional,
 )
-from src.infrastructure.postgresql.repositories.product.product import ProductRepository
-from src.use_cases.product.list.list_product_dto import (
-    ListProductOutputDto,
-)
-from src.use_cases.product.update.update_product_dto import (
-    UpdateProductOutputDto,
-)
+from src.use_cases.product.list.list_product_dto import ListProductOutputDto
+from src.use_cases.product.update.update_product_dto import UpdateProductOutputDto
 from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 
 
@@ -59,7 +49,7 @@ async def list_products(
         return ProductController(
             ProductRepository(), UserRepository(), current_user
         ).list_products(category)
-    except Unauthorized as err:
+    except UnauthorizedException as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=err.message,
@@ -84,7 +74,7 @@ async def retrieve_product(
         return ProductController(
             ProductRepository(), UserRepository(), current_user
         ).retrieve_product(product_uuid)
-    except Unauthorized as err:
+    except UnauthorizedException as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=err.message,
@@ -113,7 +103,7 @@ async def update_product(
         return await ProductController(
             ProductRepository(), UserRepository(), current_user
         ).update_product(name, category, price, description, image_contents, uuid)
-    except Unauthorized as err:
+    except UnauthorizedException as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=err.message,
@@ -141,7 +131,7 @@ async def create_product(
         return await ProductController(
             ProductRepository(), UserRepository(), current_user
         ).create_product(name, category, price, description, image_contents)
-    except Unauthorized as err:
+    except UnauthorizedException as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=err.message,
@@ -164,7 +154,7 @@ async def activate_product(
         return ProductController(
             ProductRepository(), UserRepository(), current_user
         ).activate_product(input_data)
-    except Unauthorized as err:
+    except UnauthorizedException as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=err.message,
@@ -187,7 +177,7 @@ async def deactivate_product(
         return ProductController(
             ProductRepository(), UserRepository(), current_user
         ).deactivate_product(input_data)
-    except Unauthorized as err:
+    except UnauthorizedException as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=err.message,
@@ -210,7 +200,7 @@ async def delete_product(
         return ProductController(
             ProductRepository(), UserRepository(), current_user
         ).delete_product(product_uuid)
-    except Unauthorized as err:
+    except UnauthorizedException as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=err.message,

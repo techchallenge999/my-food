@@ -1,6 +1,5 @@
 from src.domain.aggregates.user.interfaces.value_objects import EmailInterface
-from src.domain.aggregates.user.validators.email_validator import EmailValidator
-from src.domain.shared.interfaces.validator import ValidatorInterface
+from src.domain.aggregates.user.validators.email import EmailValidator
 
 
 class Email(EmailInterface):
@@ -10,13 +9,13 @@ class Email(EmailInterface):
         self.validator.validate()
 
     @property
-    def value(self) -> str:
+    def value(self):
         return self._value
 
     @value.setter
-    def value(self, value: str):
+    def value(self, value):
         self._value = value
 
     @property
-    def validator(self) -> ValidatorInterface:
+    def validator(self):
         return self._validator

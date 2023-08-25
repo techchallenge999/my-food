@@ -17,5 +17,7 @@ class PaymentGatewayOutputDto:
 
 class PaymentGatewayInterface(ABC):
     @abstractmethod
-    def create(self, payment_data: PaymentGatewayInputDto) -> PaymentGatewayOutputDto:
+    def create(
+        self, payment_gateway_input_dto: PaymentGatewayInputDto
+    ) -> PaymentGatewayOutputDto:
         pass

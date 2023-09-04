@@ -4,8 +4,13 @@ from src.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,
     CreateUserOutputDto,
 )
-from src.use_cases.user.find.find_user import FindUserUseCase
-from src.use_cases.user.find.find_user_dto import FindUserInputDto, FindUserOutputDto
+from src.use_cases.user.find.find_user import FindUserByCpfUseCase, FindUserUseCase
+from src.use_cases.user.find.find_user_dto import (
+    FindUserByCpfInputDto,
+    FindUserByCpfOutputDto,
+    FindUserInputDto,
+    FindUserOutputDto,
+)
 from src.use_cases.user.list.list_user import ListUserUseCase
 from src.use_cases.user.list.list_user_dto import ListUserOutputDto
 from src.use_cases.user.update.update_user import UpdateUserUseCase
@@ -56,3 +61,12 @@ class UserController:
         create_use_case = CreateAdminUserUseCase(self.repository)
         new_admin_user = create_use_case.execute(input_data, current_user.uuid)
         return new_admin_user
+
+    def find_user_by_cpf(
+        self, cpf: str, actor_cpf: str
+    ) -> FindUserByCpfOutputDto | None:
+        find_use_case = FindUserByCpfUseCase(self.repository)
+        user = find_use_case.execute(
+            FindUserByCpfInputDto(cpf=cpf), actor_cpf=actor_cpf
+        )
+        return user

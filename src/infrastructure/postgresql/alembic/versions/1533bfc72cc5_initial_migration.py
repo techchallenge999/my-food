@@ -22,7 +22,15 @@ def upgrade() -> None:
         "order",
         sa.Column(
             "status",
-            sa.Enum("RECEIVED", "PREPARING", "READY", "WITHDRAWN", name="orderstatus"),
+            sa.Enum(
+                "CANCELED",
+                "PENDING_PAYMENT",
+                "RECEIVED",
+                "PREPARING",
+                "READY",
+                "WITHDRAWN",
+                name="orderstatus",
+            ),
             nullable=False,
         ),
         sa.Column("total_amount", sa.String(), nullable=False),
@@ -37,10 +45,10 @@ def upgrade() -> None:
         sa.Column(
             "category",
             sa.Enum(
-                "lanche",
-                "acompanhamento",
-                "bebida",
-                "sobremesa",
+                "SANDWICH",
+                "SIDE_DISH",
+                "BEVERAGE",
+                "DESSERT",
                 name="productcategory",
             ),
             nullable=False,

@@ -7,6 +7,8 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 
 from src.infrastructure.postgresql.models.user import pwd_context
+from src.infrastructure.postgresql.repositories.user import UserRepository
+from src.interface_adapters.controllers.user import UserController
 from src.use_cases.user.find.find_user_dto import FindUserByCpfOutputDto
 
 
@@ -25,8 +27,7 @@ class EmptyUser:
 
 async def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
-    user: FindUserByCpfOutputDto | None,
-):
+) -> FindUserByCpfOutputDto:
     try:
         payload = decode_access_token(token)
         username: str = payload["sub"]
@@ -34,6 +35,9 @@ async def get_current_user(
             raise_credentials_exception("Could not validate credentials")
     except JWTError:
         raise_credentials_exception("Could not validate credentials")
+    user = UserController(UserRepository()).find_user_by_cpf(
+        cpf=username, actor_cpf=username
+    )
     if user is None:
         raise_credentials_exception("Could not validate credentials")
     return user
@@ -41,8 +45,7 @@ async def get_current_user(
 
 async def get_current_user_optional(
     token: Annotated[str | None, Depends(oauth2_scheme_optional)],
-    user: FindUserByCpfOutputDto | None,
-):
+) -> FindUserByCpfOutputDto | EmptyUser:
     try:
         if token is None:
             return EmptyUser()
@@ -52,6 +55,9 @@ async def get_current_user_optional(
             return EmptyUser()
     except JWTError:
         return EmptyUser()
+    user = UserController(UserRepository()).find_user_by_cpf(
+        cpf=username, actor_cpf=username
+    )
     if user is None:
         raise_credentials_exception("Could not validate credentials")
     return user

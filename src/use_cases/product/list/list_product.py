@@ -24,7 +24,7 @@ class ListProductUseCase:
             filters["is_active"] = True
         if "category" in filters.keys():
             try:
-                ProductCategory(filters["category"])
+                ProductCategory[filters["category"]]
             except ValueError as err:
                 raise InvalidProductCategoryException(err.args[0])
 

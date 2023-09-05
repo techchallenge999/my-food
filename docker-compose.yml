@@ -11,13 +11,13 @@ services:
       - 8000:8000
     volumes:
       - source: .
-        target: /app
+        target: /src
         type: bind
     command: bash init_app.sh
 
   db:
     container_name: my-food-db
-    image: postgres:14
+    image: postgres:15.4
     env_file: .env
     ports:
       - 5432:5432

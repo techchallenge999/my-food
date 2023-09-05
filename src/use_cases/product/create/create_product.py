@@ -1,3 +1,4 @@
+from uuid import uuid4
 from src.domain.aggregates.product.entities.product import Product
 from src.domain.shared.exceptions.user import UnauthorizedException
 from src.interface_adapters.gateways.repositories.product import (
@@ -35,6 +36,7 @@ class CreateProductUseCase:
             description=input_data.description,
             image=input_data.image,
             repository=self._repository,
+            uuid=uuid4(),
         )
 
         new_product_dto = CreateProductOutputDto(

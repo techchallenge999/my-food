@@ -1,3 +1,4 @@
+from uuid import uuid4
 from src.domain.aggregates.user.entities.user import User
 from src.domain.aggregates.user.value_objects.cpf import Cpf
 from src.domain.aggregates.user.value_objects.email import Email
@@ -23,6 +24,7 @@ class CreateUserUseCase:
             name=input_data.name,
             password=Password(input_data.password),
             repository=self._repository,
+            uuid=uuid4(),
         )
 
         new_user_dto = CreateUserOutputDto(
@@ -59,6 +61,7 @@ class CreateAdminUserUseCase:
             password=Password(input_data.password),
             repository=self._repository,
             is_admin=True,
+            uuid=uuid4(),
         )
 
         self._repository.create(entity=new_user)

@@ -1,5 +1,5 @@
 from dataclasses import asdict
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from src.domain.aggregates.order.entities.order import Order
 from src.domain.aggregates.order.value_objects.order_item import OrderItem
@@ -40,6 +40,7 @@ class CreateOrderUseCase:
             order_repository=self._order_repository,
             product_repository=self._product_repository,
             user_repository=self._user_repository,
+            uuid=uuid4(),
             user_uuid=UUID(input_data.user_uuid)
             if isinstance(input_data.user_uuid, str)
             else None,

@@ -1,4 +1,4 @@
-from uuid import UUID
+from uuid import UUID, uuid4
 import os
 
 from src.domain.aggregates.payment.entities.payment import Payment
@@ -35,8 +35,9 @@ class CreatePaymentUseCase:
             raise OrderNotFoundException()
 
         new_payment = Payment(
-            UUID(order.uuid),
-            self._order_repository,
+            order_uuid=UUID(order.uuid),
+            order_repository=self._order_repository,
+            uuid=uuid4(),
         )
 
         api_url = os.getenv("API_URL", "http://localhost:8000")

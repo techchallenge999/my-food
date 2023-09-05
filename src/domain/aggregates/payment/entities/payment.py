@@ -1,4 +1,4 @@
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from src.domain.aggregates.payment.interfaces.payment import (
     PaymentInterface,
@@ -14,8 +14,8 @@ class Payment(PaymentInterface):
         self,
         order_uuid: UUID,
         order_repository: OrderRepositoryInterface,
+        uuid: UUID,
         status: PaymentStatus = PaymentStatus.PENDING,
-        uuid: UUID = uuid4(),
     ):
         self._order_uuid = order_uuid
         self._status = status

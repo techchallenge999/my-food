@@ -18,7 +18,7 @@ from src.interface_adapters.gateways.repositories.product import ProductReposito
 class OrderRepository(OrderRepositoryInterface):
     def create(self, create_order_dto):
         new_order = OrderModel(
-            status=OrderStatus.RECEIVED,
+            status=OrderStatus.PENDING_PAYMENT,
             total_amount=create_order_dto.total_amount,
             uuid=create_order_dto.uuid,
             user_uuid=create_order_dto.user_uuid,
@@ -65,7 +65,7 @@ class OrderRepository(OrderRepositoryInterface):
             status=order.status,
             total_amount=order.total_amount,
             uuid=str(order.uuid),
-            user_uuid=str(order.user_uuid),
+            user_uuid=str(order.user_uuid) if order.user_uuid else None,
             created_at=order.created_at,
             updated_at=order.updated_at,
         )
@@ -144,7 +144,7 @@ class OrderRepository(OrderRepositoryInterface):
             OrderItemModel(
                 comment=item.comment,
                 order_uuid=order.uuid,
-                product_uuid=item.product.uuid,
+                product_uuid=item.product_uuid,
                 quantity=item.quantity,
             ).create()
 

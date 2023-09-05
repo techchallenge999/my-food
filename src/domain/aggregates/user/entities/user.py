@@ -1,4 +1,4 @@
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from src.domain.aggregates.user.interfaces.user import UserInterface
 from src.domain.aggregates.user.interfaces.value_objects import (
@@ -18,8 +18,8 @@ class User(UserInterface):
         name: str,
         password: PasswordInterface,
         repository: UserRepositoryInterface,
+        uuid: UUID,
         is_admin: bool = False,
-        uuid: UUID = uuid4(),
     ):
         self.cpf = cpf
         self.email = email

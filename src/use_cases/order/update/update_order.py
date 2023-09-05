@@ -66,7 +66,7 @@ class UpdateOrderUseCase:
             items=[
                 OrderItem(
                     comment=item.comment,
-                    product_uuid=UUID(item.product.uuid),
+                    product_uuid=UUID(item.product["uuid"]),
                     quantity=item.quantity,
                 )
                 for item in find_order_dto.items
@@ -88,7 +88,7 @@ class UpdateOrderUseCase:
             items=[
                 OrderItem(
                     comment=item.comment,
-                    product_uuid=UUID(item.product.uuid),
+                    product_uuid=UUID(item.product["uuid"]),
                     quantity=item.quantity,
                 )
                 for item in find_order_dto.items

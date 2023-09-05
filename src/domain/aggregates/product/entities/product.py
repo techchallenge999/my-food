@@ -1,4 +1,4 @@
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from src.domain.aggregates.product.interfaces.product import (
     ProductInterface,
@@ -19,8 +19,8 @@ class Product(ProductInterface):
         description: str,
         image: bytes,
         repository: ProductRepositoryInterface,
+        uuid: UUID,
         is_active: bool = False,
-        uuid: UUID = uuid4(),
     ):
         self._name = name
         self._category = category

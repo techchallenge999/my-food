@@ -54,4 +54,4 @@ class PaymentRepository(PaymentRepositoryInterface):
         payment = PaymentModel.retrieve(update_order_dto.uuid)
         if payment is None:
             raise PaymentNotFoundException()
-        PaymentModel.update({"status": update_order_dto.status})
+        PaymentModel.update({"status": update_order_dto.status, "id": payment.id})

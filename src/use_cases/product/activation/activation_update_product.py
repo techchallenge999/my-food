@@ -16,6 +16,7 @@ from src.use_cases.product.activation.activation_product_dto import (
     DeactivateProductInputDto,
     DeactivateProductOutputDto,
 )
+from src.use_cases.product.update.update_product_dto import UpdateProductOutputDto
 
 
 class ActivateProductUseCase:
@@ -52,7 +53,17 @@ class ActivateProductUseCase:
 
         activated_product.activate()
 
-        self._repository.update(entity=activated_product)
+        updated_product_dto = UpdateProductOutputDto(
+            name=activated_product.name,
+            category=activated_product.category,
+            price=activated_product.price,
+            description=activated_product.description,
+            image=activated_product.image,
+            is_active=activated_product.is_active,
+            uuid=activated_product.uuid,
+        )
+
+        self._repository.update(updated_product_dto=updated_product_dto)
 
         return ActivateProductOutputDto(
             name=activated_product.name,
@@ -99,7 +110,17 @@ class DeactivateProductUseCase:
 
         deactivated_product.deactivate()
 
-        self._repository.deactivate(entity=deactivated_product)
+        updated_product_dto = UpdateProductOutputDto(
+            name=deactivated_product.name,
+            category=deactivated_product.category,
+            price=deactivated_product.price,
+            description=deactivated_product.description,
+            image=deactivated_product.image,
+            is_active=deactivated_product.is_active,
+            uuid=deactivated_product.uuid,
+        )
+
+        self._repository.update(updated_product_dto)
 
         return DeactivateProductOutputDto(
             name=deactivated_product.name,

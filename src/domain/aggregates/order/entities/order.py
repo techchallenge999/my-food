@@ -1,5 +1,5 @@
 from decimal import Decimal
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from src.domain.aggregates.order.interfaces.order import (
     OrderInterface,
@@ -21,9 +21,9 @@ class Order(OrderInterface):
         order_repository: OrderRepositoryInterface,
         product_repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
+        uuid: UUID,
         status: OrderStatus = OrderStatus.PENDING_PAYMENT,
         user_uuid: UUID | None = None,
-        uuid: UUID = uuid4(),
     ):
         self._items = items
         self._status = status

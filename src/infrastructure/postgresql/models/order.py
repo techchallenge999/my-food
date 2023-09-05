@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String
+from sqlalchemy import Column, Enum, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
@@ -24,8 +24,6 @@ class OrderModel(Base, CRUDMixin, BaseTimestamp):
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, index=True, unique=True)
     user_uuid = Column(UUID(as_uuid=True), ForeignKey("user.uuid"), nullable=True)
     id = Column(Integer, primary_key=True)
-    created_at = Column(DateTime, nullable=False)
-    updated_at = Column(DateTime, nullable=True)
 
 
 class OrderItemModel(Base, CRUDMixin):

@@ -31,7 +31,7 @@ class UpdateUserUseCase:
         if user is None:
             raise UserNotFoundException()
 
-        cpf = "".join(filter(str.isdigit, input_data.cpf))
+        cpf = "".join(filter(str.isdigit, user.cpf))
         updated_user = User(
             cpf=Cpf(cpf),
             email=Email(input_data.email),

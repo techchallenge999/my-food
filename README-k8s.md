@@ -14,4 +14,4 @@ Follow these steps in the root directory of your local cloned repository:
     kubectl apply -f k8s/api
     ```
 ## API Documentation UI
-[Swagger](https://swagger.io/tools/swagger-ui/) specification is available in http://localhost:8000/docs
+[Swagger](https://swagger.io/tools/swagger-ui/) specification is available in http://(minikube-ip):(api-svc-port)/docs

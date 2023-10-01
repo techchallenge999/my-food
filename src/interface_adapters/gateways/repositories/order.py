@@ -4,7 +4,6 @@ from datetime import datetime
 
 from src.domain.aggregates.order.value_objects.order_status import OrderStatus
 from src.domain.shared.interfaces.repository import RepositoryInterface
-from src.interface_adapters.gateways.repositories.product import ProductRepositoryDto
 from src.use_cases.order.create.create_order_dto import CreateOrderOutputDto
 from src.use_cases.order.update.update_order_dto import UpdateOrderOutputDto
 
@@ -12,7 +11,7 @@ from src.use_cases.order.update.update_order_dto import UpdateOrderOutputDto
 @dataclass
 class OrderItemRepositoryDto:
     comment: str
-    product: ProductRepositoryDto
+    product_uuid: str
     quantity: int
 
 

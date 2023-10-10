@@ -35,7 +35,7 @@ class CreateUserUseCase:
             uuid=new_user.uuid,
         )
 
-        self._repository.create(new_user_dto, new_user.password)
+        self._repository.create(new_user_dto=new_user_dto, password=new_user.password)
 
         return new_user_dto
 
@@ -64,12 +64,14 @@ class CreateAdminUserUseCase:
             uuid=uuid4(),
         )
 
-        self._repository.create(entity=new_user)
-
-        return CreateUserOutputDto(
+        new_user_dto = CreateUserOutputDto(
             cpf=new_user.cpf,
             email=new_user.email,
             name=new_user.name,
             is_admin=new_user.is_admin,
             uuid=new_user.uuid,
         )
+
+        self._repository.create(new_user_dto=new_user_dto, password=new_user.password)
+
+        return new_user_dto

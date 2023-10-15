@@ -33,3 +33,35 @@ resource "aws_eks_cluster" "cluster" {
 
   depends_on      = [aws_iam_role_policy_attachment.amazon-eks-cluster-policy, module.vpc]
 }
+
+resource "aws_iam_role" "pod_execution_role" {
+  name = "eks-fargate-profile-myfood"
+
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "eks-fargate-pods.amazonaws.com"
+      }
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "myfood_AmazonEKSFargatePodExecutionRolePolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
+  role       = aws_iam_role.pod_execution_role.name
+}
+
+resource "aws_eks_fargate_profile" "fargate_profile" {
+  cluster_name           = aws_eks_cluster.cluster.name
+  fargate_profile_name   = "fargate_profile"
+  pod_execution_role_arn = aws_iam_role.pod_execution_role.arn
+  subnet_ids             = module.vpc.private_subnets.*
+
+  selector {
+    namespace = "myfood"
+  }
+  depends_on = [aws_iam_role_policy_attachment.myfood_AmazonEKSFargatePodExecutionRolePolicy, module.vpc]
+}

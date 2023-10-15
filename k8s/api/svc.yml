@@ -7,4 +7,4 @@ spec:
     app: api
   ports:
     - port: 8000
-  type: NodePort
+  type: LoadBalancer

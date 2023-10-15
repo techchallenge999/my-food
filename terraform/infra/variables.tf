@@ -63,6 +63,6 @@ variable "port" {
 }
 variable "name" {
   description = "The database name"
-  default = "terraform-postgresql"
+  default = "myfood"
   type = string
 }

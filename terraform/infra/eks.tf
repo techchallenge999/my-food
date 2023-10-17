@@ -38,14 +38,21 @@ resource "aws_iam_role" "pod_execution_role" {
   name = "eks-fargate-profile-myfood"
 
   assume_role_policy = jsonencode({
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Principal = {
-        Service = "eks-fargate-pods.amazonaws.com"
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Condition": {
+          "ArnLike": {
+              "aws:SourceArn": "arn:aws:eks:us-east-1:447798043017:fargateprofile/*"
+          }
+        },
+        "Principal": {
+          "Service": "eks-fargate-pods.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
       }
-    }]
-    Version = "2012-10-17"
+    ]
   })
 }
 
@@ -61,7 +68,7 @@ resource "aws_eks_fargate_profile" "fargate_profile" {
   subnet_ids             = module.vpc.private_subnets.*
 
   selector {
-    namespace = "myfood"
+    namespace = "default"
   }
   depends_on = [aws_iam_role_policy_attachment.myfood_AmazonEKSFargatePodExecutionRolePolicy, module.vpc]
 }

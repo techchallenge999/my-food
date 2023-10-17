@@ -15,7 +15,7 @@ spec:
       containers:
         - name: api
           image: my-food-app:latest
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           command: ['sh', '-c', "bash ./init_app.sh"]
           ports:
             - containerPort: 8000

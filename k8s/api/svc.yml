@@ -2,9 +2,13 @@ kind: Service
 apiVersion: v1
 metadata:
   name: api-svc
+  annotations:
+    alb.ingress.kubernetes.io/target-type: ip
 spec:
   selector:
     app: api
   ports:
-    - port: 8000
-  type: LoadBalancer
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: ClusterIP

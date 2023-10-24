@@ -7,12 +7,11 @@ from src.interface_adapters.gateways.repositories.user import (
 
 
 class UserRepository(UserRepositoryInterface):
-    def create(self, new_user_dto, password):
+    def create(self, new_user_dto):
         new_user = UserModel(
             cpf=new_user_dto.cpf,
             email=new_user_dto.email,
             name=new_user_dto.name,
-            password=password,
             uuid=new_user_dto.uuid,
         )
         new_user.create()

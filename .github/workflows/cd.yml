@@ -2,7 +2,7 @@ name: cd-opusq-backend-homolog
 on:
   push:
     branch:
-      - build/terraform
+      - feat/aws-lambda-sign-up
 
 env:
   AWS_REGION: "us-east-1"

@@ -3,11 +3,12 @@ kind: Ingress
 metadata:
   name: myfood-ingress
   annotations:
-    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
   labels:
     app: myfood-api-ingress
 spec:
+  ingressClassName: alb
   rules:
     - http:
         paths:

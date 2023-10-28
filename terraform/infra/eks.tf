@@ -8,8 +8,11 @@ resource "aws_iam_role" "eks-cluster" {
     {
       "Effect": "Allow",
       "Principal": {
-        "Service": "eks.amazonaws.com",
-        "AWS": "arn:aws:iam::447798043017:root"
+        "AWS": "arn:aws:iam::447798043017:root",
+        "Service": [
+            "eks.amazonaws.com",
+            "elasticloadbalancing.amazonaws.com"
+        ]
       },
       "Action": "sts:AssumeRole"
     }

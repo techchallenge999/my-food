@@ -13,9 +13,15 @@ from fastapi import (
 from src.domain.aggregates.product.interfaces.product import ProductCategory
 from src.domain.shared.exceptions.base import DomainException
 from src.domain.shared.exceptions.user import UnauthorizedException
+from src.infrastructure.boto.authorization.authorization_microservice import (
+    AuthorizationMicroservice,
+)
 from src.infrastructure.postgresql.repositories.user import UserRepository
 from src.infrastructure.postgresql.repositories.product import ProductRepository
 from src.interface_adapters.controllers.product import ProductController
+from src.interface_adapters.gateways.authorization_microservice import (
+    AuthorizationOutputDto,
+)
 from src.use_cases.product.activation.activation_product_dto import (
     ActivateProductInputDto,
     ActivateProductOutputDto,
@@ -25,14 +31,8 @@ from src.use_cases.product.activation.activation_product_dto import (
 from src.use_cases.product.create.create_product_dto import CreateProductOutputDto
 from src.use_cases.product.delete.delete_product_dto import DeleteProductOutputDto
 from src.use_cases.product.find.find_product_dto import FindProductOutputDto
-from src.infrastructure.fast_api.utils.auth import (
-    EmptyUser,
-    get_current_user,
-    get_current_user_optional,
-)
 from src.use_cases.product.list.list_product_dto import ListProductOutputDto
 from src.use_cases.product.update.update_product_dto import UpdateProductOutputDto
-from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 
 
 router = APIRouter()
@@ -41,7 +41,7 @@ router = APIRouter()
 @router.get("/", response_model=list[ListProductOutputDto])
 async def list_products(
     current_user: Annotated[
-        FindUserOutputDto | EmptyUser, Depends(get_current_user_optional)
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
     ],
     category: str | None = None,
 ):
@@ -67,7 +67,7 @@ async def list_products(
 async def retrieve_product(
     product_uuid: str,
     current_user: Annotated[
-        FindUserOutputDto | EmptyUser, Depends(get_current_user_optional)
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
     ],
 ):
     try:
@@ -90,7 +90,9 @@ async def retrieve_product(
 
 @router.put("/", response_model=UpdateProductOutputDto)
 async def update_product(
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
+    current_user: Annotated[
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
+    ],
     name: Annotated[str, Form()],
     category: Annotated[ProductCategory, Form()],
     price: Annotated[float, Form()],
@@ -119,7 +121,9 @@ async def update_product(
 
 @router.post("/", response_model=CreateProductOutputDto)
 async def create_product(
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
+    current_user: Annotated[
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
+    ],
     name: Annotated[str, Form()],
     category: Annotated[ProductCategory, Form()],
     price: Annotated[float, Form()],
@@ -147,7 +151,9 @@ async def create_product(
 
 @router.put("/activate/", response_model=ActivateProductOutputDto)
 async def activate_product(
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
+    current_user: Annotated[
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
+    ],
     input_data: ActivateProductInputDto,
 ):
     try:
@@ -170,7 +176,9 @@ async def activate_product(
 
 @router.put("/deactivate/", response_model=DeactivateProductOutputDto)
 async def deactivate_product(
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
+    current_user: Annotated[
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
+    ],
     input_data: DeactivateProductInputDto,
 ):
     try:
@@ -194,7 +202,9 @@ async def deactivate_product(
 @router.delete("/{product_uuid}/", response_model=DeleteProductOutputDto)
 async def delete_product(
     product_uuid: str,
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
+    current_user: Annotated[
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
+    ],
 ):
     try:
         return ProductController(

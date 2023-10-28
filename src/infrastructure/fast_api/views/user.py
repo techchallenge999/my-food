@@ -4,9 +4,14 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from src.domain.shared.exceptions.base import DomainException
 from src.domain.shared.exceptions.user import UnauthorizedException
-from src.infrastructure.fast_api.utils.auth import get_current_user
+from src.infrastructure.boto.authorization.authorization_microservice import (
+    AuthorizationMicroservice,
+)
 from src.infrastructure.postgresql.repositories.user import UserRepository
 from src.interface_adapters.controllers.user import UserController
+from src.interface_adapters.gateways.authorization_microservice import (
+    AuthorizationOutputDto,
+)
 from src.use_cases.user.create.create_user_dto import (
     CreateUserInputDto,
     CreateUserOutputDto,
@@ -24,7 +29,9 @@ router = APIRouter()
 
 @router.get("/me/", response_model=FindUserOutputDto)
 async def read_users_me(
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)]
+    current_user: Annotated[
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
+    ],
 ):
     return current_user
 
@@ -32,7 +39,9 @@ async def read_users_me(
 @router.put("/me/", response_model=UpdateUserOutputDto)
 async def update_users_me(
     input_data: UpdateUserInputDto,
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
+    current_user: Annotated[
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
+    ],
 ):
     try:
         return UserController(UserRepository()).update_me(input_data, current_user)
@@ -46,7 +55,9 @@ async def update_users_me(
 
 @router.get("/", response_model=list[ListUserOutputDto])
 async def list_users(
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)]
+    current_user: Annotated[
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
+    ],
 ):
     try:
         return UserController(UserRepository()).list_users(current_user)
@@ -67,7 +78,9 @@ async def list_users(
 @router.get("/{user_uuid}/", response_model=FindUserOutputDto | None)
 async def retrieve_user(
     user_uuid: str,
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
+    current_user: Annotated[
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
+    ],
 ):
     try:
         return UserController(UserRepository()).retrieve_user(user_uuid, current_user)
@@ -88,7 +101,9 @@ async def retrieve_user(
 @router.put("/", response_model=UpdateUserOutputDto)
 async def update_user(
     input_data: UpdateUserInputDto,
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
+    current_user: Annotated[
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
+    ],
 ):
     try:
         return UserController(UserRepository()).update_user(input_data, current_user)
@@ -109,7 +124,9 @@ async def update_user(
 @router.post("/admin/", response_model=CreateUserOutputDto)
 async def create_admin_user(
     input_data: CreateUserInputDto,
-    current_user: Annotated[FindUserOutputDto, Depends(get_current_user)],
+    current_user: Annotated[
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
+    ],
 ):
     try:
         return UserController(UserRepository()).create_admin_user(

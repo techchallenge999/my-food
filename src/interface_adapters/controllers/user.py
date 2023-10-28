@@ -1,3 +1,7 @@
+from src.infrastructure.boto.sign_up.sign_up_microservice import SignUpMicroservice
+from src.interface_adapters.gateways.authorization_microservice import (
+    AuthorizationOutputDto,
+)
 from src.interface_adapters.gateways.repositories.user import UserRepositoryInterface
 from src.use_cases.user.create.create_user import CreateAdminUserUseCase
 from src.use_cases.user.create.create_user_dto import (
@@ -25,7 +29,7 @@ class UserController:
         self.repository = repository
 
     def update_me(
-        self, input_data: UpdateUserInputDto, current_user: FindUserOutputDto
+        self, input_data: UpdateUserInputDto, current_user: AuthorizationOutputDto
     ) -> UpdateUserOutputDto:
         update_use_case = UpdateUserUseCase(self.repository)
         updated_user = update_use_case.execute(
@@ -33,12 +37,14 @@ class UserController:
         )
         return updated_user
 
-    def list_users(self, current_user: FindUserOutputDto) -> list[ListUserOutputDto]:
+    def list_users(
+        self, current_user: AuthorizationOutputDto
+    ) -> list[ListUserOutputDto]:
         list_use_case = ListUserUseCase(self.repository)
         return list_use_case.execute(current_user.uuid)
 
     def retrieve_user(
-        self, user_uuid: str, current_user: FindUserOutputDto
+        self, user_uuid: str, current_user: AuthorizationOutputDto
     ) -> FindUserOutputDto | None:
         find_use_case = FindUserUseCase(self.repository)
         user = find_use_case.execute(
@@ -47,7 +53,7 @@ class UserController:
         return user
 
     def update_user(
-        self, input_data: UpdateUserInputDto, current_user: FindUserOutputDto
+        self, input_data: UpdateUserInputDto, current_user: AuthorizationOutputDto
     ) -> UpdateUserOutputDto:
         update_use_case = UpdateUserUseCase(self.repository)
         updated_user = update_use_case.execute(
@@ -56,9 +62,11 @@ class UserController:
         return updated_user
 
     def create_admin_user(
-        self, input_data: CreateUserInputDto, current_user: FindUserOutputDto
+        self, input_data: CreateUserInputDto, current_user: AuthorizationOutputDto
     ) -> CreateUserOutputDto:
-        create_use_case = CreateAdminUserUseCase(self.repository)
+        create_use_case = CreateAdminUserUseCase(
+            repository=self.repository, sign_up_microservice=SignUpMicroservice()
+        )
         new_admin_user = create_use_case.execute(input_data, current_user.uuid)
         return new_admin_user
 

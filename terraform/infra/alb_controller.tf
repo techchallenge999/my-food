@@ -1,24 +1,24 @@
-data "aws_iam_policy_document" "aws_load_balancer_controller_assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-    effect  = "Allow"
-
-    condition {
-      test     = "StringEquals"
-      variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
-      values   = ["system:serviceaccount:default:aws-load-balancer-controller-role"]
-    }
-
-    principals {
-      identifiers = [aws_iam_openid_connect_provider.eks.arn]
-      type        = "Federated"
-    }
-  }
-}
-
 resource "aws_iam_role" "aws_load_balancer_controller" {
-  assume_role_policy = data.aws_iam_policy_document.aws_load_balancer_controller_assume_role_policy.json
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": "arn:aws:iam::447798043017:oidc-provider/${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+                "StringEquals": {
+                    "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:aud": "sts.amazonaws.com",
+                    "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub": "system:serviceaccount:default:aws-load-balancer-controller-role"
+                }
+            }
+        }
+    ]
+  })
   name               = "aws-load-balancer-controller-role"
+  depends_on = [aws_iam_openid_connect_provider.eks]
 }
 
 resource "aws_iam_policy" "aws_load_balancer_controller" {

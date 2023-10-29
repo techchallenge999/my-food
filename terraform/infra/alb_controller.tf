@@ -11,7 +11,7 @@ resource "aws_iam_role" "aws_load_balancer_controller" {
             "Condition": {
                 "StringEquals": {
                     "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:aud": "sts.amazonaws.com",
-                    "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub": "system:serviceaccount:default:aws-load-balancer-controller-role"
+                    "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub": "system:serviceaccount:kube-system:aws-load-balancer-controller"
                 }
             }
         }
@@ -35,37 +35,41 @@ output "aws_load_balancer_controller_role_arn" {
   value = aws_iam_role.aws_load_balancer_controller.arn
 }
 
+resource "kubernetes_service_account" "this" {
+  metadata {
+    name = "aws-load-balancer-controller"
+    namespace = "kube-system"
+    labels = {
+      "app.kubernetes.io/component" = "controller"
+      "app.kubernetes.io/name" = "aws-load-balancer-controller"
+    }
+    annotations = {
+      "eks.amazonaws.com/role-arn" = aws_iam_role.aws_load_balancer_controller.arn
+    }
+  }
+}
+
 resource "helm_release" "helm-aws-load-balancer-controller" {
   name = "helm-aws-load-balancer-controller"
 
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
-  namespace  = "default"
+  namespace  = "kube-system"
   version    = "1.4.1"
 
   set {
     name  = "clusterName"
-    value = aws_eks_cluster.cluster.id
+    value = var.cluster_name
   }
 
-  set {
-    name  = "image.tag"
-    value = "v2.4.2"
-  }
-
-  set {
-    name  = "replicaCount"
-    value = 1
+set {
+    name  = "serviceAccount.create"
+    value = false
   }
 
   set {
     name  = "serviceAccount.name"
-    value = "aws-load-balancer-controller-role"
-  }
-
-  set {
-    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-    value = aws_iam_role.aws_load_balancer_controller.arn
+    value = "aws-load-balancer-controller"
   }
 
   # EKS Fargate specific

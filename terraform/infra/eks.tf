@@ -74,5 +74,13 @@ resource "aws_eks_fargate_profile" "fargate_profile" {
   selector {
     namespace = "default"
   }
+  selector {
+    namespace = "kube-system"
+  }
+
+  selector {
+    namespace = "kube-public"
+  }
+
   depends_on = [aws_iam_role_policy_attachment.myfood_AmazonEKSFargatePodExecutionRolePolicy, module.vpc]
 }

@@ -72,6 +72,11 @@ set {
     value = "aws-load-balancer-controller"
   }
 
+  set {
+    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = aws_iam_role.aws_load_balancer_controller.arn
+  }
+
   # EKS Fargate specific
   set {
     name  = "region"

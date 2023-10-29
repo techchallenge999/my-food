@@ -25,10 +25,12 @@ provider "helm" {
 }
 
 data "aws_eks_cluster_auth" "default" {
+  depends_on = [ aws_eks_fargate_profile.fargate_profile ]
   name = var.cluster_name
 }
 
 data "aws_eks_cluster" "default" {
+  depends_on = [ aws_eks_fargate_profile.fargate_profile ]
   name = var.cluster_name
 }
 

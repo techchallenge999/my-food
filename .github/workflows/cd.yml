@@ -8,7 +8,7 @@ env:
   AWS_REGION: "us-east-1"
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  IMAGE: "447798043017.dkr.ecr.us-east-1.amazonaws.com/my-food:latest"
+  IMAGE: "447798043017.dkr.ecr.us-east-1.amazonaws.com/producao:latest"
   POSTGRES_DB: ${{secrets.POSTGRES_DB}}
   POSTGRES_USER: ${{secrets.POSTGRES_USER}}
   POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
@@ -44,7 +44,7 @@ jobs:
       - name: Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: my-food
+          REPOSITORY: producao
         run: |
           docker build -t ${{ env.IMAGE }} .
           docker push ${{ env.IMAGE }}
@@ -54,7 +54,7 @@ jobs:
 
       - run: aws sts get-caller-identity
 
-      - run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name my-food
+      - run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name producao
 
       - run: kubectl apply -f k8s/api/
 

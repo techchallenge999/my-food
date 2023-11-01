@@ -46,7 +46,7 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: my-food
         run: |
-          docker build --build-arg POSTGRES_DB="${{ env.POSTGRES_DB }}" --build-arg POSTGRES_PASSWORD="${{ env.POSTGRES_PASSWORD }}" --build-arg POSTGRES_USER="${{ env.POSTGRES_USER }}" --build-arg POSTGRES_URL="${{ env.POSTGRES_URL }}" -t ${{ env.IMAGE }} .
+          docker build --build-arg POSTGRES_DB="${{ env.POSTGRES_DB }}" --build-arg POSTGRES_PASSWORD="${{ env.POSTGRES_PASSWORD }}" --build-arg POSTGRES_USER="${{ env.POSTGRES_USER }}" --build-arg POSTGRES_URL="${{ env.POSTGRES_URL }}" -t ${{ env.IMAGE }} --build-arg AWS_REGION="${{ env.AWS_REGION }}" --build-arg AWS_ACCESS_KEY_ID="${{ env.AWS_ACCESS_KEY_ID }}" --build-arg AWS_SECRET_ACCESS_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}" --build-arg REDIS_URL="${{ env.REDIS_URL }}" --build-arg JWT_SECRET="${{ env.JWT_SECRET }}" --build-arg ACCESS_TOKEN_EXPIRE_MINUTES="${{ env.ACCESS_TOKEN_EXPIRE_MINUTES }}" -t ${{ env.IMAGE }} .
           docker push ${{ env.IMAGE }}
 
       - name: Kubectl tool installer

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: my-food-app:latest
+          image: 447798043017.dkr.ecr.us-east-1.amazonaws.com/my-food:latest
           imagePullPolicy: Always
           command: ['sh', '-c', "bash ./init_app.sh"]
           ports:

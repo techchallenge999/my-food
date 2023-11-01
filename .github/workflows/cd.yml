@@ -8,7 +8,7 @@ env:
   AWS_REGION: "us-east-1"
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  IMAGE: "447798043017.dkr.ecr.us-east-1.amazonaws.com/producao:latest"
+  IMAGE: "447798043017.dkr.ecr.us-east-1.amazonaws.com/my-food:latest"
   POSTGRES_DB: ${{secrets.POSTGRES_DB}}
   POSTGRES_USER: ${{secrets.POSTGRES_USER}}
   POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
@@ -54,14 +54,16 @@ jobs:
 
       - run: aws sts get-caller-identity
 
-      - run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name producao
+      - run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name myfood-dev-eks
+
+      - run: kubectl patch deployment coredns -n kube-system --type json -p='[{"op":"remove", "path":"/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'
+
+      - run: kubectl rollout restart -n kube-system deployment coredns
 
       - run: kubectl apply -f k8s/api/
 
       - run: kubectl delete secret api-secrets --ignore-not-found
       - run: kubectl create secret generic api-secrets --save-config --from-literal=POSTGRES_DB="${{ env.POSTGRES_DB }}" --from-literal=POSTGRES_USER="${{ env.POSTGRES_USER }}" --from-literal=POSTGRES_PASSWORD="${{ env.POSTGRES_PASSWORD }}" --from-literal=POSTGRES_URL="${{ env.POSTGRES_URL }}" --from-literal=REDIS_URL="${{ env.REDIS_URL }}" --from-literal=JWT_SECRET="${{ env.JWT_SECRET }}" --from-literal=ACCESS_TOKEN_EXPIRE_MINUTES="${{ env.ACCESS_TOKEN_EXPIRE_MINUTES }}"
-
-      - run: kubectl set image deployment/api api=${{ env.IMAGE }}
       - run: kubectl get services -o wide
       - run: kubectl get all
       - run: kubectl get deployments

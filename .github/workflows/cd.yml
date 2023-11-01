@@ -56,10 +56,6 @@ jobs:
 
       - run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name myfood-dev-eks
 
-      - run: kubectl patch deployment coredns -n kube-system --type json -p='[{"op":"remove", "path":"/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'
-
-      - run: kubectl rollout restart -n kube-system deployment coredns
-
       - run: kubectl apply -f k8s/api/
 
       - run: kubectl delete secret api-secrets --ignore-not-found

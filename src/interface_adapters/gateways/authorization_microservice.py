@@ -14,8 +14,8 @@ class AuthorizationOutputDto:
 
 
 class AuthorizationMicroserviceInterface(ABC):
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def authorize(
         authorization_input_dto: AuthorizationInputDto,
     ) -> AuthorizationOutputDto:

@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: api
-          image: my-food-app:latest
-          imagePullPolicy: Never
+          image: 447798043017.dkr.ecr.us-east-1.amazonaws.com/my-food:latest
+          imagePullPolicy: Always
           command: ['sh', '-c', "bash ./init_app.sh"]
           ports:
             - containerPort: 8000
@@ -36,6 +36,22 @@ spec:
                   name: api-secrets
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_URL
-              value: postgres-svc
-            - name: API_URL
-              value: api-svc
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: POSTGRES_URL
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: REDIS_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: JWT_SECRET
+            - name: ACCESS_TOKEN_EXPIRE_MINUTES
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: ACCESS_TOKEN_EXPIRE_MINUTES

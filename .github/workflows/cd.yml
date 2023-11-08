@@ -2,7 +2,7 @@ name: cd-opusq-backend-homolog
 on:
   push:
     branch:
-      - build/terraform
+      - feat/aws-lambda-sign-up
 
 env:
   AWS_REGION: "us-east-1"
@@ -46,7 +46,7 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: my-food
         run: |
-          docker build --build-arg POSTGRES_DB="${{ env.POSTGRES_DB }}" --build-arg POSTGRES_PASSWORD="${{ env.POSTGRES_PASSWORD }}" --build-arg POSTGRES_USER="${{ env.POSTGRES_USER }}" --build-arg POSTGRES_URL="${{ env.POSTGRES_URL }}" -t ${{ env.IMAGE }} .
+          docker build -t ${{ env.IMAGE }} .
           docker push ${{ env.IMAGE }}
 
       - name: Kubectl tool installer
@@ -57,8 +57,8 @@ jobs:
       - run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name myfood-dev-eks
 
       - run: kubectl delete secret api-secrets --ignore-not-found
-      - run: kubectl create secret generic api-secrets --save-config --from-literal=POSTGRES_DB="${{ env.POSTGRES_DB }}" --from-literal=POSTGRES_USER="${{ env.POSTGRES_USER }}" --from-literal=POSTGRES_PASSWORD="${{ env.POSTGRES_PASSWORD }}" --from-literal=POSTGRES_URL="${{ env.POSTGRES_URL }}" --from-literal=REDIS_URL="${{ env.REDIS_URL }}" --from-literal=JWT_SECRET="${{ env.JWT_SECRET }}" --from-literal=ACCESS_TOKEN_EXPIRE_MINUTES="${{ env.ACCESS_TOKEN_EXPIRE_MINUTES }}"
-
+      - run: kubectl create secret generic api-secrets --save-config --from-literal=POSTGRES_DB="${{ env.POSTGRES_DB }}" --from-literal=POSTGRES_USER="${{ env.POSTGRES_USER }}" --from-literal=POSTGRES_PASSWORD="${{ env.POSTGRES_PASSWORD }}" --from-literal=POSTGRES_URL="${{ env.POSTGRES_URL }}" --from-literal=REDIS_URL="${{ env.REDIS_URL }}" --from-literal=JWT_SECRET="${{ env.JWT_SECRET }}" --from-literal=ACCESS_TOKEN_EXPIRE_MINUTES="${{ env.ACCESS_TOKEN_EXPIRE_MINUTES }}" --from-literal=AWS_ACCESS_KEY_ID="${{ env.AWS_ACCESS_KEY_ID }}" --from-literal=AWS_SECRET_ACCESS_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}" --from-literal=AWS_REGION="${{ env.AWS_REGION }}"
+      - run: kubectl delete -f k8s/api/deployment.yml --ignore-not-found
       - run: kubectl apply -f k8s/api/
       - run: kubectl get services -o wide
       - run: kubectl get all

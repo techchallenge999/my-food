@@ -55,3 +55,18 @@ spec:
                 secretKeyRef:
                   name: api-secrets
                   key: ACCESS_TOKEN_EXPIRE_MINUTES
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: AWS_REGION

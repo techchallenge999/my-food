@@ -2,13 +2,12 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from src.domain.aggregates.order.value_objects.order_status import OrderStatus
-from src.use_cases.product.list.list_product_dto import ListProductOutputDto
 
 
 @dataclass
 class ListOrderItemOutputDto:
     comment: str
-    product: ListProductOutputDto
+    product_uuid: str
     quantity: int
 
 

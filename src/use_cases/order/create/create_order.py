@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from uuid import UUID, uuid4
 
 from src.domain.aggregates.order.entities.order import Order
@@ -13,7 +12,6 @@ from src.use_cases.order.create.create_order_dto import (
     CreateOrderItemOutputDto,
     CreateOrderOutputDto,
 )
-from src.use_cases.product.find.find_product_dto import FindProductOutputDto
 
 
 class CreateOrderUseCase:
@@ -50,9 +48,7 @@ class CreateOrderUseCase:
             items=[
                 CreateOrderItemOutputDto(
                     comment=new_item.comment,
-                    product=FindProductOutputDto(
-                        **asdict(self._product_repository.find(new_item.product_uuid))
-                    ),
+                    product_uuid=new_item.product_uuid,
                     quantity=new_item.quantity,
                 )
                 for new_item in new_order.items

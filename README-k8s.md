@@ -2,6 +2,7 @@
 ## Requirements
 - [Docker Engine](https://docs.docker.com/engine/install/)
 - [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 ## Usage
 Follow these steps in the root directory of your local cloned repository:
 - Run the following commands:

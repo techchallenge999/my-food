@@ -1,4 +1,6 @@
-from src.infrastructure.fast_api.utils.auth import EmptyUser
+from src.interface_adapters.gateways.authorization_microservice import (
+    AuthorizationOutputDto,
+)
 from src.interface_adapters.gateways.order_parser import CreateOrderParser
 from src.interface_adapters.gateways.repositories.order import OrderRepositoryInterface
 from src.interface_adapters.gateways.repositories.product import (
@@ -27,7 +29,6 @@ from src.use_cases.order.update.update_order_dto import (
     UpdateOrderItemsInputDto,
     UpdateOrderOutputDto,
 )
-from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 
 
 class OrderController:
@@ -40,15 +41,15 @@ class OrderController:
         create_order_parser: CreateOrderParser,
         product_repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
-        current_user: FindUserOutputDto | EmptyUser,
+        current_user: AuthorizationOutputDto,
     ) -> CreateOrderOutputDto:
         create_use_case = CreateOrderUseCase(
             self.repository, product_repository, user_repository
         )
-        new_user = create_use_case.execute(
+        new_order = create_use_case.execute(
             create_order_parser.get_order_input_dto(input_data, current_user)
         )
-        return new_user
+        return new_order
 
     def list_orders(self) -> list[ListOrderOutputDto]:
         return ListOrderUseCase(self.repository).execute()

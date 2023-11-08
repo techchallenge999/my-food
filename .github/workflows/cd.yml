@@ -1,0 +1,65 @@
+name: cd-opusq-backend-homolog
+on:
+  push:
+    branch:
+      - feat/aws-lambda-sign-up
+
+env:
+  AWS_REGION: "us-east-1"
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  IMAGE: "447798043017.dkr.ecr.us-east-1.amazonaws.com/my-food:latest"
+  POSTGRES_DB: ${{secrets.POSTGRES_DB}}
+  POSTGRES_USER: ${{secrets.POSTGRES_USER}}
+  POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+  POSTGRES_URL: ${{secrets.POSTGRES_URL}}
+  REDIS_URL:  ${{secrets.REDIS_URL}}
+  JWT_SECRET:  ${{secrets.JWT_SECRET}}
+  ACCESS_TOKEN_EXPIRE_MINUTES: ${{secrets.ACCESS_TOKEN_EXPIRE_MINUTES}}
+
+jobs:
+  build-n-deploy:
+    name: "Build and Deploy"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: my-food
+        run: |
+          docker build -t ${{ env.IMAGE }} .
+          docker push ${{ env.IMAGE }}
+
+      - name: Kubectl tool installer
+        uses: Azure/setup-kubectl@v3
+
+      - run: aws sts get-caller-identity
+
+      - run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name myfood-dev-eks
+
+      - run: kubectl delete secret api-secrets --ignore-not-found
+      - run: kubectl create secret generic api-secrets --save-config --from-literal=POSTGRES_DB="${{ env.POSTGRES_DB }}" --from-literal=POSTGRES_USER="${{ env.POSTGRES_USER }}" --from-literal=POSTGRES_PASSWORD="${{ env.POSTGRES_PASSWORD }}" --from-literal=POSTGRES_URL="${{ env.POSTGRES_URL }}" --from-literal=REDIS_URL="${{ env.REDIS_URL }}" --from-literal=JWT_SECRET="${{ env.JWT_SECRET }}" --from-literal=ACCESS_TOKEN_EXPIRE_MINUTES="${{ env.ACCESS_TOKEN_EXPIRE_MINUTES }}" --from-literal=AWS_ACCESS_KEY_ID="${{ env.AWS_ACCESS_KEY_ID }}" --from-literal=AWS_SECRET_ACCESS_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}" --from-literal=AWS_REGION="${{ env.AWS_REGION }}"
+      - run: kubectl delete -f k8s/api/deployment.yml --ignore-not-found
+      - run: kubectl apply -f k8s/api/
+      - run: kubectl get services -o wide
+      - run: kubectl get all
+      - run: kubectl get deployments

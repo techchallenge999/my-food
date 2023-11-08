@@ -18,7 +18,7 @@ class UserRepositoryDto:
 
 class UserRepositoryInterface(RepositoryInterface):
     @abstractmethod
-    def create(self, new_user_dto: CreateUserOutputDto, password: str) -> None:
+    def create(self, new_user_dto: CreateUserOutputDto) -> None:
         pass
 
     @abstractmethod

@@ -3,11 +3,16 @@ from typing import Annotated
 from fastapi import APIRouter, HTTPException, status as status_code, Depends
 
 from src.domain.shared.exceptions.base import DomainException
-from src.infrastructure.fast_api.utils.auth import EmptyUser, get_current_user_optional
+from src.infrastructure.boto.authorization.authorization_microservice import (
+    AuthorizationMicroservice,
+)
 from src.infrastructure.postgresql.repositories.order import OrderRepository
 from src.infrastructure.postgresql.repositories.product import ProductRepository
 from src.infrastructure.postgresql.repositories.user import UserRepository
 from src.interface_adapters.controllers.order import OrderController
+from src.interface_adapters.gateways.authorization_microservice import (
+    AuthorizationOutputDto,
+)
 from src.interface_adapters.gateways.order_parser import CreateOrderParser
 from src.use_cases.order.create.create_order_dto import (
     CreateOrderInputDto,
@@ -20,7 +25,6 @@ from src.use_cases.order.update.update_order_dto import (
     UpdateOrderItemsInputDto,
     UpdateOrderOutputDto,
 )
-from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 
 
 router = APIRouter()
@@ -30,7 +34,7 @@ router = APIRouter()
 async def create_order(
     input_data: CreateOrderInputDto,
     current_user: Annotated[
-        FindUserOutputDto | EmptyUser, Depends(get_current_user_optional)
+        AuthorizationOutputDto, Depends(AuthorizationMicroservice.authorize)
     ],
 ):
     try:

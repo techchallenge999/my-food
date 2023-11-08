@@ -1,5 +1,7 @@
 from src.domain.aggregates.product.interfaces.product import ProductCategory
-from src.infrastructure.fast_api.utils.auth import EmptyUser
+from src.interface_adapters.gateways.authorization_microservice import (
+    AuthorizationOutputDto,
+)
 from src.interface_adapters.gateways.repositories.product import (
     ProductRepositoryInterface,
 )
@@ -39,7 +41,6 @@ from src.use_cases.product.update.update_product_dto import (
     UpdateProductInputDto,
     UpdateProductOutputDto,
 )
-from src.use_cases.user.find.find_user_dto import FindUserOutputDto
 
 
 class ProductController:
@@ -47,7 +48,7 @@ class ProductController:
         self,
         repository: ProductRepositoryInterface,
         user_repository: UserRepositoryInterface,
-        current_user: FindUserOutputDto | EmptyUser,
+        current_user: AuthorizationOutputDto,
     ):
         self.repository = repository
         self.user_repository = user_repository

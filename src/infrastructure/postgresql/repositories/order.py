@@ -12,7 +12,6 @@ from src.interface_adapters.gateways.repositories.order import (
     OrderRepositoryDto,
     OrderRepositoryInterface,
 )
-from src.interface_adapters.gateways.repositories.product import ProductRepositoryDto
 
 
 class OrderRepository(OrderRepositoryInterface):
@@ -49,15 +48,7 @@ class OrderRepository(OrderRepositoryInterface):
             items=[
                 OrderItemRepositoryDto(
                     comment=item.comment,
-                    product=ProductRepositoryDto(
-                        name=item.product.name,
-                        category=item.product.category,
-                        price=item.product.price,
-                        description=item.product.description,
-                        image=item.product.image,
-                        is_active=item.product.is_active,
-                        uuid=str(item.product.uuid),
-                    ),
+                    product_uuid=str(item.product.uuid),
                     quantity=item.quantity,
                 )
                 for item in order.items
@@ -109,15 +100,7 @@ class OrderRepository(OrderRepositoryInterface):
                 items=[
                     OrderItemRepositoryDto(
                         comment=item.comment,
-                        product=ProductRepositoryDto(
-                            name=item.product.name,
-                            category=item.product.category,
-                            price=item.product.price,
-                            description=item.product.description,
-                            image=item.product.image,
-                            is_active=item.product.is_active,
-                            uuid=str(item.product.uuid),
-                        ),
+                        product_uuid=str(item.product.uuid),
                         quantity=item.quantity,
                     )
                     for item in order[0].items

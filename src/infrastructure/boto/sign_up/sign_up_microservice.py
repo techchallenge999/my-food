@@ -11,5 +11,5 @@ class SignUpMicroservice(SignUpMicroserviceInterface):
     def save(self, sign_up_input_dto):
         client = session.client("lambda")
         client.invoke(
-            FunctionName="sign-up-save", Payload=json.dumps(asdict(sign_up_input_dto))
+            FunctionName="signUp", Payload=json.dumps(asdict(sign_up_input_dto))
         )

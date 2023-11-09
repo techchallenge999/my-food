@@ -17,7 +17,7 @@ class AuthorizationMicroservice(AuthorizationMicroserviceInterface):
     def authorize(token: Annotated[str, Depends(oauth2_scheme)]):
         client = session.client("lambda")
         response = client.invoke(
-            FunctionName="authorize",
+            FunctionName="authorization",
             Payload=json.dumps(asdict(AuthorizationInputDto(token=token))),
         )
         return response

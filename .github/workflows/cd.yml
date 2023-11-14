@@ -1,8 +1,8 @@
 name: cd-opusq-backend-homolog
 on:
   push:
-    branch:
-      - feat/aws-lambda-sign-up
+    branches:
+      - main
 
 env:
   AWS_REGION: "us-east-1"

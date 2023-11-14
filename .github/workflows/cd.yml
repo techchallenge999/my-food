@@ -46,7 +46,7 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: my-food
         run: |
-          docker build -t ${{ env.IMAGE }} .
+          docker build  --build-arg POSTGRES_DB="${{ env.POSTGRES_DB }}"  --build-arg POSTGRES_USER="${{ env.POSTGRES_USER }}"  --build-arg POSTGRES_PASSWORD="${{ env.POSTGRES_PASSWORD }}"  --build-arg POSTGRES_URL="${{ env.POSTGRES_URL }}"  --build-arg REDIS_URL="${{ env.REDIS_URL }}"  --build-arg JWT_SECRET="${{ env.JWT_SECRET }}"  --build-arg ACCESS_TOKEN_EXPIRE_MINUTES="${{ env.ACCESS_TOKEN_EXPIRE_MINUTES }}"  --build-arg AWS_ACCESS_KEY_ID="${{ env.AWS_ACCESS_KEY_ID }}"  --build-arg AWS_SECRET_ACCESS_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}"  --build-arg AWS_REGION="${{ env.AWS_REGION }}" -t ${{ env.IMAGE }} .
           docker push ${{ env.IMAGE }}
 
       - name: Kubectl tool installer
@@ -55,6 +55,8 @@ jobs:
       - run: aws sts get-caller-identity
 
       - run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name myfood-dev-eks
+      - run: kubectl patch deployment coredns -n kube-system --type json -p='[{"op":"remove", "path":"/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'
+      - run: kubectl rollout restart -n kube-system deployment coredns
 
       - run: kubectl delete secret api-secrets --ignore-not-found
       - run: kubectl create secret generic api-secrets --save-config --from-literal=POSTGRES_DB="${{ env.POSTGRES_DB }}" --from-literal=POSTGRES_USER="${{ env.POSTGRES_USER }}" --from-literal=POSTGRES_PASSWORD="${{ env.POSTGRES_PASSWORD }}" --from-literal=POSTGRES_URL="${{ env.POSTGRES_URL }}" --from-literal=REDIS_URL="${{ env.REDIS_URL }}" --from-literal=JWT_SECRET="${{ env.JWT_SECRET }}" --from-literal=ACCESS_TOKEN_EXPIRE_MINUTES="${{ env.ACCESS_TOKEN_EXPIRE_MINUTES }}" --from-literal=AWS_ACCESS_KEY_ID="${{ env.AWS_ACCESS_KEY_ID }}" --from-literal=AWS_SECRET_ACCESS_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}" --from-literal=AWS_REGION="${{ env.AWS_REGION }}"
